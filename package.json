@@ -1,5 +1,5 @@
 {
-  "name": "@pagerduty/backstage-plugin",
+  "name": "@tbarbosa/backstage-plugin",
   "description": "A Backstage plugin that integrates towards PagerDuty",
   "version": "0.6.4",
   "main": "src/index.ts",

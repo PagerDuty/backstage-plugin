@@ -37,8 +37,9 @@ jobs:
         with:
           node-version: 18
       - run: yarn install
-      - run: npm publish
+      - run: npm publish --access private
         env:
+          
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       
