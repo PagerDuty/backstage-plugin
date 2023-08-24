@@ -20,7 +20,7 @@ jobs:
         uses: DerYeger/yarn-setup-action@master
         with:
           node-version: 18
-      - run: npm install
+      - run: npm install --legacy-peer-deps
       - run: npm run build
 
   publish-npm:
@@ -36,7 +36,7 @@ jobs:
         uses: DerYeger/yarn-setup-action@master
         with:
           node-version: 18
-      - run: npm install
+      - run: npm install --legacy-peer-deps
       - run: npm publish --access private
         env:
           
