@@ -35,7 +35,7 @@ jobs:
         uses: DerYeger/yarn-setup-action@master
         with:
           node-version: 18
-      - run: yarn install
+      - run: npm run install
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
