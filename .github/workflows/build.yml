@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 18
       - run: npm install --legacy-peer-deps
-      - run: npm publish --access private
+      - run: npm publish
         env:
           
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
