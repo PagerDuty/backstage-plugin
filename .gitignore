@@ -165,6 +165,5 @@ tsconfig.tmp.json
 # TypeScript generated files
 **/*.d.ts
 !config.d.ts
-yarn.lock
 .yarnrc.yml
 .gitignore
