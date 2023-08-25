@@ -12,14 +12,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node 18
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: corepack enable
-      - run: yarn set version stable
-      - run: yarn install
-      - run: yarn build
+      - name: Install yarn
+        run: corepack enable
+      - name: Set yarn version to latest stable
+        run: yarn set version stable
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Test
+        run: yarn test
       
 
       

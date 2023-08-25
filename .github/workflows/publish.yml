@@ -11,15 +11,21 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node 18
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: https://registry.npmjs.org/
-      - run: corepack enable
-      - run: yarn set version stable
-      - run: yarn install
-      - run: yarn build
-      - run: yarn npm publish
+      - name: Install yarn
+        run: corepack enable
+      - name: Set yarn version to latest stable
+        run: yarn set version stable
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Publish to NPM
+        run: yarn npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
