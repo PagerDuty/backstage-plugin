@@ -16,8 +16,7 @@
 
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-// import EmptyStateImage from '../../assets/emptystate.svg';
-const EmptyStateImage: string = require("../assets/emptystate.svg").default;
+const EmptyStateImage: string = require("../../assets/emptystate.svg").default;
 
 export const ChangeEventEmptyState = () => {
   return (
