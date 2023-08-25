@@ -16,12 +16,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
-        with:
-          node-version: 18
-      - run: npm install --legacy-peer-deps
-      - run: npm run build
+      - run: corepack enable
+      - run: yarn set version stable
+      - run: yarn install
+      - run: yarn build
 
   publish-npm:
     needs: build
@@ -32,14 +30,12 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - name: Yarn setup
-        uses: DerYeger/yarn-setup-action@master
-        with:
-          node-version: 18
-      - run: npm install --legacy-peer-deps
+      - run: corepack enable
+      - run: yarn set version stable
+      - run: yarn install
+      - run: yarn build
       - run: npm publish
         env:
-          
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       
