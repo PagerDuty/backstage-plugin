@@ -20,8 +20,8 @@ jobs:
           node-version: 18
       - name: Install yarn
         run: corepack enable
-      - name: Set yarn version to latest stable
-        run: yarn set version stable
+      - name: Set yarn version to 3.6.3
+        run: yarn set version 3.6.3
       - name: Install dependencies
         run: yarn install
       - name: Build
