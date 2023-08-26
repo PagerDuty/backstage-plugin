@@ -59,7 +59,7 @@ First, install the PagerDuty plugin via a CLI:
 
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/app @backstage/plugin-pagerduty
+yarn add --cwd packages/app @pagerduty/backstage-plugin
 ```
 
 Next, add the plugin to `EntityPage.tsx` in `packages/app/src/components/catalog` by adding the following code snippets.
@@ -209,9 +209,36 @@ proxy:
 2. Remove the added code snippets from `EntityPage.tsx`
 3. Remove the plugin package:
 
-```bash
-# From your Backstage root directory
-yarn remove --cwd packages/app @backstage/plugin-pagerduty
-```
+    ```bash
+    # From your Backstage root directory
+    yarn remove --cwd packages/app @pagerduty/backstage-plugin
+    ```
 
 4. [Delete the integration](https://support.pagerduty.com/docs/services-and-integrations#delete-an-integration-from-a-service) from the service in PagerDuty
+
+## How to Migrate from @backstage/plugin-pagerduty
+
+If you are migrating from the Pagerduty plugin that was maintained by Spotify, the steps to migrate are pretty simple. 
+
+1. Remove the Backstage package from your Backstage project
+
+    ```bash
+    # From your Backstage root directory
+    yarn remove --cwd packages/app @backstage/plugin-pagerduty
+    ```
+
+2. Install the new PagerDuty plugin for Backstage
+
+   ```bash
+    # From your Backstage root directory
+    yarn add --cwd packages/app @pagerduty/backstage-plugin
+    ```
+
+3. Replace all occurrences of **@backstage/plugin-pagerduty** with **@pagerduty/backstage-plugin** in your components
+
+4. Re-install dependencies and run Backstage locally to test that everything is working
+
+   ```bash
+    # From your Backstage root directory
+    yarn install && yarn dev
+    ```
