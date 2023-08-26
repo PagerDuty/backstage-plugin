@@ -1,5 +1,8 @@
 # PagerDuty + Backstage Integration Benefits
 
+[![Build](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml)
+[![NPM Publish](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml)
+
 - Display relevant PagerDuty information about an entity within Backstage, such as the escalation policy, if there are any active incidents, and recent changes
 - Trigger an incident to the currently on-call responder(s) for a service
 
