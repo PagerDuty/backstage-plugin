@@ -58,10 +58,9 @@ If you need help with this plugin, please reach out on the [Backstage Discord se
 
 The file paths mentioned in the following steps are relative to your app's root directory — for example, the directory created by following the [Getting Started](https://backstage.io/docs/getting-started/) guide and creating your app with `npx @backstage/create-app`.
 
-First, install the PagerDuty plugin via a CLI:
+First, from your Backstage root directory, install the PagerDuty plugin via CLI:
 
 ```bash
-# From your Backstage root directory
 yarn add --cwd packages/app @pagerduty/backstage-plugin
 ```
 
@@ -73,7 +72,7 @@ Add the following imports to the top of the file:
 import {
   isPluginApplicableToEntity as isPagerDutyAvailable,
   EntityPagerDutyCard,
-} from '@backstage/plugin-pagerduty';
+} from '@pagerduty/backstage-plugin';
 ```
 
 Find `const overviewContent` in `EntityPage.tsx`, and add the following snippet inside the outermost `Grid` defined there, just before the closing `</Grid>` tag:
