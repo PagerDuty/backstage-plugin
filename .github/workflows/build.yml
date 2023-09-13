@@ -28,6 +28,10 @@ jobs:
         run: yarn build
       - name: Test
         run: yarn test
+      - name: Publish beta version to NPM (uses package.json version)
+        run: yarn npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       
 
       
