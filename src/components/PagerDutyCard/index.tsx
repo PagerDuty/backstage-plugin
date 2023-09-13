@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// eslint-disable-next-line @backstage/no-undeclared-imports
 import React, { ReactNode, useState, useCallback } from 'react';
 import { Card, CardHeader, Divider, CardContent } from '@material-ui/core';
 import { Incidents } from '../Incident';
@@ -170,15 +171,15 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
                 refreshIncidents={refreshIncidents}
               />
             </CardTab>
-            <>
-              {disableChangeEvents !== true && (
-                <CardTab label="Change Events">
+            <>            
+            {disableChangeEvents !== true && (
+              <CardTab label="Change Events">
                   <ChangeEvents
                     serviceId={service!.id}
                     refreshEvents={refreshChangeEvents}
                   />
                 </CardTab>
-              )}
+            )}
             </>
           </TabbedCard>
           <EscalationPolicy policyId={service!.policyId} />

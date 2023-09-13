@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// eslint-disable-next-line @backstage/no-undeclared-imports
 import React, { useCallback, ReactNode, useState } from 'react';
 import { makeStyles, Button } from '@material-ui/core';
 import { BackstageTheme } from '@backstage/theme';

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// eslint-disable-next-line @backstage/no-undeclared-imports
 import React, { useEffect } from 'react';
 import { List, ListSubheader } from '@material-ui/core';
 import { ChangeEventListItem } from './ChangeEventListItem';

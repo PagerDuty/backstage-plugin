@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+// eslint-disable-next-line @backstage/no-undeclared-imports
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
+
 const EmptyStateImage: string = require("../../assets/emptystate.svg").default;
 
 export const ChangeEventEmptyState = () => {
