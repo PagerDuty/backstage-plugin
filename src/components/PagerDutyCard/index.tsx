@@ -171,16 +171,16 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
                 refreshIncidents={refreshIncidents}
               />
             </CardTab>
-            <>            
-            {disableChangeEvents !== true && (
+            {disableChangeEvents !== true ? (
               <CardTab label="Change Events">
-                  <ChangeEvents
-                    serviceId={service!.id}
-                    refreshEvents={refreshChangeEvents}
-                  />
-                </CardTab>
+                <ChangeEvents
+                  serviceId={service!.id}
+                  refreshEvents={refreshChangeEvents}
+                />
+              </CardTab>
+            ) : (
+              <></>
             )}
-            </>
           </TabbedCard>
           <EscalationPolicy policyId={service!.policyId} />
         </CardContent>
