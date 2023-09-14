@@ -166,4 +166,5 @@ tsconfig.tmp.json
 # TypeScript generated files
 **/*.d.ts
 !config.d.ts
+!custom.d.ts
 .gitignore
