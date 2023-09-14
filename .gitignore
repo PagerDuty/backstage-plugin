@@ -107,6 +107,7 @@ typings/
 dist
 dist-types
 dist-workspace
+assets
 
 # Gatsby files
 .cache/
