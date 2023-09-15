@@ -35,10 +35,5 @@ jobs:
           files: ./.yarnrc.yml
           replacements: NPM_TOKEN=${{secrets.npm_token}}
       - name: Publish beta version to NPM (uses package.json version)
-        run: yarn npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      
-
-      
-  
+        run: yarn npm publish --tag beta --access public
+    

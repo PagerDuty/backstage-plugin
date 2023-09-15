@@ -26,7 +26,10 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
-      - name: Publish to NPM
-        run: yarn npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Replace Action
+        uses: datamonsters/replace-action@v2
+        with:
+          files: ./.yarnrc.yml
+          replacements: NPM_TOKEN=${{secrets.npm_token}}
+      - name: Publish beta version to NPM (uses package.json version)
+        run: yarn npm publish --tag stable --access public
