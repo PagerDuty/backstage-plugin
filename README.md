@@ -1,21 +1,26 @@
-# PagerDuty + Backstage Integration Benefits
+# PagerDuty plugin for Backstage
 
 [![Build](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml)
 [![NPM Publish](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml)
 
-- Display relevant PagerDuty information about an entity within Backstage, such as the escalation policy, if there are any active incidents, and recent changes
-- Trigger an incident to the currently on-call responder(s) for a service
+**Note:** If you are migrating from *@backstage/plugin-pagerduty* you can follow these instructions [here](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#how-to-migrate-from-backstageplugin-pagerduty).
+
+## Integration Benefits
+
+- Display relevant PagerDuty information about an entity within Backstage, such as the active incidents or recent changes.
+- Quickly check who is on call for a service.
+- Trigger an incident to the currently on-call responder(s) for a service.
 
 ## How it Works
 
 - The Backstage PagerDuty plugin allows PagerDuty information about a Backstage entity to be displayed within Backstage. This includes active incidents, recent change events, as well as the current on-call responders' names, email addresses, and links to their profiles in PagerDuty.
-- Incidents can be manually triggered via the plugin with a user-provided description, which will in turn notify the current on-call responders (Alternatively, the plugin can be configured with an optional `readOnly` property to suppress the ability to trigger incidents from the plugin).
-  - _Note: This feature is only available when providing the `pagerduty.com/integration-key` annotation_
-- Change events will be displayed in a separate tab. If the change event payload has additional links the first link only will be rendered.
+- Incidents can be manually triggered via the plugin with a user-provided description, which will in turn notify the current on-call responders. Alternatively, the plugin can be configured with an optional `readOnly` property to suppress the ability to trigger incidents from the plugin.
+  - **Note:** This feature is only available when providing the _`pagerduty.com/integration-key`_ annotation.
+- Change events will be displayed in a separate tab. If the change event payload has additional links, only the first link will be rendered.
 
 ## Requirements
 
-- Setup of the PagerDuty plugin for Backstage requires a PagerDuty Admin role in order to generate the necessary authorizations, such as the API token. If you do not have this role, please reach out to an Admin or Account Owner within your organization to request configuration of this plugin.
+- Setup of the PagerDuty plugin for Backstage requires a PagerDuty Admin role in order to generate the necessary authorizations, such as the API token. If you do not have this role, please reach out to a **Global Admin** or **Account Owner** within your organization to request configuration of this plugin.
 
 ## Feature Overview
 
@@ -35,7 +40,7 @@
 
 ## Support
 
-If you need help with this plugin, please reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673).
+If you need help with this plugin, please open an issue in [GitHub](https://github.com/PagerDuty/backstage-plugin) or reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673).
 
 ## Integration Walk-through
 
@@ -46,7 +51,7 @@ If you need help with this plugin, please reach out on the [Backstage Discord se
 1. From the **Configuration** menu, select **Services**.
 2. There are two ways to add an integration to a service:
    - **If you are adding your integration to an existing service**: Click the **name** of the service you want to add the integration to. Then, select the **Integrations** tab and click the **New Integration** button.
-   - **If you are creating a new service for your integration**: Please read the documentation in section [Configuring Services and Integrations](https://support.pagerduty.com/docs/services-and-integrations#section-configuring-services-and-integrations) and follow the steps outlined in the [Create a New Service](https://support.pagerduty.com/docs/services-and-integrations#section-create-a-new-service) section, selecting **Backstage** as the **Integration Type** in step 4. Continue with the **In Backstage** section (below) once you have finished these steps.
+   - **If you are creating a new service for your integration**: Please read the documentation in section [Configuring Services and Integrations](https://support.pagerduty.com/docs/services-and-integrations#section-configuring-services-and-integrations) and follow the steps outlined in the [Create a Service](https://support.pagerduty.com/docs/services-and-integrations#create-a-service) section, selecting **Backstage** as the **Integration Type** in step 5. Continue with the [_"In Backstage"_](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#in-backstage) section (below) once you have finished these steps.
 3. Enter an **Integration Name** in the format `monitoring-tool-service-name` (e.g. `Backstage-Shopping-Cart`) and select **Backstage** from the Integration Type menu.
 4. Click the **Add Integration** button to save your new integration. You will be redirected to the Integrations tab for your service.
 5. An **Integration Key** will be generated on this screen. Keep this key saved in a safe place, as it will be used when you configure the integration with **Backstage** in the next section.
@@ -176,7 +181,7 @@ This service ID can be found by navigating to a Service within PagerDuty and pul
 
 Your browser URL should now be located at `https://pagerduty.com/service-directory/[SERVICE_ID]`.
 
-_Note: When annotating with `pagerduty.com/service-id`, the feature to Create Incidents is not currently supported_
+**Note:** _When annotating with `pagerduty.com/service-id`, the feature to Create Incidents is not currently supported_
 
 ##### Custom Events URL
 
@@ -218,7 +223,7 @@ proxy:
 
 4. [Delete the integration](https://support.pagerduty.com/docs/services-and-integrations#delete-an-integration-from-a-service) from the service in PagerDuty
 
-## How to Migrate from @backstage/plugin-pagerduty
+## How to migrate from @backstage/plugin-pagerduty
 
 If you are migrating from the Pagerduty plugin that was maintained by Spotify, the steps to migrate are pretty simple. 
 
