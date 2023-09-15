@@ -38,10 +38,6 @@
 
 ![PagerDuty plugin showing an active incident](doc/pd4.png)
 
-## Support
-
-If you need help with this plugin, please open an issue in [GitHub](https://github.com/PagerDuty/backstage-plugin) or reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673).
-
 ## Integration Walk-through
 
 ### In PagerDuty
@@ -249,3 +245,10 @@ If you are migrating from the Pagerduty plugin that was maintained by Spotify, t
     # From your Backstage root directory
     yarn install && yarn dev
     ```
+
+## Support
+
+If you need help with this plugin, please open an issue in [GitHub](https://github.com/PagerDuty/backstage-plugin) or reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673).
+
+## Contributing
+
