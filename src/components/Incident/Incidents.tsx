@@ -63,7 +63,7 @@ export const Incidents = ({ serviceId, refreshIncidents }: Props) => {
   }
 
   return (
-    <List dense subheader={<ListSubheader>INCIDENTS</ListSubheader>}>
+    <List dense>
       {incidents!.map((incident, index) => (
         <IncidentListItem key={incident.id + index} incident={incident} />
       ))}

@@ -61,7 +61,7 @@ export const ChangeEvents = ({ serviceId, refreshEvents }: Props) => {
   }
 
   return (
-    <List dense subheader={<ListSubheader>CHANGE EVENTS</ListSubheader>}>
+    <List dense>
       {changeEvents!.map((changeEvent, index) => (
         <ChangeEventListItem
           key={changeEvent.id + index}
