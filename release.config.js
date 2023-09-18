@@ -11,7 +11,7 @@ module.exports = {
                 changelogFile: 'CHANGELOG.md'
             }
         ],
-        '@semantic-release-yarn',
+        'semantic-release-yarn',
         '@semantic-release/github',
         [
             '@semantic-release/git',
