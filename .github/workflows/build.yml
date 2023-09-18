@@ -25,15 +25,11 @@ jobs:
         run: corepack prepare yarn@stable --activate
       - name: Install dependencies
         run: yarn install
+      - name: Lint
+        run: yarn lint
       - name: Build
         run: yarn build
       - name: Test
         run: yarn test
-      - name: Replace Action
-        uses: datamonsters/replace-action@v2
-        with:
-          files: ./.yarnrc.yml
-          replacements: NPM_TOKEN=${{secrets.npm_token}}
-      - name: Publish beta version to NPM (uses package.json version)
-        run: yarn npm publish --tag beta --access public
+              
     

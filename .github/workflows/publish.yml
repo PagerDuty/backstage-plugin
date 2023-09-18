@@ -4,11 +4,12 @@
 name: NPM Publish
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main    
 
 jobs:
-  publish-npm:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,12 +25,21 @@ jobs:
         run: corepack prepare yarn@stable --activate
       - name: Install dependencies
         run: yarn install
+      - name: install semantic-release extra plugins
+        run: yarn add -D @semantic-release/changelog @semantic-release/git @semantic-release/github
+      - name: lint
+        run: yarn lint
       - name: Build
         run: yarn build
-      - name: Replace Action
-        uses: datamonsters/replace-action@v2
-        with:
-          files: ./.yarnrc.yml
-          replacements: NPM_TOKEN=${{secrets.npm_token}}
-      - name: Publish beta version to NPM (uses package.json version)
-        run: yarn npm publish --tag stable --access public
+      - name: Release
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+      # - name: Replace Action
+      #   uses: datamonsters/replace-action@v2
+      #   with:
+      #     files: ./.yarnrc.yml
+      #     replacements: NPM_TOKEN=${{secrets.npm_token}}
+      # - name: Publish beta version to NPM (uses package.json version)
+      #   run: yarn npm publish --tag stable --access public
