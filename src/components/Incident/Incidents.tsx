@@ -15,7 +15,7 @@
  */
 // eslint-disable-next-line @backstage/no-undeclared-imports
 import React, { useEffect } from 'react';
-import { List, ListSubheader } from '@material-ui/core';
+import { List } from '@material-ui/core';
 import { IncidentListItem } from './IncidentListItem';
 import { IncidentsEmptyState } from './IncidentEmptyState';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
@@ -63,7 +63,7 @@ export const Incidents = ({ serviceId, refreshIncidents }: Props) => {
   }
 
   return (
-    <List dense subheader={<ListSubheader>INCIDENTS</ListSubheader>}>
+    <List dense>
       {incidents!.map((incident, index) => (
         <IncidentListItem key={incident.id + index} incident={incident} />
       ))}
