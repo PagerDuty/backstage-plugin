@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: install semantic-release extra plugins
-        run: yarn add -D @semantic-release/changelog @semantic-release/git @semantic-release/github
+        run: yarn add -D @semantic-release/changelog @semantic-release/git @semantic-release/github semantic-release-yarn
       - name: lint
         run: yarn lint
       - name: Build
