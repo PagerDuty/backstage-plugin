@@ -1,6 +1,5 @@
 # PagerDuty plugin for Backstage
 
-[![Build](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/build.yml)
 [![NPM Publish](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml)
 
 **Note:** If you are migrating from *@backstage/plugin-pagerduty* you can follow these instructions [here](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#how-to-migrate-from-backstageplugin-pagerduty).
