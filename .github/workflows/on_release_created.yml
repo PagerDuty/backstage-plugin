@@ -39,7 +39,7 @@ jobs:
             - name: Publish beta version to NPM (uses package.json version)
               if: ${{ github.event.release.prerelease }}
               run: 
-                yarn npm publish --tag beta --access public
+                yarn npm publish --tag next --access public
             - name: Publish latest version to NPM (uses package.json version)
               if: ${{ !github.event.release.prerelease }}
               run: 
