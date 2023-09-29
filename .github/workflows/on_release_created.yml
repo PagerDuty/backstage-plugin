@@ -37,11 +37,11 @@ jobs:
                 files: ./package.json
                 replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}} 
             - name: Publish beta version to NPM (uses package.json version)
-              if: ${{ github.event.release.prerelease }} == true
+              if: ${{ github.event.release.prerelease }}
               run: 
                 yarn npm publish --tag beta --access public
             - name: Publish latest version to NPM (uses package.json version)
-              if: ${{ github.event.release.prerelease }} == false
+              if: ${{ !github.event.release.prerelease }}
               run: 
                 yarn npm publish --tag latest --access public
 
