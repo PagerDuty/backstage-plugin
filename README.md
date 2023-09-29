@@ -1,6 +1,7 @@
 # PagerDuty plugin for Backstage
 
-[![NPM Publish](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/publish.yml)
+[![Release](https://github.com/PagerDuty/backstage-plugin/actions/workflows/on_release_created.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/on_release_created.yml)
+[![npm version](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin.svg)](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin)
 
 **Note:** If you are migrating from *@backstage/plugin-pagerduty* you can follow these instructions [here](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#how-to-migrate-from-backstageplugin-pagerduty).
 
