@@ -46,6 +46,8 @@ jobs:
                 files: ./package.json
                 replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
             - name: Publish beta version to NPM (uses package.json version)
-              run: yarn npm publish --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
+              run: | 
+                echo "Beta version? ${{ steps.check_if_beta.outputs.is_beta }}"
+                yarn npm publish --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
 
     
