@@ -1,0 +1,46 @@
+name: On Release Created
+
+on:
+    release:
+        types: [created]
+
+jobs:
+    # check if the release version contains "beta"
+    check_if_beta:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check if beta
+              id: check_if_beta
+              run: echo ::set-output name=is_beta::$(echo "${{ github.event.release.tag_name}}" | grep -q "beta" && echo "true" || echo "false")
+
+    # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
+    publish_to_npm:
+        needs: check_if_beta
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Setup Node 18
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+                registry-url: 'https://registry.npmjs.org'
+            - name: Install yarn
+              run: corepack enable
+            - name: Set yarn version to latest stable
+              run: corepack prepare yarn@stable --activate
+            - name: Install dependencies
+              run: yarn install
+            - name: lint
+              run: yarn lint
+            - name: Build
+              run: yarn build
+            - name: Replace Action
+              uses: datamonsters/replace-action@v2
+              with:
+                files: ./.yarnrc.yml
+                replacements: NPM_TOKEN=${{secrets.npm_token}}
+            - name: Publish beta version to NPM (uses package.json version)
+              run: yarn npm publish --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
+
+    
