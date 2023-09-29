@@ -2,6 +2,7 @@
 
 [![Release](https://github.com/PagerDuty/backstage-plugin/actions/workflows/on_release_created.yml/badge.svg)](https://github.com/PagerDuty/backstage-plugin/actions/workflows/on_release_created.yml)
 [![npm version](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin.svg)](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 **Note:** If you are migrating from *@backstage/plugin-pagerduty* you can follow these instructions [here](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#how-to-migrate-from-backstageplugin-pagerduty).
 
@@ -252,3 +253,4 @@ If you need help with this plugin, please open an issue in [GitHub](https://gith
 
 ## Contributing
 
+If you are interested in contributing to this project, please refer to our [Contributing Guidelines](https://github.com/PagerDuty/backstage-plugin/CONTRIBUTING.md).
