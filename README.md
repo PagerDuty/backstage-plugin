@@ -253,4 +253,4 @@ If you need help with this plugin, please open an issue in [GitHub](https://gith
 
 ## Contributing
 
-If you are interested in contributing to this project, please refer to our [Contributing Guidelines](https://github.com/PagerDuty/backstage-plugin/CONTRIBUTING.md).
+If you are interested in contributing to this project, please refer to our [Contributing Guidelines](https://github.com/PagerDuty/backstage-plugin/blob/main/CONTRIBUTING.md).
