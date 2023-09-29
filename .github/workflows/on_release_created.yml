@@ -12,11 +12,13 @@ jobs:
             - name: Check if beta
               id: check_if_beta
               run: |
-                if [[ "${{ github.event.release.tag_name}}" == .*"beta".* ]]; then
+                if [[ "${{ github.event.release.tag_name}}" == *"beta"* ]]; then
                     echo "{is_beta}={true}" >> "$GITHUB_OUTPUT"
                 else
                     echo "{is_beta}={false}" >> "$GITHUB_OUTPUT"
-                fi                
+                fi   
+        outputs:
+            is_beta: ${{ steps.check_if_beta.outputs.is_beta }}             
 
     # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
     publish_to_npm:
@@ -52,7 +54,7 @@ jobs:
                 replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
             - name: Publish beta version to NPM (uses package.json version)
               run: | 
-                echo "Beta version? ${{ steps.check_if_beta.outputs.is_beta }}"
-                yarn npm publish --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
+                echo "Beta version? ${{ needs.check_if_beta.outputs.is_beta }}"
+                yarn npm publish --tag ${{ needs.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
 
     
