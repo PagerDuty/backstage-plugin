@@ -40,7 +40,12 @@ jobs:
               with:
                 files: ./.yarnrc.yml
                 replacements: NPM_TOKEN=${{secrets.npm_token}}
+            - name: Replace Action
+              uses: datamonsters/replace-action@v2
+              with:
+                files: ./package.json
+                replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
             - name: Publish beta version to NPM (uses package.json version)
-              run: yarn npm publish --new-version ${{ github.event.release.tag_name}} --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
+              run: yarn npm publish --tag ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }} --access public
 
     
