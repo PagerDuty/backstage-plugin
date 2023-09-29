@@ -1,4 +1,4 @@
-name: On Release Created
+name: Release
 
 on:
     release:
@@ -26,29 +26,24 @@ jobs:
               run: yarn lint
             - name: Build
               run: yarn build
-            - name: Replace Action
+            - name: Replace NPM Token in yarnrc.yml
               uses: datamonsters/replace-action@v2
               with:
                 files: ./.yarnrc.yml
                 replacements: NPM_TOKEN=${{secrets.npm_token}}
-            - name: Replace Action
+            - name: Replace release version in package.json before release
               uses: datamonsters/replace-action@v2
               with:
                 files: ./package.json
-                replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
-            - name: Check if beta
-              id: check_if_beta
-              run: |
-                if [[ "${{ github.event.release.tag_name}}" == *"beta"* ]]; then
-                    echo "{is_beta}={true}" >> "$GITHUB_OUTPUT"
-                else
-                    echo "{is_beta}={false}" >> "$GITHUB_OUTPUT"
-                fi   
+                replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}} 
             - name: Publish beta version to NPM (uses package.json version)
-              env:
-                NPM_TAG: ${{ steps.check_if_beta.outputs.is_beta == 'true' && 'beta' || 'latest' }}
-              run: | 
-                echo "Beta version? ${{ steps.check_if_beta.outputs.is_beta }}"
-                yarn npm publish --tag $NPM_TAG --access public
+              if: contains('${{ github.event.release.tag_name}}'', 'beta')
+              run: 
+                yarn npm publish --tag beta --access public
+            - name: Publish latest version to NPM (uses package.json version)
+              if: "contains('${{ github.event.release.tag_name}}', 'beta')"
+              run: 
+                yarn npm publish --tag latest --access public
+
 
     
