@@ -11,7 +11,12 @@ jobs:
         steps:
             - name: Check if beta
               id: check_if_beta
-              run: echo {is_beta}={$(echo "${{ github.event.release.tag_name}}" | grep -q "beta" && echo "true" || echo "false")} >> $GITHUB_OUTPUT
+              run: |
+                if [[ "${{ github.event.release.tag_name}}" == .*"beta".* ]]; then
+                    echo {is_beta}={true} >> $GITHUB_OUTPUT
+                else
+                    echo {is_beta}={false} >> $GITHUB_OUTPUT
+                fi                
 
     # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
     publish_to_npm:
