@@ -1,0 +1,40 @@
+change-template: "* $TITLE (#$NUMBER) by @$AUTHOR"
+categories:
+  - title: '⚡ Breaking Changes'
+    labels:
+      - 'type/breaking-change'
+  - title: '🌟New features and non-breaking changes'
+    labels:
+      - 'type/feature'
+  - title: '🌟 Minor Changes'
+    labels:
+      - 'type/enhancement'
+  - title: '📜 Documentation updates'
+    labels:
+      - 'area/documentation'
+  - title: '🐛 Bug and hot fixes'
+    labels:
+      - 'type/bug'
+      - 'type/fix'
+  - title: '🚒 Deprecations'
+    labels:
+      - 'type/deprecation'
+  - title: '🔧 Maintenance'
+    labels:
+      - 'type/internal'
+      - 'type/dependencies'
+exclude-labels:
+  - 'skip-changelog'
+tag-template: 'v$NEXT_PATCH_VERSION'
+template: |
+  ## Summary
+
+  **[Human readable summary of changes]**
+
+  ## Changes
+
+  $CHANGES
+
+  ## This release was made possible by the following contributors:
+
+  $CONTRIBUTORS
