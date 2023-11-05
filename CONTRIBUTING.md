@@ -1,12 +1,12 @@
-[![License](https://img.shields.io/github/license/rails/rails)](https://github.com/rails/rails)
-
 # Contributing to PagerDuty plugin for Backstage
+
+[![License](https://img.shields.io/github/license/rails/rails)](https://github.com/rails/rails)
 
 ## **Did you find a bug?**
 
 * **Do not open up a GitHub issue if the bug is a security vulnerability**, and instead send us an [email](mailto:open-source@pagerduty.com).
 
-* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/pagerduty/backstage-plugin/issues).
+* **Ensure the bug was not already reported** by searching on GitHub's [issues](https://github.com/pagerduty/backstage-plugin/issues) page.
 
 * If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/PagerDuty/backstage-plugin/issues/new?labels=bug&projects=&template=bug_report.md). **Use the bug template.**
 
@@ -16,15 +16,15 @@
   
 * If you can't find it, open an issue on GitHub using the [Feature Request](https://github.com/PagerDuty/backstage-plugin/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=) template.
 
-* Provide as much details as possible so the request can be analysed by the team. 
+* Provide as much details as possible so the request can be analysed by the team.
 
-* If you aren't too sure about the feature you are about to request use Backstage's [Discord](https://discord.gg/backstage-687207715902193673) server to collect feedback from the Community first.
+* If you aren't sure about the feature you are about to request use Backstage's [Discord](https://discord.gg/backstage-687207715902193673) server to collect feedback from the Community first or reach out on [PagerDuty Community Forum](https://community.pagerduty.com).
 
 > Note: Features will be reviewed by the core team and discussed with the contributor. Different factors may cause features to be rejected or postponed.
 
 ## Pull Requests
 
-Contributions via pull requests are much appreciated but we need you to follow some basic rules so can work more effectively.
+Contributions via pull requests are much appreciated but we need you to follow some basic rules so we can work more effectively.
 
 ### Step 1: Find something to work on
 
@@ -32,8 +32,7 @@ If you want to contribute a specific feature or fix you have in mind, look at ac
 
 On the other hand, if you are here looking for an issue/bug to work on, check out our [backlog of issues](https://github.com/pagerduty/backstage-plugin/issues) and find something that looks interesting. We label our issues with [GitHub's default labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels#about-default-labels). Use that as a reference.
 
-It's a good idea to keep the priority of issues in mind when deciding what to
-work on. If we have labelled an issue as `low priority`, it means it's something we won't get to work soon while `high priority` issues have a bigger impact, so we are much more likely to give a PR for those issues prompt attention.
+It's a good idea to keep the priority of issues in mind when deciding what to work on. If we have labelled an issue as `low priority`, it means it's something we won't get to work soon while `high priority` issues have a bigger impact, so we are much more likely to give a PR for those issues prompt attention.
 
 ### Step 2: Design
 
@@ -41,13 +40,13 @@ We ask you to seek feedback and consensus on your proposed change by iterating o
 
 If you're picking up an existing issue, you can simply post your comment and discuss your proposed changes. If instead you're proposing a new feature, you can start by creating a new [feature request issue](https://github.com/PagerDuty/backstage-plugin/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=) and discuss your proposed change with the maintainers.
 
-Another way to collect feedback on a new feature request is to use Backstage's [Discord](https://discord.gg/backstage-687207715902193673) server.
+Another way to collect feedback on a new feature request is to use Backstage's [Discord](https://discord.gg/backstage-687207715902193673) server or by sharing it in [PagerDuty's community forum](https://community.pagerduty.com).
 
 ### Step 3: Have fun coding!
 
 Do your thing but please make sure you follow the rules:
 
-* Work against the latest source on the **next** branch. This will allow maintainers to publish pre-release versions with changes before releasing a supported version.
+* Work against the latest source on the **next** branch. This will allow maintainers to publish pre-release versions with changes before releasing a stable version.
 * Try to maintain a single feature/bugfix per pull request. It's okay to introduce a little bit of housekeeping changes along the way, but try to avoid conflating multiple features. Eventually, all these are going to go into a single commit, so you can use that to frame your scope.
 * Add **unit tests** that test your changes when applicable. This is especially important for new features and bug fixes, as it helps you to make sure that your changes are working as intended.
 * Lint and test the code. Pull request builds will run the same checks as well.
@@ -59,13 +58,11 @@ Do your thing but please make sure you follow the rules:
 
 ### Step 4: Pull Request
 
-Once you're done with your changes, you can open a pull request. Make sure to follow the checklist inside the pull request template:
+Once you're done with your changes, you can open a pull request. Make sure to follow the checklist inside the pull request template.
 
-* Create a commit with your changes and push them to a new branch/fork.
+Create a commit with your changes and push them to a new branch/fork then create a [pull request on GitHub](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork).
   
   > **Note:** Core members can push directly to a branch on the repo (following the same conventions detailed below).
-
-* Create a [pull request on GitHub](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork).
 
 Pull request title and message (and PR title and description) must adhere to [conventional commits](https://www.conventionalcommits.org), this is enforced by the CI. This is a summary of the rules:
 

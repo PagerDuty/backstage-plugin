@@ -16,7 +16,7 @@
 
 - The Backstage PagerDuty plugin allows PagerDuty information about a Backstage entity to be displayed within Backstage. This includes active incidents, recent change events, as well as the current on-call responders' names, email addresses, and links to their profiles in PagerDuty.
 - Incidents can be manually triggered via the plugin with a user-provided description, which will in turn notify the current on-call responders. Alternatively, the plugin can be configured with an optional `readOnly` property to suppress the ability to trigger incidents from the plugin.
-  - **Note:** This feature is only available when providing the _`pagerduty.com/integration-key`_ annotation.
+  - **Note:** This feature is only available when providing the *`pagerduty.com/integration-key`* annotation.
 - Change events will be displayed in a separate tab. If the change event payload has additional links, only the first link will be rendered.
 
 ## Requirements
@@ -48,11 +48,11 @@
 1. From the **Configuration** menu, select **Services**.
 2. There are two ways to add an integration to a service:
    - **If you are adding your integration to an existing service**: Click the **name** of the service you want to add the integration to. Then, select the **Integrations** tab and click the **New Integration** button.
-   - **If you are creating a new service for your integration**: Please read the documentation in section [Configuring Services and Integrations](https://support.pagerduty.com/docs/services-and-integrations#section-configuring-services-and-integrations) and follow the steps outlined in the [Create a Service](https://support.pagerduty.com/docs/services-and-integrations#create-a-service) section, selecting **Backstage** as the **Integration Type** in step 5. Continue with the [_"In Backstage"_](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#in-backstage) section (below) once you have finished these steps.
+   - **If you are creating a new service for your integration**: Please read the documentation in section [Configuring Services and Integrations](https://support.pagerduty.com/docs/services-and-integrations#section-configuring-services-and-integrations) and follow the steps outlined in the [Create a Service](https://support.pagerduty.com/docs/services-and-integrations#create-a-service) section, selecting **Backstage** as the **Integration Type** in step 5. Continue with the [*"In Backstage"*](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#in-backstage) section (below) once you have finished these steps.
 3. Enter an **Integration Name** in the format `monitoring-tool-service-name` (e.g. `Backstage-Shopping-Cart`) and select **Backstage** from the Integration Type menu.
 4. Click the **Add Integration** button to save your new integration. You will be redirected to the Integrations tab for your service.
 5. An **Integration Key** will be generated on this screen. Keep this key saved in a safe place, as it will be used when you configure the integration with **Backstage** in the next section.
-   ![](https://pdpartner.s3.amazonaws.com/ig-template-copy-integration-key.png)
+   ![screenshot-for-integration-key-page](https://pdpartner.s3.amazonaws.com/ig-template-copy-integration-key.png)
 
 ### In Backstage
 
@@ -155,7 +155,7 @@ proxy:
 Then, start the backend, passing the PagerDuty API token as an environment variable:
 
 ```bash
-$ PAGERDUTY_TOKEN='<TOKEN>' yarn start
+PAGERDUTY_TOKEN='<TOKEN>' yarn start
 ```
 
 This will proxy the request by adding an `Authorization` header with the provided token.
@@ -178,7 +178,7 @@ This service ID can be found by navigating to a Service within PagerDuty and pul
 
 Your browser URL should now be located at `https://pagerduty.com/service-directory/[SERVICE_ID]`.
 
-**Note:** _When annotating with `pagerduty.com/service-id`, the feature to Create Incidents is not currently supported_
+**Note:** *When annotating with `pagerduty.com/service-id`, the feature to Create Incidents is not currently supported*.
 
 ##### Custom Events URL
 
@@ -188,6 +188,8 @@ If you want to override the default URL used for events, you can add it to `app-
 pagerDuty:
   eventsBaseUrl: 'https://events.pagerduty.com/v2'
 ```
+
+> **Note:** PagerDuty accounts based in Europe use a different url so you need to override it here if that is your case.
 
 To suppress the rendering of the actionable incident-creation button, the `PagerDutyCard` can also be instantiated in `readOnly` mode:
 
@@ -222,9 +224,9 @@ proxy:
 
 ## How to migrate from @backstage/plugin-pagerduty
 
-If you are migrating from the Pagerduty plugin that was maintained by Spotify, the steps to migrate are pretty simple. 
+If you are migrating from the Pagerduty plugin that was maintained by Spotify, the steps to migrate are pretty simple.
 
-1. Remove the Backstage package from your Backstage project
+1. Remove the Backstage package from your project
 
     ```bash
     # From your Backstage root directory
@@ -249,7 +251,7 @@ If you are migrating from the Pagerduty plugin that was maintained by Spotify, t
 
 ## Support
 
-If you need help with this plugin, please open an issue in [GitHub](https://github.com/PagerDuty/backstage-plugin) or reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673).
+If you need help with this plugin, please open an issue in [GitHub](https://github.com/PagerDuty/backstage-plugin), reach out on the [Backstage Discord server](https://discord.gg/backstage-687207715902193673) or [PagerDuty's community forum](https://community.pagerduty.com).
 
 ## Contributing
 
