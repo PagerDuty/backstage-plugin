@@ -1,8 +1,17 @@
 name: Release
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      pre-release:
+        description: 'Is this a pre-release version?'
+        required: true
+        default: true
+        type: boolean
+      version:
+        description: 'Test scenario tags'
+        required: true
+        type: string      
 
 jobs:
   # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
@@ -35,10 +44,10 @@ jobs:
         uses: datamonsters/replace-action@v2
         with:
           files: ./package.json
-          replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
+          replacements: NPM_PACKAGE_VERSION=${{ inputs.version }}
       - name: Publish beta version to NPM (uses package.json version)
-        if: ${{ github.event.release.prerelease }}
+        if: ${{ inputs.pre-release }}
         run: yarn npm publish --tag next --access public
       - name: Publish latest version to NPM (uses package.json version)
-        if: ${{ !github.event.release.prerelease }}
+        if: ${{ !inputs.pre-release }}
         run: yarn npm publish --tag latest --access public
