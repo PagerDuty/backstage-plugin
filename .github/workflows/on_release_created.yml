@@ -1,49 +1,44 @@
 name: Release
 
 on:
-    release:
-        types: [created]
+  release:
+    types: [created]
 
 jobs:
-    # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
-    publish_to_npm:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
-            - name: Setup Node 18
-              uses: actions/setup-node@v3
-              with:
-                node-version: 18
-                registry-url: 'https://registry.npmjs.org'
-            - name: Install yarn
-              run: corepack enable
-            - name: Set yarn version to latest stable
-              run: corepack prepare yarn@stable --activate
-            - name: Install dependencies
-              run: yarn install
-            - name: lint
-              run: yarn lint
-            - name: Build
-              run: yarn build
-            - name: Replace NPM Token in yarnrc.yml
-              uses: datamonsters/replace-action@v2
-              with:
-                files: ./.yarnrc.yml
-                replacements: NPM_TOKEN=${{secrets.npm_token}}
-            - name: Replace release version in package.json before release
-              uses: datamonsters/replace-action@v2
-              with:
-                files: ./package.json
-                replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}} 
-            - name: Publish beta version to NPM (uses package.json version)
-              if: ${{ github.event.release.prerelease }}
-              run: 
-                yarn npm publish --tag next --access public
-            - name: Publish latest version to NPM (uses package.json version)
-              if: ${{ !github.event.release.prerelease }}
-              run: 
-                yarn npm publish --tag latest --access public
-
-
-    
+  # publish to npm with the tag "beta" if the release version contains "beta" otherwise publish with the tag "latest"
+  publish_to_npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+      - name: Install yarn
+        run: corepack enable
+      - name: Set yarn version to latest stable
+        run: corepack prepare yarn@stable --activate
+      - name: Install dependencies
+        run: yarn install
+      - name: lint
+        run: yarn lint
+      - name: Build
+        run: yarn build
+      - name: Replace NPM Token in yarnrc.yml
+        uses: datamonsters/replace-action@v2
+        with:
+          files: ./.yarnrc.yml
+          replacements: NPM_TOKEN=${{secrets.npm_token}}
+      - name: Replace release version in package.json before release
+        uses: datamonsters/replace-action@v2
+        with:
+          files: ./package.json
+          replacements: NPM_PACKAGE_VERSION=${{ github.event.release.tag_name}}
+      - name: Publish beta version to NPM (uses package.json version)
+        if: ${{ github.event.release.prerelease }}
+        run: yarn npm publish --tag next --access public
+      - name: Publish latest version to NPM (uses package.json version)
+        if: ${{ !github.event.release.prerelease }}
+        run: yarn npm publish --tag latest --access public
