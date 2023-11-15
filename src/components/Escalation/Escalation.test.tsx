@@ -61,7 +61,6 @@ describe('Escalation', () => {
             } as PagerDutyUser,
             escalation_level: 1,
           },
-          
         ],
       }));
 
@@ -77,6 +76,60 @@ describe('Escalation', () => {
     expect(getByText('person1')).toBeInTheDocument();
     expect(getByText('person1@example.com')).toBeInTheDocument();
     expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith('abc');
+  });
+
+  it("Renders a list of users without duplicates", async () => {
+    mockPagerDutyApi.getOnCallByPolicyId = jest
+      .fn()
+      .mockImplementationOnce(async () => ({
+        oncalls: [
+          {
+            user: {
+              name: "person1",
+              id: "p1",
+              summary: "person1",
+              email: "person1@example.com",
+              html_url: "http://a.com/id1",
+            } as PagerDutyUser,
+            escalation_level: 1,
+          },
+          {
+            user: {
+              name: "person2",
+              id: "p2",
+              summary: "person2",
+              email: "person2@example.com",
+              html_url: "http://a.com/id2",
+            } as PagerDutyUser,
+            escalation_level: 1,
+          },
+          {
+            user: {
+              name: "person2",
+              id: "p2",
+              summary: "person2",
+              email: "person2@example.com",
+              html_url: "http://a.com/id2",
+            } as PagerDutyUser,
+            escalation_level: 1,
+          },
+        ],
+      }));
+
+    const { getByText, queryByTestId, queryAllByText } = render(
+      wrapInTestApp(
+        <ApiProvider apis={apis}>
+          <EscalationPolicy policyId="abc" />
+        </ApiProvider>
+      )
+    );
+    await waitFor(() => !queryByTestId("progress"));
+
+    expect(getByText("person1")).toBeInTheDocument();
+    expect(getByText("person1@example.com")).toBeInTheDocument();
+    expect(queryAllByText("person2").length).toBe(1);
+    expect(queryAllByText("person2@example.com").length).toBe(1);
+    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("abc");
   });
 
   it("Renders only user(s) in escalation level 1", async () => {

@@ -124,10 +124,10 @@ export const mockPagerDutyApi: PagerDutyApi = {
   },
 
   async getOnCallByPolicyId() {
-    const oncall = (name: string, escalation: number) => {
+    const oncall = (id: string, name: string, escalation: number) => {
       return {
         user: {
-          id: '123',
+          id: id,
           name: name,
           html_url: 'http://assignee',
           summary: 'summary',
@@ -139,7 +139,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
     };
 
     return {
-      oncalls: [oncall('Jane Doe', 1), oncall('John Doe', 2), oncall('James Doe', 1)],
+      oncalls: [oncall('1', 'Jane Doe', 1), oncall('2', 'John Doe', 2), oncall('3', 'James Doe', 1)],
     };
   },
 

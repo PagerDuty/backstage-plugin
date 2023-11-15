@@ -43,6 +43,17 @@ export const EscalationPolicy = ({ policyId }: Props) => {
       .sort((a, b) => a.user.name > b.user.name ? 1 : -1)
       .map((oncall) => oncall.user);
 
+    // remove duplicates from usersItem
+    const uniqueUsers = new Map();
+    usersItem.forEach((user) => {
+      uniqueUsers.set(user.id, user);
+    });
+
+    usersItem.length = 0;
+    uniqueUsers.forEach((user) => {
+      usersItem.push(user);
+    });
+
     return usersItem;
   });
 
