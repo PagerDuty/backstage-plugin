@@ -39,6 +39,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
             email: 'email@email.com',
             html_url: 'http://user',
             name: 'some-user',
+            avatar_url: 'http://avatar',
           },
         },
       },
@@ -61,6 +62,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
             email: 'email@email.com',
             html_url: 'http://user',
             name: 'some-user',
+            avatar_url: 'http://avatar',
           },
         },
       },
@@ -130,6 +132,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
           html_url: 'http://assignee',
           summary: 'summary',
           email: 'email@email.com',
+          avatar_url: 'http://avatar',
         },
         escalation_level: escalation,
       };
