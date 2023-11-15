@@ -31,6 +31,7 @@ const user: PagerDutyUser = {
   summary: 'person1',
   email: 'person1@example.com',
   html_url: 'http://a.com/id1',
+  avatar_url: 'http://a.com/id1/avatar',
 };
 
 const service: PagerDutyService = {
