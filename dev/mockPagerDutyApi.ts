@@ -139,7 +139,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
     };
 
     return {
-      oncalls: [oncall('Jane Doe', 1), oncall('John Doe', 2)],
+      oncalls: [oncall('Jane Doe', 1), oncall('John Doe', 2), oncall('James Doe', 1)],
     };
   },
 
