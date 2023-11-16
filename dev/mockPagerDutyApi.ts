@@ -39,6 +39,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
             email: 'email@email.com',
             html_url: 'http://user',
             name: 'some-user',
+            avatar_url: 'http://avatar',
           },
         },
       },
@@ -61,6 +62,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
             email: 'email@email.com',
             html_url: 'http://user',
             name: 'some-user',
+            avatar_url: 'http://avatar',
           },
         },
       },
@@ -122,21 +124,22 @@ export const mockPagerDutyApi: PagerDutyApi = {
   },
 
   async getOnCallByPolicyId() {
-    const oncall = (name: string, escalation: number) => {
+    const oncall = (id: string, name: string, escalation: number) => {
       return {
         user: {
-          id: '123',
+          id: id,
           name: name,
           html_url: 'http://assignee',
           summary: 'summary',
           email: 'email@email.com',
+          avatar_url: 'http://avatar',
         },
         escalation_level: escalation,
       };
     };
 
     return {
-      oncalls: [oncall('Jane Doe', 1), oncall('John Doe', 2)],
+      oncalls: [oncall('1', 'Jane Doe', 1), oncall('2', 'John Doe', 2), oncall('3', 'James Doe', 1)],
     };
   },
 

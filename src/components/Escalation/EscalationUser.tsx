@@ -46,7 +46,7 @@ export const EscalationUser = ({ user }: Props) => {
   return (
     <ListItem>
       <ListItemIcon>
-        <Avatar alt="User" />
+        <Avatar alt="User" src={user.avatar_url} />
       </ListItemIcon>
       <ListItemText
         primary={
