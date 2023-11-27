@@ -4,250 +4,33 @@
 [![npm version](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin.svg)](https://badge.fury.io/js/@pagerduty%2Fbackstage-plugin)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-**Note:** If you are migrating from *@backstage/plugin-pagerduty* you can follow these instructions [here](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#how-to-migrate-from-backstageplugin-pagerduty).
+**Bring the power of PagerDuty to Backstage!**
+The PagerDuty plugin reduces the cognitive load on developers responsible for maintaining services in production. Instead of having to go to PagerDuty's console, you can now access the necessary information directly within Backstage. This includes finding active incidents or opening a new incident, reviewing recent changes made to the service, and checking who is on-call.
 
-## Integration Benefits
+## Features
 
-- Display relevant PagerDuty information about an entity within Backstage, such as the active incidents or recent changes.
-- Quickly check who is on call for a service.
-- Trigger an incident to the currently on-call responder(s) for a service.
+- **[Trigger New Incident](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#trigger-an-incident-for-a-service>)** - Easily create new incidents for your service directly from Backstage. This feature saves time and reduces the need for context switching.
+- **[See Active Incidents](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#view-any-open-incidents>)** - View all active incidents for a service directly in Backstage.
+- **[Check for Recent Changes](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#view-change-events-associated-to-a-service>)** - Identify recent changes that may be the root cause of potential issues with your service.
+- **[Identify On-Call Personnel](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#see-and-contact-on-call-staff>)** - Quickly determine who is responsible for a failing service and resolve the incident as quickly as possible. This feature allows companies to spend more time solving problems rather than determining who should solve them.
 
-## How it Works
+## Getting Started
 
-- The Backstage PagerDuty plugin allows PagerDuty information about a Backstage entity to be displayed within Backstage. This includes active incidents, recent change events, as well as the current on-call responders' names, email addresses, and links to their profiles in PagerDuty.
-- Incidents can be manually triggered via the plugin with a user-provided description, which will in turn notify the current on-call responders. Alternatively, the plugin can be configured with an optional `readOnly` property to suppress the ability to trigger incidents from the plugin.
-  - **Note:** This feature is only available when providing the *`pagerduty.com/integration-key`* annotation.
-- Change events will be displayed in a separate tab. If the change event payload has additional links, only the first link will be rendered.
+Find the complete project's documentation [here](https://pagerduty.github.io/backstage-plugin-docs/).
 
-## Requirements
+### Installation
 
-- Setup of the PagerDuty plugin for Backstage requires a PagerDuty Admin role in order to generate the necessary authorizations, such as the API token. If you do not have this role, please reach out to a **Global Admin** or **Account Owner** within your organization to request configuration of this plugin.
+The installation of the PagerDuty plugin for Backstage is done with *yarn* as all other plugins in Backstage. This plugin follows a modular approach which means that every individual component will be a separate package (e.g. frontend, backend, common). In this case, you are installing a **frontend plugin**.
 
-## Feature Overview
-
-### View any open incidents
-
-![PagerDuty plugin showing no incidents and the on-call rotation](doc/pd1.png)
-
-### Email link, and view contact information for staff on call
-
-![PagerDuty plugin showing on-call rotation contact information](doc/pd2.png)
-
-### Trigger an incident for a service
-
-![PagerDuty plugin popup modal for creating an incident](doc/pd3.png)
-
-![PagerDuty plugin showing an active incident](doc/pd4.png)
-
-## Integration Walk-through
-
-### In PagerDuty
-
-#### Integrating With a PagerDuty Service
-
-1. From the **Configuration** menu, select **Services**.
-2. There are two ways to add an integration to a service:
-   - **If you are adding your integration to an existing service**: Click the **name** of the service you want to add the integration to. Then, select the **Integrations** tab and click the **New Integration** button.
-   - **If you are creating a new service for your integration**: Please read the documentation in section [Configuring Services and Integrations](https://support.pagerduty.com/docs/services-and-integrations#section-configuring-services-and-integrations) and follow the steps outlined in the [Create a Service](https://support.pagerduty.com/docs/services-and-integrations#create-a-service) section, selecting **Backstage** as the **Integration Type** in step 5. Continue with the [*"In Backstage"*](https://github.com/PagerDuty/backstage-plugin?tab=readme-ov-file#in-backstage) section (below) once you have finished these steps.
-3. Enter an **Integration Name** in the format `monitoring-tool-service-name` (e.g. `Backstage-Shopping-Cart`) and select **Backstage** from the Integration Type menu.
-4. Click the **Add Integration** button to save your new integration. You will be redirected to the Integrations tab for your service.
-5. An **Integration Key** will be generated on this screen. Keep this key saved in a safe place, as it will be used when you configure the integration with **Backstage** in the next section.
-   ![screenshot-for-integration-key-page](https://pdpartner.s3.amazonaws.com/ig-template-copy-integration-key.png)
-
-### In Backstage
-
-#### Install the plugin
-
-The file paths mentioned in the following steps are relative to your app's root directory — for example, the directory created by following the [Getting Started](https://backstage.io/docs/getting-started/) guide and creating your app with `npx @backstage/create-app`.
-
-First, from your Backstage root directory, install the PagerDuty plugin via CLI:
+To install this plugin run the following command from the Backstage root folder.
 
 ```bash
 yarn add --cwd packages/app @pagerduty/backstage-plugin
 ```
 
-Next, add the plugin to `EntityPage.tsx` in `packages/app/src/components/catalog` by adding the following code snippets.
+### Configuration
 
-Add the following imports to the top of the file:
-
-```ts
-import {
-  isPluginApplicableToEntity as isPagerDutyAvailable,
-  EntityPagerDutyCard,
-} from '@pagerduty/backstage-plugin';
-```
-
-Find `const overviewContent` in `EntityPage.tsx`, and add the following snippet inside the outermost `Grid` defined there, just before the closing `</Grid>` tag:
-
-```ts
-<EntitySwitch>
-  <EntitySwitch.Case if={isPagerDutyAvailable}>
-    <Grid item md={6}>
-      <EntityPagerDutyCard />
-    </Grid>
-  </EntitySwitch.Case>
-</EntitySwitch>
-```
-
-When you're done, the `overviewContent` definition should look something like this:
-
-```ts
-const overviewContent = (
-  <Grid ...>
-    ...
-    <EntitySwitch>
-      <EntitySwitch.Case if={isPagerDutyAvailable}>
-        <Grid item md={6}>
-          <EntityPagerDutyCard />
-        </Grid>
-      </EntitySwitch.Case>
-    </EntitySwitch>
-  </Grid>
-);
-```
-
-#### Configure the plugin
-
-First, [annotate](https://backstage.io/docs/features/software-catalog/descriptor-format#annotations-optional) the appropriate entity with the PagerDuty integration key in its `.yaml` configuration file:
-
-```yaml
-annotations:
-  pagerduty.com/integration-key: [INTEGRATION_KEY]
-```
-
-#### The homepage component
-
-You may also add the component to the homepage of Backstage. Edit the `HomePage.tsx` file, import `PagerDutyHomepageCard` and add it to the home page. e.g.
-
-```typescript jsx
-...
-export const homePage = (
-  <Page themeId="home">
-    ...
-    <Content>
-      <CustomHomepageGrid config={defaultConfig}>
-        ...
-        <PagerDutyHomepageCard
-          name="My Service"
-          serviceId="<service id>"
-          integrationKey="<integration key>"
-          readOnly={false}
-        />
-      </CustomHomepageGrid>
-    </Content>
-  </Page>
-);
-```
-
-Next, provide the [API token](https://support.pagerduty.com/docs/generating-api-keys#generating-a-general-access-rest-api-key) that the client will use to make requests to the [PagerDuty API](https://developer.pagerduty.com/docs/rest-api-v2/rest-api/).
-
-Add the proxy configuration in `app-config.yaml`:
-
-```yaml
-proxy:
-  ...
-  '/pagerduty':
-    target: https://api.pagerduty.com
-    headers:
-      Authorization: Token token=${PAGERDUTY_TOKEN}
-```
-
-Then, start the backend, passing the PagerDuty API token as an environment variable:
-
-```bash
-PAGERDUTY_TOKEN='<TOKEN>' yarn start
-```
-
-This will proxy the request by adding an `Authorization` header with the provided token.
-
-#### Optional configuration
-
-##### Annotating with Service ID
-
-If you want to integrate a PagerDuty service with Backstage but don't want to use an integration key, you can also [annotate](https://backstage.io/docs/features/software-catalog/descriptor-format#annotations-optional) the appropriate entity with a PagerDuty Service ID instead
-
-```yaml
-annotations:
-  pagerduty.com/service-id: [SERVICE_ID]
-```
-
-This service ID can be found by navigating to a Service within PagerDuty and pulling the ID value out of the URL.
-
-1. From the **Configuration** menu within PagerDuty, select **Services**.
-2. Click the **name** of the service you want to represent for your Entity.
-
-Your browser URL should now be located at `https://pagerduty.com/service-directory/[SERVICE_ID]`.
-
-**Note:** *When annotating with `pagerduty.com/service-id`, the feature to Create Incidents is not currently supported*.
-
-##### Custom Events URL
-
-If you want to override the default URL used for events, you can add it to `app-config.yaml`:
-
-```yaml
-pagerDuty:
-  eventsBaseUrl: 'https://events.pagerduty.com/v2'
-```
-
-> **Note:** PagerDuty accounts based in Europe use a different url so you need to override it here if that is your case.
-
-To suppress the rendering of the actionable incident-creation button, the `PagerDutyCard` can also be instantiated in `readOnly` mode:
-
-```ts
-<PagerDuty readOnly />
-```
-
-**WARNING**: In current implementation, the PagerDuty plugin requires the `/pagerduty` proxy endpoint be exposed by the Backstage backend as an unprotected endpoint, in effect enabling PagerDuty API access using the configured `PAGERDUTY_TOKEN` for any user or process with access to the `/pagerduty` Backstage backend endpoint. If you regard this as problematic, consider using the plugin in `readOnly` mode (`<PagerDutyCard readOnly />`) using the following proxy configuration:
-
-```yaml
-proxy:
-  '/pagerduty':
-    target: https://api.pagerduty.com
-    headers:
-      Authorization: Token token=${PAGERDUTY_TOKEN}
-    # prohibit the `/pagerduty` proxy endpoint from servicing non-GET requests
-    allowedMethods: ['GET']
-```
-
-## How to Uninstall
-
-1. Remove any configuration added in Backstage yaml files, such as the proxy configuration in `app-config.yaml` and the integration key in an entity's annotations.
-2. Remove the added code snippets from `EntityPage.tsx`
-3. Remove the plugin package:
-
-    ```bash
-    # From your Backstage root directory
-    yarn remove --cwd packages/app @pagerduty/backstage-plugin
-    ```
-
-4. [Delete the integration](https://support.pagerduty.com/docs/services-and-integrations#delete-an-integration-from-a-service) from the service in PagerDuty
-
-## How to migrate from @backstage/plugin-pagerduty
-
-If you are migrating from the Pagerduty plugin that was maintained by Spotify, the steps to migrate are pretty simple.
-
-1. Remove the Backstage package from your project
-
-    ```bash
-    # From your Backstage root directory
-    yarn remove --cwd packages/app @backstage/plugin-pagerduty
-    ```
-
-2. Install the new PagerDuty plugin for Backstage
-
-   ```bash
-    # From your Backstage root directory
-    yarn add --cwd packages/app @pagerduty/backstage-plugin
-    ```
-
-3. Replace all occurrences of **@backstage/plugin-pagerduty** with **@pagerduty/backstage-plugin** in your components
-
-4. Re-install dependencies and run Backstage locally to test that everything is working
-
-   ```bash
-    # From your Backstage root directory
-    yarn install && yarn dev
-    ```
+To configure this frontend plugin follow the instructions on the `Getting Started` section of the project's documentation [here](https://pagerduty.github.io/backstage-plugin-docs/).
 
 ## Support
 
