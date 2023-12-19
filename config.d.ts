@@ -24,5 +24,10 @@ export interface Config {
      * @visibility frontend
      */
     eventsBaseUrl?: string;
+    /**
+     * Optional PagerDuty API Token used in API calls from the backend component.
+     * @visibility frontend
+     */
+    apiToken?: string;
   };
 }
