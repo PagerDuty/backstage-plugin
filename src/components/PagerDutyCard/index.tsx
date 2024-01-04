@@ -87,7 +87,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
       policyId: foundService.escalation_policy.id,
       policyLink: foundService.escalation_policy.html_url,
     };
-  });
+  }, [props]);
 
   if (error) {
     let errorNode: ReactNode;
