@@ -27,20 +27,12 @@ export const mockPagerDutyApi: PagerDutyApi = {
     return {
       service: {
         name: pagerDutyEntity.name,
-        integrationKey: 'key',
-        id: '123',
-        html_url: 'http://service',
+        id: "SERV1CE1D",
+        html_url: "www.example.com",
         escalation_policy: {
-          id: '123',
-          html_url: 'http://escalationpolicy',
-          user: {
-            id: '123',
-            summary: 'summary',
-            email: 'email@email.com',
-            html_url: 'http://user',
-            name: 'some-user',
-            avatar_url: 'http://avatar',
-          },
+          id: "ESCALAT1ONP01ICY1D",
+          name: "ep-one",
+          html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
       },
     };
@@ -50,20 +42,12 @@ export const mockPagerDutyApi: PagerDutyApi = {
     return {
       service: {
         name: entity.metadata.name,
-        integrationKey: 'key',
-        id: '123',
-        html_url: 'http://service',
+        id: "SERV1CE1D",
+        html_url: "www.example.com",
         escalation_policy: {
-          id: '123',
-          html_url: 'http://escalationpolicy',
-          user: {
-            id: '123',
-            summary: 'summary',
-            email: 'email@email.com',
-            html_url: 'http://user',
-            name: 'some-user',
-            avatar_url: 'http://avatar',
-          },
+          id: "ESCALAT1ONP01ICY1D",
+          name: "ep-one",
+          html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
       },
     };

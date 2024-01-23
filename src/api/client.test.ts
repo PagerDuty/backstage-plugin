@@ -16,8 +16,7 @@
 import { MockFetchApi } from '@backstage/test-utils';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { PagerDutyClient, UnauthorizedError } from './client';
-import { PagerDutyService } from '../components/types';
-import { PagerDutyUser} from '@pagerduty/backstage-plugin-common';
+import { PagerDutyService } from '@pagerduty/backstage-plugin-common';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
 
@@ -26,7 +25,7 @@ const mockDiscoveryApi: jest.Mocked<DiscoveryApi> = {
   getBaseUrl: jest
     .fn()
     .mockName('discoveryApi')
-    .mockResolvedValue('http://localhost:7007/proxy'),
+    .mockResolvedValue('http://localhost:7007/pagerduty'),
 };
 const mockFetchApi: MockFetchApi = new MockFetchApi({
   baseImplementation: mockFetch,
@@ -35,25 +34,15 @@ const mockFetchApi: MockFetchApi = new MockFetchApi({
 let client: PagerDutyClient;
 let entity: Entity;
 
-const user: PagerDutyUser = {
-  name: 'person1',
-  id: 'p1',
-  summary: 'person1',
-  email: 'person1@example.com',
-  html_url: 'http://a.com/id1',
-  avatar_url: 'http://a.com/id1/avatar',
-};
-
 const service: PagerDutyService = {
-  id: 'def456',
-  name: 'pagerduty-name',
-  html_url: 'www.example.com',
+  id: "SERV1CE1D",
+  name: "service-one",
+  html_url: "www.example.com",
   escalation_policy: {
-    id: 'def',
-    user: user,
-    html_url: 'http://a.com/id1',
+    id: "ESCALAT1ONP01ICY1D",
+    name: "ep-one",
+    html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
   },
-  integrationKey: 'abc123',
 };
 
 const requestHeaders = {
@@ -94,14 +83,14 @@ describe('PagerDutyClient', () => {
         mockFetch.mockResolvedValueOnce({
           status: 200,
           ok: true,
-          json: () => Promise.resolve({ services: [service] }),
+          json: () => Promise.resolve({ service }),
         });
 
         expect(await client.getServiceByEntity(entity)).toEqual({
           service,
         });
         expect(mockFetch).toHaveBeenCalledWith(
-          'http://localhost:7007/proxy/pagerduty/services?time_zone=UTC&include[]=integrations&include[]=escalation_policies&query=abc123',
+          'http://localhost:7007/pagerduty/services?integration_key=abc123',
           requestHeaders,
         );
       });
@@ -162,7 +151,7 @@ describe('PagerDutyClient', () => {
           mockFetch.mockResolvedValueOnce({
             status: 200,
             ok: true,
-            json: () => Promise.resolve({ services: [] }),
+            json: () => Promise.resolve({ }),
           });
         });
 
@@ -182,7 +171,7 @@ describe('PagerDutyClient', () => {
           metadata: {
             name: 'pagerduty-test',
             annotations: {
-              'pagerduty.com/service-id': 'def456',
+              'pagerduty.com/service-id': 'SERVICE1D',
             },
           },
         };
@@ -199,7 +188,7 @@ describe('PagerDutyClient', () => {
           service,
         });
         expect(mockFetch).toHaveBeenCalledWith(
-          'http://localhost:7007/proxy/pagerduty/services/def456?time_zone=UTC&include[]=integrations&include[]=escalation_policies',
+          'http://localhost:7007/pagerduty/services/SERVICE1D',
           requestHeaders,
         );
       });
@@ -271,18 +260,18 @@ describe('PagerDutyClient', () => {
         };
       });
 
-      it('queries proxy path by integration id', async () => {
+      it('queries pagerduty path by integration id', async () => {
         mockFetch.mockResolvedValueOnce({
           status: 200,
           ok: true,
-          json: () => Promise.resolve({ services: [service] }),
+          json: () => Promise.resolve({ service }),
         });
 
         expect(await client.getServiceByEntity(entity)).toEqual({
           service,
         });
         expect(mockFetch).toHaveBeenCalledWith(
-          'http://localhost:7007/proxy/pagerduty/services?time_zone=UTC&include[]=integrations&include[]=escalation_policies&query=abc123',
+          'http://localhost:7007/pagerduty/services?integration_key=abc123',
           requestHeaders,
         );
       });
@@ -343,7 +332,7 @@ describe('PagerDutyClient', () => {
           mockFetch.mockResolvedValueOnce({
             status: 200,
             ok: true,
-            json: () => Promise.resolve({ services: [] }),
+            json: () => Promise.resolve({ }),
           });
         });
 

@@ -17,14 +17,12 @@
 import {
   PagerDutyApi,
   PagerDutyTriggerAlarmRequest,
-  PagerDutyServicesResponse,
-  PagerDutyServiceResponse,
   PagerDutyIncidentsResponse,
   PagerDutyClientApiDependencies,
   PagerDutyClientApiConfig,
   RequestOptions,
 } from './types';
-import { PagerDutyChangeEventsResponse, PagerDutyOnCallUsersResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEventsResponse, PagerDutyOnCallUsersResponse, PagerDutyUser, PagerDutyServiceResponse } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
@@ -73,18 +71,17 @@ export class PagerDutyClient implements PagerDutyApi {
 
     if (integrationKey) {
       url = `${await this.config.discoveryApi.getBaseUrl(
-        'proxy',
-      )}/pagerduty/services?${commonGetServiceParams}&query=${integrationKey}`;
-      const { services } = await this.findByUrl<PagerDutyServicesResponse>(url);
-      const service = services[0];
+        'pagerduty',
+      )}/services?integration_key=${integrationKey}`;
+      const serviceResponse = await this.findByUrl<PagerDutyServiceResponse>(url);
 
-      if (!service) throw new NotFoundError();
+      if (serviceResponse.service === undefined) throw new NotFoundError();
 
-      response = { service };
+      response = serviceResponse;
     } else if (serviceId) {
       url = `${await this.config.discoveryApi.getBaseUrl(
-        'proxy',
-      )}/pagerduty/services/${serviceId}?${commonGetServiceParams}`;
+        'pagerduty',
+      )}/services/${serviceId}`;
 
       response = await this.findByUrl<PagerDutyServiceResponse>(url);
     } else {
