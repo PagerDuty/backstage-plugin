@@ -43,7 +43,6 @@
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.61",
-    "@pagerduty/backstage-plugin-common": "^0.0.1-next.10",
     "classnames": "^2.2.6",
     "luxon": "^3.4.1",
     "react-use": "^17.2.4"
@@ -51,7 +50,8 @@
   "peerDependencies": {
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.13.1 || ^17.0.0 || ^18.0.0",
-    "react-router-dom": "6.0.0-beta.0 || ^6.3.0"
+    "react-router-dom": "6.0.0-beta.0 || ^6.3.0",
+    "@pagerduty/backstage-plugin-common": "^0.0.1-next.11"
   },
   "devDependencies": {
     "@backstage/cli": "^0.24.0",
@@ -72,7 +72,8 @@
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.13.1 || ^17.0.0 || ^18.0.0",
     "react-router-dom": "6.0.0-beta.0 || ^6.3.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "@pagerduty/backstage-plugin-common": "^0.0.1-next.11"
   },
   "files": [
     "dist/**/*",

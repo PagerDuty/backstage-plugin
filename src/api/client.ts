@@ -37,9 +37,6 @@ export const pagerDutyApiRef = createApiRef<PagerDutyApi>({
   id: 'plugin.pagerduty.api',
 });
 
-const commonGetServiceParams =
-  'time_zone=UTC&include[]=integrations&include[]=escalation_policies';
-
 /** @public */
 export class PagerDutyClient implements PagerDutyApi {
   static fromConfig(
@@ -108,10 +105,9 @@ export class PagerDutyClient implements PagerDutyApi {
   async getChangeEventsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyChangeEventsResponse> {
-    const params = `limit=5&time_zone=UTC&sort_by=timestamp`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/services/${serviceId}/change_events?${params}`;
+      'pagerduty',
+    )}/services/${serviceId}/change-events`;
 
     return await this.findByUrl<PagerDutyChangeEventsResponse>(url);
   }

@@ -4242,10 +4242,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagerduty/backstage-plugin-common@npm:^0.0.1-next.10":
-  version: 0.0.1-next.10
-  resolution: "@pagerduty/backstage-plugin-common@npm:0.0.1-next.10"
-  checksum: 94dbdcfae268028bfebc15c105c9721f427b0e5e358d902614898aa60fe8a7cc779e84bd98246631dc374654c8b910b05307988290801e2b7b23642a394fe3b1
+"@pagerduty/backstage-plugin-common@npm:^0.0.1-next.11":
+  version: 0.0.1-next.11
+  resolution: "@pagerduty/backstage-plugin-common@npm:0.0.1-next.11"
+  checksum: 73abbb7e5b936fe0b41d7d2da52743e72ea099e7ed19d29ccfe8dac90c431f4ed86bd3bfe4fcc03577701673fd2ea3f2e07ae916c11e0172ab29b38ce02df03d
   languageName: node
   linkType: hard
 
@@ -4269,7 +4269,7 @@ __metadata:
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
     "@material-ui/lab": 4.0.0-alpha.61
-    "@pagerduty/backstage-plugin-common": ^0.0.1-next.10
+    "@pagerduty/backstage-plugin-common": ^0.0.1-next.11
     "@testing-library/dom": ^8.0.0
     "@testing-library/jest-dom": ^5.10.1
     "@testing-library/react": ^12.1.3
