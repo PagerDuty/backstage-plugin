@@ -15,12 +15,10 @@
  */
 
 export type {
-  PagerDutyChangeEvent,
   PagerDutyIncident,
   PagerDutyService,
   PagerDutyOnCall,
   PagerDutyAssignee,
-  PagerDutyUser,
 } from './types';
 
 export type { EntityPagerDutyCardProps } from './EntityPagerDutyCard';

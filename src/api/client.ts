@@ -20,12 +20,11 @@ import {
   PagerDutyServicesResponse,
   PagerDutyServiceResponse,
   PagerDutyIncidentsResponse,
-  PagerDutyOnCallsResponse,
   PagerDutyClientApiDependencies,
   PagerDutyClientApiConfig,
   RequestOptions,
-  PagerDutyChangeEventsResponse,
 } from './types';
+import { PagerDutyChangeEventsResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
@@ -122,13 +121,13 @@ export class PagerDutyClient implements PagerDutyApi {
 
   async getOnCallByPolicyId(
     policyId: string,
-  ): Promise<PagerDutyOnCallsResponse> {
-    const params = `time_zone=UTC&include[]=users&escalation_policy_ids[]=${policyId}`;
+  ): Promise<PagerDutyUser[]> {
+    const params = `escalation_policy_ids[]=${policyId}`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/oncalls?${params}`;
+      'pagerduty',
+    )}/oncall-users?${params}`;
 
-    return await this.findByUrl<PagerDutyOnCallsResponse>(url);
+    return await this.findByUrl<PagerDutyUser[]>(url);
   }
 
   triggerAlarm(request: PagerDutyTriggerAlarmRequest): Promise<Response> {

@@ -16,7 +16,8 @@
 import { MockFetchApi } from '@backstage/test-utils';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { PagerDutyClient, UnauthorizedError } from './client';
-import { PagerDutyService, PagerDutyUser } from '../components/types';
+import { PagerDutyService } from '../components/types';
+import { PagerDutyUser} from '@pagerduty/backstage-plugin-common';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
 

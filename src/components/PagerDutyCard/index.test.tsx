@@ -20,7 +20,8 @@ import { PagerDutyCard } from '../PagerDutyCard';
 import { NotFoundError } from '@backstage/errors';
 import { TestApiRegistry, wrapInTestApp } from '@backstage/test-utils';
 import { pagerDutyApiRef, UnauthorizedError, PagerDutyClient } from '../../api';
-import { PagerDutyService, PagerDutyUser } from '../types';
+import { PagerDutyService } from '../types';
+import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { ApiProvider } from '@backstage/core-app-api';
@@ -48,7 +49,7 @@ const service: PagerDutyService = {
 
 const mockPagerDutyApi: Partial<PagerDutyClient> = {
   getServiceByEntity: async () => ({ service }),
-  getOnCallByPolicyId: async () => ({ oncalls: [] }),
+  getOnCallByPolicyId: async () => ([]),
   getIncidentsByServiceId: async () => ({ incidents: [] }),
 };
 
@@ -74,7 +75,7 @@ describe('PagerDutyCard', () => {
     expect(getByText('Service Directory')).toBeInTheDocument();
     expect(getByText('Create Incident')).toBeInTheDocument();
     expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
-    expect(getByText('Empty escalation policy')).toBeInTheDocument();
+    expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
   });
 
   it('Handles custom error for missing token', async () => {
@@ -168,7 +169,7 @@ describe('PagerDutyCard', () => {
       expect(getByText('Service Directory')).toBeInTheDocument();
       expect(getByText('Create Incident')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
-      expect(getByText('Empty escalation policy')).toBeInTheDocument();
+      expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
     });
 
     it('Handles custom error for missing token', async () => {
@@ -278,7 +279,7 @@ describe('PagerDutyCard', () => {
       expect(getByText('Service Directory')).toBeInTheDocument();
       expect(getByText('Create Incident')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
-      expect(getByText('Empty escalation policy')).toBeInTheDocument();
+      expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
     });
   });
 
@@ -303,7 +304,7 @@ describe('PagerDutyCard', () => {
       await waitFor(() => !queryByTestId('progress'));
       expect(getByText('Service Directory')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
-      expect(getByText('Empty escalation policy')).toBeInTheDocument();
+      expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
       expect(() => getByText('Create Incident')).toThrow();
     });
   });

@@ -42,7 +42,7 @@ export const EscalationUsersEmptyState = () => {
           <StatusWarning />
         </div>
       </ListItemIcon>
-      <ListItemText primary="Empty escalation policy" />
+      <ListItemText primary="No one is on-call. Update the escalation policy." />
     </ListItem>
   );
 };

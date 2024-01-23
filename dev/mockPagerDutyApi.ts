@@ -15,11 +15,11 @@
  */
 import {
   PagerDutyApi,
-  PagerDutyChangeEvent,
   PagerDutyEntity,
   PagerDutyIncident,
   PagerDutyTriggerAlarmRequest,
 } from '../src';
+import { PagerDutyChangeEvent, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { Entity } from '@backstage/catalog-model';
 
 export const mockPagerDutyApi: PagerDutyApi = {
@@ -124,23 +124,24 @@ export const mockPagerDutyApi: PagerDutyApi = {
   },
 
   async getOnCallByPolicyId() {
-    const oncall = (id: string, name: string, escalation: number) => {
+    const oncall = (id: string, name: string) => {
       return {
-        user: {
           id: id,
           name: name,
           html_url: 'http://assignee',
           summary: 'summary',
           email: 'email@email.com',
           avatar_url: 'http://avatar',
-        },
-        escalation_level: escalation,
       };
     };
 
-    return {
-      oncalls: [oncall('1', 'Jane Doe', 1), oncall('2', 'John Doe', 2), oncall('3', 'James Doe', 1)],
-    };
+    const users: PagerDutyUser[] = [
+      oncall('1', 'Jane Doe'),
+      oncall('2', 'John Doe'),
+      oncall('3', 'James Doe'),
+    ];
+
+    return users;
   },
 
   async triggerAlarm(request: PagerDutyTriggerAlarmRequest) {

@@ -16,10 +16,9 @@
 
 import {
   PagerDutyIncident,
-  PagerDutyChangeEvent,
-  PagerDutyOnCall,
   PagerDutyService,
 } from '../components/types';
+import { PagerDutyChangeEventsResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
 import { PagerDutyEntity } from '../types';
@@ -38,15 +37,6 @@ export type PagerDutyIncidentsResponse = {
   incidents: PagerDutyIncident[];
 };
 
-/** @public */
-export type PagerDutyChangeEventsResponse = {
-  change_events: PagerDutyChangeEvent[];
-};
-
-/** @public */
-export type PagerDutyOnCallsResponse = {
-  oncalls: PagerDutyOnCall[];
-};
 
 /** @public */
 export type PagerDutyTriggerAlarmRequest = {
@@ -92,7 +82,7 @@ export interface PagerDutyApi {
    * Fetches the list of users in an escalation policy.
    *
    */
-  getOnCallByPolicyId(policyId: string): Promise<PagerDutyOnCallsResponse>;
+  getOnCallByPolicyId(policyId: string): Promise<PagerDutyUser[]>;
 
   /**
    * Triggers an incident to whoever is on-call.

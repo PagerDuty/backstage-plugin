@@ -14,25 +14,7 @@
  * limitations under the License.
  */
 
-/** @public */
-export type PagerDutyChangeEvent = {
-  id: string;
-  integration: [
-    {
-      service: PagerDutyService;
-    },
-  ];
-  source: string;
-  html_url: string;
-  links: [
-    {
-      href: string;
-      text: string;
-    },
-  ];
-  summary: string;
-  timestamp: string;
-};
+import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 
 /** @public */
 export type PagerDutyIncident = {
@@ -73,16 +55,6 @@ export type PagerDutyAssignee = {
   id: string;
   summary: string;
   html_url: string;
-};
-
-/** @public */
-export type PagerDutyUser = {
-  id: string;
-  summary: string;
-  email: string;
-  html_url: string;
-  name: string;
-  avatar_url: string;
 };
 
 /** @public */

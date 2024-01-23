@@ -19,8 +19,6 @@ export type {
   PagerDutyApi,
   PagerDutyServiceResponse,
   PagerDutyIncidentsResponse,
-  PagerDutyChangeEventsResponse,
-  PagerDutyOnCallsResponse,
   PagerDutyTriggerAlarmRequest,
   PagerDutyClientApiDependencies,
   PagerDutyClientApiConfig,

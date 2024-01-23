@@ -28,7 +28,7 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import EmailIcon from '@material-ui/icons/Email';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
-import { PagerDutyUser } from '../types';
+import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 
 const useStyles = makeStyles({
   listItemPrimary: {
