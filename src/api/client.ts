@@ -24,7 +24,7 @@ import {
   PagerDutyClientApiConfig,
   RequestOptions,
 } from './types';
-import { PagerDutyChangeEventsResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEventsResponse, PagerDutyOnCallUsersResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
@@ -127,7 +127,8 @@ export class PagerDutyClient implements PagerDutyApi {
       'pagerduty',
     )}/oncall-users?${params}`;
 
-    return await this.findByUrl<PagerDutyUser[]>(url);
+    const response: PagerDutyOnCallUsersResponse = await this.findByUrl<PagerDutyOnCallUsersResponse>(url);
+    return response.users;
   }
 
   triggerAlarm(request: PagerDutyTriggerAlarmRequest): Promise<Response> {

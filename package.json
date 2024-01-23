@@ -43,7 +43,7 @@
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.61",
-    "@pagerduty/backstage-plugin-common": "^0.0.1-next.7",
+    "@pagerduty/backstage-plugin-common": "^0.0.1-next.8",
     "classnames": "^2.2.6",
     "luxon": "^3.4.1",
     "react-use": "^17.2.4"
