@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-import {
-  PagerDutyIncident,
-} from '../components/types';
-import { PagerDutyChangeEventsResponse, PagerDutyServiceResponse, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEventsResponse, PagerDutyServiceResponse, PagerDutyUser, PagerDutyIncidentsResponse } from '@pagerduty/backstage-plugin-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
 import { PagerDutyEntity } from '../types';
-
-/** @public */
-export type PagerDutyIncidentsResponse = {
-  incidents: PagerDutyIncident[];
-};
-
 
 /** @public */
 export type PagerDutyTriggerAlarmRequest = {

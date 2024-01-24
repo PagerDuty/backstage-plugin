@@ -14,49 +14,6 @@
  * limitations under the License.
  */
 
-import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
-
-/** @public */
-export type PagerDutyIncident = {
-  id: string;
-  title: string;
-  status: string;
-  html_url: string;
-  assignments: [
-    {
-      assignee: PagerDutyAssignee;
-    },
-  ];
-  serviceId: string;
-  created_at: string;
-};
-
-/** @public */
-export type PagerDutyService = {
-  id: string;
-  name: string;
-  html_url: string;
-  integrationKey: string;
-  escalation_policy: {
-    id: string;
-    user: PagerDutyUser;
-    html_url: string;
-  };
-};
-
-/** @public */
-export type PagerDutyOnCall = {
-  user: PagerDutyUser;
-  escalation_level: number;
-};
-
-/** @public */
-export type PagerDutyAssignee = {
-  id: string;
-  summary: string;
-  html_url: string;
-};
-
 /** @public */
 export type SubHeaderLink = {
   title: string;

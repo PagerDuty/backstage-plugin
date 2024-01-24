@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-export type {
-  PagerDutyIncident,
-  PagerDutyService,
-  PagerDutyOnCall,
-  PagerDutyAssignee,
-} from './types';
 
 export type { EntityPagerDutyCardProps } from './EntityPagerDutyCard';
 export type { HomePagePagerDutyCardProps } from './HomePagePagerDutyCard';

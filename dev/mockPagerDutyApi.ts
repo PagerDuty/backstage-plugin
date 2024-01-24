@@ -16,10 +16,9 @@
 import {
   PagerDutyApi,
   PagerDutyEntity,
-  PagerDutyIncident,
   PagerDutyTriggerAlarmRequest,
 } from '../src';
-import { PagerDutyChangeEvent, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEvent, PagerDutyIncident, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { Entity } from '@backstage/catalog-model';
 
 export const mockPagerDutyApi: PagerDutyApi = {
@@ -69,12 +68,17 @@ export const mockPagerDutyApi: PagerDutyApi = {
             },
           },
         ],
-        serviceId: serviceId,
+        service: {
+          id: serviceId,
+          summary: 'service summary',
+          html_url: 'http://service',
+        },
         created_at: '2015-10-06T21:30:42Z',
       } as PagerDutyIncident;
     };
 
     return {
+
       incidents: [
         incident('Some Alerting Incident'),
         incident('Another Alerting Incident'),

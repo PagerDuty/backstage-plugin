@@ -17,12 +17,15 @@
 import {
   PagerDutyApi,
   PagerDutyTriggerAlarmRequest,
-  PagerDutyIncidentsResponse,
   PagerDutyClientApiDependencies,
   PagerDutyClientApiConfig,
   RequestOptions,
 } from './types';
-import { PagerDutyChangeEventsResponse, PagerDutyOnCallUsersResponse, PagerDutyUser, PagerDutyServiceResponse } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEventsResponse, 
+  PagerDutyOnCallUsersResponse, 
+  PagerDutyUser, 
+  PagerDutyServiceResponse,
+  PagerDutyIncidentsResponse } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
@@ -94,10 +97,9 @@ export class PagerDutyClient implements PagerDutyApi {
   async getIncidentsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyIncidentsResponse> {
-    const params = `time_zone=UTC&sort_by=created_at&statuses[]=triggered&statuses[]=acknowledged&service_ids[]=${serviceId}`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/incidents?${params}`;
+      'pagerduty',
+    )}/services/${serviceId}/incidents`;
 
     return await this.findByUrl<PagerDutyIncidentsResponse>(url);
   }
