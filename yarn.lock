@@ -4242,6 +4242,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagerduty/backstage-plugin-common@npm:^0.0.1-next.13":
+  version: 0.0.1-next.13
+  resolution: "@pagerduty/backstage-plugin-common@npm:0.0.1-next.13"
+  checksum: 8ee8799cc44c322e5c54a2734a132b3cf5e70f6d97e8fe6e7ab144e2d6977c7100bbcb4eed1946c13a07492e54b2dfe9c42467aed7d2e55576ebc7d64f84c53b
+  languageName: node
+  linkType: hard
+
 "@pagerduty/backstage-plugin@workspace:.":
   version: 0.0.0-use.local
   resolution: "@pagerduty/backstage-plugin@workspace:."
@@ -4262,6 +4269,7 @@ __metadata:
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
     "@material-ui/lab": 4.0.0-alpha.61
+    "@pagerduty/backstage-plugin-common": ^0.0.1-next.13
     "@testing-library/dom": ^8.0.0
     "@testing-library/jest-dom": ^5.10.1
     "@testing-library/react": ^12.1.3
@@ -4279,6 +4287,7 @@ __metadata:
     react-use: ^17.2.4
     typescript: ^4.8.4
   peerDependencies:
+    "@pagerduty/backstage-plugin-common": ^0.0.1-next.13
     react: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0

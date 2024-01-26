@@ -15,11 +15,10 @@
  */
 import {
   PagerDutyApi,
-  PagerDutyChangeEvent,
   PagerDutyEntity,
-  PagerDutyIncident,
   PagerDutyTriggerAlarmRequest,
 } from '../src';
+import { PagerDutyChangeEvent, PagerDutyIncident, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { Entity } from '@backstage/catalog-model';
 
 export const mockPagerDutyApi: PagerDutyApi = {
@@ -27,20 +26,12 @@ export const mockPagerDutyApi: PagerDutyApi = {
     return {
       service: {
         name: pagerDutyEntity.name,
-        integrationKey: 'key',
-        id: '123',
-        html_url: 'http://service',
+        id: "SERV1CE1D",
+        html_url: "www.example.com",
         escalation_policy: {
-          id: '123',
-          html_url: 'http://escalationpolicy',
-          user: {
-            id: '123',
-            summary: 'summary',
-            email: 'email@email.com',
-            html_url: 'http://user',
-            name: 'some-user',
-            avatar_url: 'http://avatar',
-          },
+          id: "ESCALAT1ONP01ICY1D",
+          name: "ep-one",
+          html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
       },
     };
@@ -50,20 +41,12 @@ export const mockPagerDutyApi: PagerDutyApi = {
     return {
       service: {
         name: entity.metadata.name,
-        integrationKey: 'key',
-        id: '123',
-        html_url: 'http://service',
+        id: "SERV1CE1D",
+        html_url: "www.example.com",
         escalation_policy: {
-          id: '123',
-          html_url: 'http://escalationpolicy',
-          user: {
-            id: '123',
-            summary: 'summary',
-            email: 'email@email.com',
-            html_url: 'http://user',
-            name: 'some-user',
-            avatar_url: 'http://avatar',
-          },
+          id: "ESCALAT1ONP01ICY1D",
+          name: "ep-one",
+          html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
       },
     };
@@ -85,12 +68,17 @@ export const mockPagerDutyApi: PagerDutyApi = {
             },
           },
         ],
-        serviceId: serviceId,
+        service: {
+          id: serviceId,
+          summary: 'service summary',
+          html_url: 'http://service',
+        },
         created_at: '2015-10-06T21:30:42Z',
       } as PagerDutyIncident;
     };
 
     return {
+
       incidents: [
         incident('Some Alerting Incident'),
         incident('Another Alerting Incident'),
@@ -124,23 +112,24 @@ export const mockPagerDutyApi: PagerDutyApi = {
   },
 
   async getOnCallByPolicyId() {
-    const oncall = (id: string, name: string, escalation: number) => {
+    const oncall = (id: string, name: string) => {
       return {
-        user: {
           id: id,
           name: name,
           html_url: 'http://assignee',
           summary: 'summary',
           email: 'email@email.com',
           avatar_url: 'http://avatar',
-        },
-        escalation_level: escalation,
       };
     };
 
-    return {
-      oncalls: [oncall('1', 'Jane Doe', 1), oncall('2', 'John Doe', 2), oncall('3', 'James Doe', 1)],
-    };
+    const users: PagerDutyUser[] = [
+      oncall('1', 'Jane Doe'),
+      oncall('2', 'John Doe'),
+      oncall('3', 'James Doe'),
+    ];
+
+    return users;
   },
 
   async triggerAlarm(request: PagerDutyTriggerAlarmRequest) {

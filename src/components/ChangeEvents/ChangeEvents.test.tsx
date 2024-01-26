@@ -16,7 +16,7 @@
 // eslint-disable-next-line @backstage/no-undeclared-imports
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import { PagerDutyChangeEvent } from '../types';
+import { PagerDutyChangeEvent } from '@pagerduty/backstage-plugin-common';
 import { TestApiRegistry, wrapInTestApp } from '@backstage/test-utils';
 import { pagerDutyApiRef } from '../../api';
 import { ApiProvider } from '@backstage/core-app-api';

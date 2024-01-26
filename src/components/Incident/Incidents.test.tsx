@@ -19,7 +19,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Incidents } from './Incidents';
 import { TestApiRegistry, wrapInTestApp } from '@backstage/test-utils';
 import { pagerDutyApiRef } from '../../api';
-import { PagerDutyIncident } from '../types';
+import { PagerDutyIncident } from '@pagerduty/backstage-plugin-common';
 import { ApiProvider } from '@backstage/core-app-api';
 
 const mockPagerDutyApi = {
@@ -64,7 +64,16 @@ describe('Incidents', () => {
               },
             ],
             html_url: 'http://a.com/id1',
-            serviceId: 'sId1',
+            service: {
+              id: 'sId1',
+              name: 'sName1',
+              html_url: 'http://a.com/sId1',
+              escalation_policy: {
+                id: 'ep1',
+                summary: 'ep1',
+                html_url: 'http://a.com/ep1',
+              },
+            }
           },
           {
             id: 'id2',

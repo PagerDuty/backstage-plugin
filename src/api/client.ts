@@ -17,15 +17,16 @@
 import {
   PagerDutyApi,
   PagerDutyTriggerAlarmRequest,
-  PagerDutyServicesResponse,
-  PagerDutyServiceResponse,
-  PagerDutyIncidentsResponse,
-  PagerDutyOnCallsResponse,
   PagerDutyClientApiDependencies,
   PagerDutyClientApiConfig,
   RequestOptions,
-  PagerDutyChangeEventsResponse,
 } from './types';
+import { PagerDutyChangeEventsResponse, 
+  PagerDutyOnCallUsersResponse, 
+  PagerDutyUser, 
+  PagerDutyServiceResponse,
+  PagerDutyIncidentsResponse 
+} from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
@@ -39,9 +40,6 @@ export class UnauthorizedError extends Error {}
 export const pagerDutyApiRef = createApiRef<PagerDutyApi>({
   id: 'plugin.pagerduty.api',
 });
-
-const commonGetServiceParams =
-  'time_zone=UTC&include[]=integrations&include[]=escalation_policies';
 
 /** @public */
 export class PagerDutyClient implements PagerDutyApi {
@@ -74,18 +72,17 @@ export class PagerDutyClient implements PagerDutyApi {
 
     if (integrationKey) {
       url = `${await this.config.discoveryApi.getBaseUrl(
-        'proxy',
-      )}/pagerduty/services?${commonGetServiceParams}&query=${integrationKey}`;
-      const { services } = await this.findByUrl<PagerDutyServicesResponse>(url);
-      const service = services[0];
+        'pagerduty',
+      )}/services?integration_key=${integrationKey}`;
+      const serviceResponse = await this.findByUrl<PagerDutyServiceResponse>(url);
 
-      if (!service) throw new NotFoundError();
+      if (serviceResponse.service === undefined) throw new NotFoundError();
 
-      response = { service };
+      response = serviceResponse;
     } else if (serviceId) {
       url = `${await this.config.discoveryApi.getBaseUrl(
-        'proxy',
-      )}/pagerduty/services/${serviceId}?${commonGetServiceParams}`;
+        'pagerduty',
+      )}/services/${serviceId}`;
 
       response = await this.findByUrl<PagerDutyServiceResponse>(url);
     } else {
@@ -101,10 +98,9 @@ export class PagerDutyClient implements PagerDutyApi {
   async getIncidentsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyIncidentsResponse> {
-    const params = `time_zone=UTC&sort_by=created_at&statuses[]=triggered&statuses[]=acknowledged&service_ids[]=${serviceId}`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/incidents?${params}`;
+      'pagerduty',
+    )}/services/${serviceId}/incidents`;
 
     return await this.findByUrl<PagerDutyIncidentsResponse>(url);
   }
@@ -112,23 +108,23 @@ export class PagerDutyClient implements PagerDutyApi {
   async getChangeEventsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyChangeEventsResponse> {
-    const params = `limit=5&time_zone=UTC&sort_by=timestamp`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/services/${serviceId}/change_events?${params}`;
+      'pagerduty',
+    )}/services/${serviceId}/change-events`;
 
     return await this.findByUrl<PagerDutyChangeEventsResponse>(url);
   }
 
   async getOnCallByPolicyId(
     policyId: string,
-  ): Promise<PagerDutyOnCallsResponse> {
-    const params = `time_zone=UTC&include[]=users&escalation_policy_ids[]=${policyId}`;
+  ): Promise<PagerDutyUser[]> {
+    const params = `escalation_policy_ids[]=${policyId}`;
     const url = `${await this.config.discoveryApi.getBaseUrl(
-      'proxy',
-    )}/pagerduty/oncalls?${params}`;
+      'pagerduty',
+    )}/oncall-users?${params}`;
 
-    return await this.findByUrl<PagerDutyOnCallsResponse>(url);
+    const response: PagerDutyOnCallUsersResponse = await this.findByUrl<PagerDutyOnCallUsersResponse>(url);
+    return response.users;
   }
 
   triggerAlarm(request: PagerDutyTriggerAlarmRequest): Promise<Response> {
