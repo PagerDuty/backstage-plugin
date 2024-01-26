@@ -25,7 +25,8 @@ import { PagerDutyChangeEventsResponse,
   PagerDutyOnCallUsersResponse, 
   PagerDutyUser, 
   PagerDutyServiceResponse,
-  PagerDutyIncidentsResponse } from '@pagerduty/backstage-plugin-common';
+  PagerDutyIncidentsResponse 
+} from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';

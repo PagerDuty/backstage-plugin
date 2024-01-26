@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { PagerDutyChangeEventsResponse, PagerDutyServiceResponse, PagerDutyUser, PagerDutyIncidentsResponse } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyChangeEventsResponse, 
+  PagerDutyServiceResponse, 
+  PagerDutyUser, 
+  PagerDutyIncidentsResponse
+ } from '@pagerduty/backstage-plugin-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
 import { PagerDutyEntity } from '../types';
