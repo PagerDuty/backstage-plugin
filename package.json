@@ -48,7 +48,7 @@
     "react-use": "^17.2.4"
   },
   "peerDependencies": {
-    "@pagerduty/backstage-plugin-common": "^0.0.1-next.13",
+    "@pagerduty/backstage-plugin-common": "^0.0.2",
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.13.1 || ^17.0.0 || ^18.0.0",
     "react-router-dom": "6.0.0-beta.0 || ^6.3.0"
@@ -60,7 +60,7 @@
     "@backstage/test-utils": "^1.4.5",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@pagerduty/backstage-plugin-common": "^0.0.1-next.13",
+    "@pagerduty/backstage-plugin-common": "^0.0.2",
     "@testing-library/dom": "^8.0.0",
     "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^12.1.3",
