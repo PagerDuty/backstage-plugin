@@ -108,6 +108,7 @@ dist
 dist-types
 dist-workspace
 assets
+!src/assets
 
 # Gatsby files
 .cache/
