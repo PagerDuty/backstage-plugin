@@ -37,6 +37,9 @@ import { PagerDutyEntity } from '../types';
 export class UnauthorizedError extends Error {}
 
 /** @public */
+export class ForbiddenError extends Error { }
+
+/** @public */
 export const pagerDutyApiRef = createApiRef<PagerDutyApi>({
   id: 'plugin.pagerduty.api',
 });
@@ -178,11 +181,15 @@ export class PagerDutyClient implements PagerDutyApi {
   ): Promise<Response> {
     const response = await this.config.fetchApi.fetch(url, options);
     if (response.status === 401) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError("Unauthorized: You don't have access to this resource");
+    }
+
+    if (response.status === 403) {
+      throw new ForbiddenError("Forbidden: You are not allowed to perform this action");
     }
 
     if (response.status === 404) {
-      throw new NotFoundError();
+      throw new NotFoundError("Not Found: Resource not found");
     }
 
     if (!response.ok) {

@@ -19,6 +19,7 @@ import React, { useEffect } from 'react';
 import { List } from '@material-ui/core';
 import { ChangeEventListItem } from './ChangeEventListItem';
 import { ChangeEventEmptyState } from './ChangeEventEmptyState';
+import { ChangeEventForbiddenState } from './ChangeEventForbiddenState';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import { pagerDutyApiRef } from '../../api';
 import { useApi } from '@backstage/core-plugin-api';
@@ -45,6 +46,10 @@ export const ChangeEvents = ({ serviceId, refreshEvents }: Props) => {
   }, [refreshEvents, getChangeEvents]);
 
   if (error) {
+    if (error.message.includes('Forbidden')) {
+      return <ChangeEventForbiddenState />;
+    }
+
     return (
       <Alert severity="error">
         Error encountered while fetching information. {error.message}
