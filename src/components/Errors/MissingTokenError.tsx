@@ -27,7 +27,7 @@ export const MissingTokenError = () => (
       <Button
         color="primary"
         variant="contained"
-        href="https://github.com/backstage/backstage/blob/master/plugins/pagerduty/README.md"
+        href="https://pagerduty.github.io/backstage-plugin-docs/getting-started/pagerduty/"
       >
         Read More
       </Button>
