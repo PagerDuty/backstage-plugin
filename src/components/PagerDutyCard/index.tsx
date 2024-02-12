@@ -19,7 +19,6 @@ import { Card, CardHeader, Divider, CardContent } from '@material-ui/core';
 import { Incidents } from '../Incident';
 import { EscalationPolicy } from '../Escalation';
 import useAsync from 'react-use/lib/useAsync';
-import { Alert } from '@material-ui/lab';
 import { pagerDutyApiRef, UnauthorizedError } from '../../api';
 import AlarmAddIcon from '@material-ui/icons/AlarmAdd';
 import { MissingTokenError, ServiceNotFoundError } from '../Errors';
@@ -39,6 +38,7 @@ import {
   InfoCard,
 } from '@backstage/core-components';
 import { PagerDutyEntity } from '../../types';
+import { ForbiddenError } from '../Errors/ForbiddenError';
 
 const BasicCard = ({ children }: { children: ReactNode }) => (
   <InfoCard title="PagerDuty">{children}</InfoCard>
@@ -100,11 +100,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
         errorNode = <ServiceNotFoundError />;
         break;
       default:
-        errorNode = (
-          <Alert severity="error">
-            Error encountered while fetching information. {error.message}
-          </Alert>
-        );
+        errorNode = <ForbiddenError />;
     }
 
     return <BasicCard>{errorNode}</BasicCard>;

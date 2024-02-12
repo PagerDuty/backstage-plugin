@@ -169,3 +169,4 @@ tsconfig.tmp.json
 !config.d.ts
 !custom.d.ts
 .gitignore
+app-config.dev.yaml

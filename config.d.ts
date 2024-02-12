@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { PagerDutyOAuthConfig } from "@pagerduty/backstage-plugin-common";
+
 export interface Config {
   /**
    * Configuration for the PagerDuty plugin
@@ -29,5 +32,10 @@ export interface Config {
      * @visibility frontend
      */
     apiToken?: string;
+    /**
+     * Optional PagerDuty Scoped OAuth Token used in API calls from the backend component.
+     * @visibility frontend
+     */
+    oauth?: PagerDutyOAuthConfig;
   };
 }
