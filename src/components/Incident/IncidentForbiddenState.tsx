@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // eslint-disable-next-line @backstage/no-undeclared-imports
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { EmptyState } from '@backstage/core-components';
+import { Grid, Typography } from '@material-ui/core';
+import ForbiddenStateImage from '../../assets/forbiddenstate.svg';
 
-export const MissingTokenError = () => (
-  <EmptyState
-    missing="info"
-    title="Missing or invalid PagerDuty Token"
-    description="The request to fetch data needs a valid token. See README for more details."
-    action={
-      <Button
-        color="primary"
-        variant="contained"
-        href="https://pagerduty.github.io/backstage-plugin-docs/getting-started/pagerduty/"
-      >
-        Read More
-      </Button>
-    }
-  />
-);
+export const IncidentForbiddenState = () => {
+  return (
+    <Grid container justify="center" direction="column" alignItems="center">
+      <Grid item xs={12}>
+        <Typography variant="h5">Feature not available with your account or token.</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <img
+          src={ForbiddenStateImage}
+          alt="ForbiddenState"
+          data-testid="forbiddenStateImg"
+        />
+      </Grid>
+    </Grid>
+  );
+};

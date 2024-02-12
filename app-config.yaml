@@ -44,12 +44,17 @@ integrations:
     #   token: ${GHE_TOKEN}
 pagerDuty:
   eventsBaseUrl: 'https://events.pagerduty.com/v2'
+  apiToken: ${PAGERDUTY_TOKEN}
+  oauth:
+    clientId: ${PAGERDUTY_CLIENT_ID}
+    clientSecret: ${PAGERDUTY_CLIENT_SECRET}
+    subDomain: ${PAGERDUTY_ACCOUNT}
 
-proxy:
-  '/pagerduty':
-    target: https://api.pagerduty.com
-    headers:
-      Authorization: Token token=${PAGERDUTY_TOKEN}
+# proxy:
+#   '/pagerduty':
+#     target: https://api.pagerduty.com
+#     headers:
+#       Authorization: Token token=${PAGERDUTY_TOKEN}
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:

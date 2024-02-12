@@ -18,11 +18,11 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { EmptyState } from '@backstage/core-components';
 
-export const MissingTokenError = () => (
+export const ForbiddenError = () => (
   <EmptyState
     missing="info"
-    title="Missing or invalid PagerDuty Token"
-    description="The request to fetch data needs a valid token. See README for more details."
+    title="Unauthorized"
+    description="You don't have the required permissions to perform this action. See README for more details."
     action={
       <Button
         color="primary"

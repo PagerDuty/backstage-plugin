@@ -17,6 +17,7 @@
 import React from 'react';
 import { List, ListSubheader } from '@material-ui/core';
 import { EscalationUsersEmptyState } from './EscalationUsersEmptyState';
+import { EscalationUsersForbiddenState } from './EscalationUsersForbiddenState';
 import { EscalationUser } from './EscalationUser';
 import useAsync from 'react-use/lib/useAsync';
 import { pagerDutyApiRef } from '../../api';
@@ -41,6 +42,14 @@ export const EscalationPolicy = ({ policyId }: Props) => {
   });
 
   if (error) {
+    if (error.message.includes("Forbidden")) {
+      return (
+        <List dense subheader={<ListSubheader>ON CALL</ListSubheader>}>
+          <EscalationUsersForbiddenState />
+        </List>
+      );
+    }
+
     return (
       <Alert severity="error">
         Error encountered while fetching information. {error.message}

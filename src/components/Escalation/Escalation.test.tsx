@@ -46,6 +46,30 @@ describe("Escalation", () => {
     expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("456");
   });
 
+  it("Renders a forbidden state when change events is undefined", async () => {
+    mockPagerDutyApi.getOnCallByPolicyId = jest
+      .fn()
+      .mockImplementationOnce(async () => {
+        throw new Error(
+          "Forbidden: You are not allowed to perform this action"
+        );
+      });
+
+    const { getByText, queryByTestId } = render(
+      wrapInTestApp(
+        <ApiProvider apis={apis}>
+          <EscalationPolicy policyId="abc" />
+        </ApiProvider>
+      )
+    );
+    await waitFor(() => !queryByTestId("progress"));
+    expect(
+      getByText(
+        "You don't permissions to list on-calls. Check your OAuth token permissions."
+      )
+    ).toBeInTheDocument();
+  });
+
   it("Render a list of users", async () => {
     mockPagerDutyApi.getOnCallByPolicyId = jest
       .fn()

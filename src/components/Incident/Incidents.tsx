@@ -24,6 +24,7 @@ import { Alert } from '@material-ui/lab';
 
 import { useApi } from '@backstage/core-plugin-api';
 import { Progress } from '@backstage/core-components';
+import { IncidentForbiddenState } from './IncidentForbiddenState';
 
 type Props = {
   serviceId: string;
@@ -47,6 +48,10 @@ export const Incidents = ({ serviceId, refreshIncidents }: Props) => {
   }, [refreshIncidents, getIncidents]);
 
   if (error) {
+    if (error.message.includes('Forbidden')) {
+      return <IncidentForbiddenState />;
+    }
+
     return (
       <Alert severity="error">
         Error encountered while fetching information. {error.message}
