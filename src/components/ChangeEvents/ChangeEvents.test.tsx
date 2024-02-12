@@ -47,7 +47,7 @@ describe('Incidents', () => {
   it("Renders a forbidden state when change events is undefined", async () => {
     mockPagerDutyApi.getChangeEventsByServiceId = jest
       .fn()
-      .mockImplementationOnce(async () => {throw new Error("Forbidden: You allowed to perform this action");});
+      .mockImplementationOnce(async () => {throw new Error("Forbidden: You are not allowed to perform this action");});
 
     const { getByText, queryByTestId } = render(
       wrapInTestApp(

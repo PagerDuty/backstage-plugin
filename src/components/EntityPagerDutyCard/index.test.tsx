@@ -199,8 +199,8 @@ describe('EntityPagerDutyCard', () => {
 
     expect(
       getByText(
-        'Error encountered while fetching information. An error occurred',
-      ),
+        "You don't have the required permissions to perform this action. See README for more details."
+      )
     ).toBeInTheDocument();
   });
 
@@ -305,8 +305,8 @@ describe('EntityPagerDutyCard', () => {
 
       expect(
         getByText(
-          'Error encountered while fetching information. An error occurred',
-        ),
+          "You don't have the required permissions to perform this action. See README for more details."
+        )
       ).toBeInTheDocument();
     });
 
