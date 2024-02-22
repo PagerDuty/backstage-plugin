@@ -28,6 +28,11 @@ export interface Config {
      */
     eventsBaseUrl?: string;
     /**
+         * Optional API Base URL to override the default.
+         * @visibility frontend
+         */
+    apiBaseUrl?: string;
+    /**
      * Optional PagerDuty API Token used in API calls from the backend component.
      * @visibility frontend
      */
