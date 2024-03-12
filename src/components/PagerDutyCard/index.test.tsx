@@ -61,8 +61,8 @@ describe('PagerDutyCard', () => {
       ),
     );
     await waitFor(() => !queryByTestId('progress'));
-    expect(getByText('Service Directory')).toBeInTheDocument();
-    expect(getByText('Create Incident')).toBeInTheDocument();
+    expect(getByText('Open service in PagerDuty')).toBeInTheDocument();
+    expect(getByText('Create new incident')).toBeInTheDocument();
     expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
     expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
   });
@@ -132,9 +132,9 @@ describe('PagerDutyCard', () => {
       ),
     );
     await waitFor(() => !queryByTestId('progress'));
-    expect(getByText('Service Directory')).toBeInTheDocument();
+    expect(getByText('Open service in PagerDuty')).toBeInTheDocument();
 
-    const triggerLink = getByText('Create Incident');
+    const triggerLink = getByText('Create new incident');
     await act(async () => {
       fireEvent.click(triggerLink);
     });
@@ -155,8 +155,8 @@ describe('PagerDutyCard', () => {
         ),
       );
       await waitFor(() => !queryByTestId('progress'));
-      expect(getByText('Service Directory')).toBeInTheDocument();
-      expect(getByText('Create Incident')).toBeInTheDocument();
+      expect(getByText('Open service in PagerDuty')).toBeInTheDocument();
+      expect(getByText('Create new incident')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
       expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
     });
@@ -227,12 +227,12 @@ describe('PagerDutyCard', () => {
       ).toBeInTheDocument();
     });
 
-    it('disables the Create Incident button', async () => {
+    it('disables the Create new incident button', async () => {
       mockPagerDutyApi.getServiceByPagerDutyEntity = jest
         .fn()
         .mockImplementationOnce(async () => ({ service }));
 
-      const { queryByTestId, getByTitle } = render(
+      const { queryByTestId, getByLabelText } = render(
         wrapInTestApp(
           <ApiProvider apis={apis}>
             <PagerDutyCard name="blah" serviceId="def123" />
@@ -241,7 +241,7 @@ describe('PagerDutyCard', () => {
       );
       await waitFor(() => !queryByTestId('progress'));
       expect(
-        getByTitle('Must provide an integration-key to create incidents')
+        getByLabelText('create-incident')
           .className,
       ).toMatch('disabled');
     });
@@ -265,15 +265,15 @@ describe('PagerDutyCard', () => {
         ),
       );
       await waitFor(() => !queryByTestId('progress'));
-      expect(getByText('Service Directory')).toBeInTheDocument();
-      expect(getByText('Create Incident')).toBeInTheDocument();
+      expect(getByText('Open service in PagerDuty')).toBeInTheDocument();
+      expect(getByText('Create new incident')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
       expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
     });
   });
 
   describe('when entity has all annotations but the plugin has been configured to be "read only"', () => {
-    it('queries by integration key but does not render the "Create Incident" button', async () => {
+    it('queries by integration key but does not render the "Create new incident" button', async () => {
       mockPagerDutyApi.getServiceByPagerDutyEntity = jest
         .fn()
         .mockImplementationOnce(async () => ({ service }));
@@ -291,10 +291,10 @@ describe('PagerDutyCard', () => {
         ),
       );
       await waitFor(() => !queryByTestId('progress'));
-      expect(getByText('Service Directory')).toBeInTheDocument();
+      expect(getByText('Open service in PagerDuty')).toBeInTheDocument();
       expect(getByText('Nice! No incidents found!')).toBeInTheDocument();
       expect(getByText('No one is on-call. Update the escalation policy.')).toBeInTheDocument();
-      expect(() => getByText('Create Incident')).toThrow();
+      expect(() => getByText('Create new incident')).toThrow();
     });
   });
 });
