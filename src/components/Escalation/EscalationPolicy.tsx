@@ -66,7 +66,7 @@ export const EscalationPolicy = ({ policyId }: Props) => {
   }
 
   return (
-    <List dense subheader={<ListSubheader>ON CALL</ListSubheader>}>
+    <List dense subheader={<ListSubheader>ON CALL</ListSubheader>} style={{marginLeft: "-15px"}}>
       {users!.map((user, index) => (
         <EscalationUser key={index} user={user} />
       ))}
