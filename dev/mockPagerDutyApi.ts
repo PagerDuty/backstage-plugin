@@ -27,12 +27,13 @@ export const mockPagerDutyApi: PagerDutyApi = {
       service: {
         name: pagerDutyEntity.name,
         id: "SERV1CE1D",
-        html_url: "www.example.com",
+        html_url: "https://www.example.com",
         escalation_policy: {
           id: "ESCALAT1ONP01ICY1D",
           name: "ep-one",
           html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
+        status: "critical",
       },
     };
   },
@@ -42,12 +43,13 @@ export const mockPagerDutyApi: PagerDutyApi = {
       service: {
         name: entity.metadata.name,
         id: "SERV1CE1D",
-        html_url: "www.example.com",
+        html_url: "https://www.example.com",
         escalation_policy: {
           id: "ESCALAT1ONP01ICY1D",
           name: "ep-one",
           html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
         },
+        status: "warning",
       },
     };
   },
@@ -72,6 +74,7 @@ export const mockPagerDutyApi: PagerDutyApi = {
           id: serviceId,
           summary: 'service summary',
           html_url: 'http://service',
+          status: 'warning',
         },
         created_at: '2015-10-06T21:30:42Z',
       } as PagerDutyIncident;
