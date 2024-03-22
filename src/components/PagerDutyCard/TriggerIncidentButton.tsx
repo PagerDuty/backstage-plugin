@@ -19,7 +19,6 @@ import React, { useCallback, useState } from "react";
 import { makeStyles, IconButton } from "@material-ui/core";
 import { BackstageTheme } from "@backstage/theme";
 
-import { usePagerdutyEntity } from "../../hooks";
 import { TriggerDialog } from "../TriggerDialog";
 import AddAlert from "@material-ui/icons/AddAlert";
 
@@ -32,21 +31,29 @@ const useStyles = makeStyles<BackstageTheme>((theme) => ({
     },
   },
   containerStyle: {
-    flex: "flex !important",
-    fontSize: "14px",
+    fontSize: "12px",
     width: "80px",
-    lineHeight: "14px",
+    marginRight: "-10px",
   },
   iconStyle: {
-    fontSize: "35px",
+    fontSize: "30px",
     marginBottom: "-10px"
+  },
+  textStyle: {
+    marginBottom: "-10px",
   }
 }));
 
 /** @public */
-export function TriggerIncidentButton() {
-  const { buttonStyle, containerStyle, iconStyle } = useStyles();
-  const { integrationKey, name } = usePagerdutyEntity();
+export type TriggerIncidentButtonProps = {
+  integrationKey: string | undefined;
+  entityName: string;
+  handleRefresh: () => void;
+}
+
+/** @public */
+export function TriggerIncidentButton({ integrationKey, entityName, handleRefresh } : TriggerIncidentButtonProps) {
+  const { buttonStyle, containerStyle, iconStyle, textStyle } = useStyles();
   const [dialogShown, setDialogShown] = useState<boolean>(false);
 
   const showDialog = useCallback(() => {
@@ -55,8 +62,9 @@ export function TriggerIncidentButton() {
   const hideDialog = useCallback(() => {
     setDialogShown(false);
   }, [setDialogShown]);
-
+  
   const disabled = !integrationKey;
+  
   return (
     <>
       <IconButton
@@ -67,7 +75,7 @@ export function TriggerIncidentButton() {
       >
         <div className={containerStyle}>
           <AddAlert className={iconStyle} />
-          <p>Create new incident</p>
+          <p className={textStyle}>Create new incident</p>
         </div>
       </IconButton>
       {integrationKey && (
@@ -75,7 +83,8 @@ export function TriggerIncidentButton() {
           showDialog={dialogShown}
           handleDialog={hideDialog}
           integrationKey={integrationKey}
-          name={name}
+          serviceName={entityName}
+          onIncidentCreated={handleRefresh}
         />
       )}
     </>

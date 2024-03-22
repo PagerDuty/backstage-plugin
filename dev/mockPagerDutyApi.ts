@@ -54,12 +54,29 @@ export const mockPagerDutyApi: PagerDutyApi = {
     };
   },
 
+  async getServiceById(serviceId: string) {
+    return {
+      service: {
+        name: "SERV1CENAME",
+        id: serviceId,
+        html_url: "https://www.example.com",
+        escalation_policy: {
+          id: "ESCALAT1ONP01ICY1D",
+          name: "ep-one",
+          html_url: "http://www.example.com/escalation-policy/ESCALAT1ONP01ICY1D",
+        },
+        status: "warning",
+      },
+    };
+  },
+
   async getIncidentsByServiceId(serviceId: string) {
     const incident = (title: string) => {
       return {
         id: '123',
         title: title,
-        status: 'acknowledged',
+        urgency: 'low',
+        status: 'triggered',
         html_url: 'http://incident',
         assignments: [
           {
@@ -114,15 +131,55 @@ export const mockPagerDutyApi: PagerDutyApi = {
     };
   },
 
+  async getServiceStandardsByServiceId(serviceId: string) {
+    const standards = () => {
+      return {
+        resource_id: serviceId,
+        resource_type: 'technical_service',
+        score: {
+          total: 1,
+          passing: 1,
+        },
+        standards: [
+          {
+            active: true,
+            id: '123',
+            name: 'Service has a description',
+            description: 'A description provides critical context about what a service represents or is used for to inform team members and responders. The description should be kept concise and understandable by those without deep knowledge of the service.',
+            pass: true,
+            type: 'has_technical_service_description'
+          },
+        ],
+      }
+    };
+
+    return {
+      standards: standards(),
+    }
+  },
+
+  async getServiceMetricsByServiceId(serviceId: string) {
+    return {
+      metrics: [
+        {
+          service_id: serviceId,
+          total_incident_count: 6,
+          total_high_urgency_incidents: 3,
+          total_interruptions: 2,
+        },
+      ]
+    }
+  },
+
   async getOnCallByPolicyId() {
     const oncall = (id: string, name: string) => {
       return {
-          id: id,
-          name: name,
-          html_url: 'http://assignee',
-          summary: 'summary',
-          email: 'email@email.com',
-          avatar_url: 'http://avatar',
+        id: id,
+        name: name,
+        html_url: 'http://assignee',
+        summary: 'summary',
+        email: 'email@email.com',
+        avatar_url: 'http://avatar',
       };
     };
 

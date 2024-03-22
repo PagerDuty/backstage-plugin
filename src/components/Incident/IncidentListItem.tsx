@@ -25,38 +25,70 @@ import {
   Typography,
   Chip,
 } from '@material-ui/core';
-import Done from '@material-ui/icons/Done';
-import Warning from '@material-ui/icons/Warning';
 import { DateTime, Duration } from 'luxon';
 import { PagerDutyIncident } from '@pagerduty/backstage-plugin-common';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import { BackstageTheme } from '@backstage/theme';
 import { Link } from '@backstage/core-components';
 
-const useStyles = makeStyles<BackstageTheme>(theme => ({
+const useStyles = makeStyles<BackstageTheme>((theme) => ({
   denseListIcon: {
     marginRight: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   listItemPrimary: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   warning: {
-    borderColor: theme.palette.status.warning,
-    color: theme.palette.status.warning,
-    '& *': {
-      color: theme.palette.status.warning,
+    borderColor: theme.palette.warning.main,
+    color: "#fff",
+    backgroundColor: theme.palette.warning.main,
+    boxShadow: "0 4px 4px 0 rgba(0,0,0,0.2)",
+    textTransform: "uppercase",
+    "& *": {
+      color: "#fff",
     },
   },
   error: {
-    borderColor: theme.palette.status.error,
-    color: theme.palette.status.error,
-    '& *': {
-      color: theme.palette.status.error,
+    borderColor: theme.palette.error.main,
+    color: "#fff",
+    backgroundColor: theme.palette.error.main,
+    boxShadow: "0 4px 4px 0 rgba(0,0,0,0.2)",
+    textTransform: "uppercase",
+    "& *": {
+      color: "#fff",
     },
+  },
+  lowUrgency: {
+    borderColor: theme.palette.warning.main,
+    color: theme.palette.warning.main,
+    backgroundColor: "#fff",
+    boxShadow: "0 4px 4px 0 rgba(0,0,0,0.2)",
+    textTransform: "uppercase",
+    "& *": {
+      color: theme.palette.warning.main,
+    },
+  },
+  highUrgency: {
+    borderColor: theme.palette.error.main,
+    color: theme.palette.error.main,
+    backgroundColor: "#fff",
+    boxShadow: "0 4px 4px 0 rgba(0,0,0,0.2)",
+    textTransform: "uppercase",
+    "& *": {
+      color: theme.palette.error.main,
+    },
+  },
+  textContainer: {
+    display: "flex",
+    alignItems: "baseline",
+  },
+  smallIconStyle: {
+    color: theme.palette.text.primary,
+    marginRight: "-20px",
   },
 }));
 
@@ -77,30 +109,40 @@ export const IncidentListItem = ({ incident }: Props) => {
     <ListItem dense key={incident.id}>
       <ListItemText
         primary={
-          <>
+          <div className={classes.textContainer}>
             <Chip
               data-testid={`chip-${incident.status}`}
               label={incident.status}
               size="small"
               variant="outlined"
-              icon={incident.status === 'acknowledged' ? <Done /> : <Warning />}
               className={
-                incident.status === 'triggered'
+                incident.status === "triggered"
                   ? classes.error
                   : classes.warning
               }
             />
+            <Chip
+              data-testid={`chip-${incident.urgency}`}
+              label={`${incident.urgency} urgency`}
+              size="small"
+              variant="outlined"
+              className={
+                incident.urgency === "high"
+                  ? classes.highUrgency
+                  : classes.lowUrgency
+              }
+            />
             {incident.title}
-          </>
+          </div>
         }
         primaryTypographyProps={{
-          variant: 'body1',
+          variant: "body1",
           className: classes.listItemPrimary,
         }}
         secondary={
           <Typography noWrap variant="body2" color="textSecondary">
-            Created {createdAt} and assigned to{' '}
-            <Link to={user?.html_url ?? '#'}>{user?.summary ?? 'nobody'}</Link>
+            Created {createdAt} and assigned to{" "}
+            <Link to={user?.html_url ?? "#"}>{user?.summary ?? "nobody"}</Link>
           </Typography>
         }
       />
@@ -110,7 +152,7 @@ export const IncidentListItem = ({ incident }: Props) => {
             href={incident.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            color="primary"
+            className={classes.smallIconStyle}
           >
             <OpenInBrowserIcon />
           </IconButton>

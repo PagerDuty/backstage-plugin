@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 // eslint-disable-next-line @backstage/no-undeclared-imports
-import React from 'react';
-import { List, ListSubheader } from '@material-ui/core';
-import { EscalationUsersEmptyState } from './EscalationUsersEmptyState';
-import { EscalationUsersForbiddenState } from './EscalationUsersForbiddenState';
-import { EscalationUser } from './EscalationUser';
-import useAsync from 'react-use/lib/useAsync';
-import { pagerDutyApiRef } from '../../api';
-import { Alert } from '@material-ui/lab';
+import React from "react";
+import { List, ListSubheader } from "@material-ui/core";
+import { EscalationUsersEmptyState } from "./EscalationUsersEmptyState";
+import { EscalationUsersForbiddenState } from "./EscalationUsersForbiddenState";
+import { EscalationUser } from "./EscalationUser";
+import useAsync from "react-use/lib/useAsync";
+import { pagerDutyApiRef } from "../../api";
+import { Alert } from "@material-ui/lab";
 
-import { useApi } from '@backstage/core-plugin-api';
-import { Progress } from '@backstage/core-components';
+import { useApi } from "@backstage/core-plugin-api";
+import { Progress } from "@backstage/core-components";
 
 type Props = {
   policyId: string;
+  policyUrl: string;
+  policyName: string;
 };
 
-export const EscalationPolicy = ({ policyId }: Props) => {
+export const EscalationPolicy = ({
+  policyId,
+  policyUrl,
+  policyName,
+}: Props) => {
   const api = useApi(pagerDutyApiRef);
 
   const {
@@ -66,9 +72,18 @@ export const EscalationPolicy = ({ policyId }: Props) => {
   }
 
   return (
-    <List dense subheader={<ListSubheader>ON CALL</ListSubheader>} style={{marginLeft: "-15px"}}>
+    <List
+      dense
+      subheader={<ListSubheader>ON CALL</ListSubheader>}
+      style={{ marginLeft: "-15px" }}
+    >
       {users!.map((user, index) => (
-        <EscalationUser key={index} user={user} />
+        <EscalationUser
+          key={index}
+          user={user}
+          policyUrl={policyUrl}
+          policyName={policyName}
+        />
       ))}
     </List>
   );

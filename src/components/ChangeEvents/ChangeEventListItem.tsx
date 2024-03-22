@@ -29,20 +29,28 @@ import {
 import { DateTime, Duration } from 'luxon';
 import { PagerDutyChangeEvent } from '@pagerduty/backstage-plugin-common';
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
+import LinkIcon from '@material-ui/icons/Link';
 import { BackstageTheme } from '@backstage/theme';
 
-const useStyles = makeStyles<BackstageTheme>({
+const useStyles = makeStyles<BackstageTheme>((theme) => ({
   denseListIcon: {
     marginRight: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   listItemPrimary: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-});
+  smallExternalLinkIconStyle: {
+    color: theme.palette.text.primary
+  },
+  smallIconStyle: {
+    color: theme.palette.text.primary,
+    marginRight: "-20px"
+  },
+}));
 
 type Props = {
   changeEvent: PagerDutyChangeEvent;
@@ -63,9 +71,9 @@ export const ChangeEventListItem = ({ changeEvent }: Props) => {
         <IconButton
           component={Link}
           to={changeEvent.links[0].href}
-          color="primary"
+          className={classes.smallExternalLinkIconStyle}
         >
-          <OpenInBrowserIcon />
+          <LinkIcon />
         </IconButton>
       </Tooltip>
     );
@@ -92,7 +100,7 @@ export const ChangeEventListItem = ({ changeEvent }: Props) => {
             <IconButton
               component={Link}
               to={changeEvent.html_url}
-              color="primary"
+              className={classes.smallIconStyle}
             >
               <OpenInBrowserIcon />
             </IconButton>

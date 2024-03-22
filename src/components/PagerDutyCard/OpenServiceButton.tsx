@@ -33,29 +33,21 @@ const useStyles = makeStyles<BackstageTheme>((theme) => ({
     },
   },
   containerStyle: {
-    flex: "flex",
-    fontSize: "14px",
+    fontSize: "12px",
     width: "85px",
-    lineHeight: "14px",
   },
   iconStyle: {
-    fontSize: "35px",
+    fontSize: "30px",
     marginBottom: "-10px",
   },
+  textStyle: {
+    marginBottom: "-10px",
+  }
 }));
 
 /** @public */
 export function OpenServiceButton(props: { serviceUrl: string}) {
-  const { buttonStyle, containerStyle, iconStyle } = useStyles();
-  // const { integrationKey, name } = usePagerdutyEntity();
-  // const [dialogShown, setDialogShown] = useState<boolean>(false);
-
-  // const showDialog = useCallback(() => {
-  //   setDialogShown(true);
-  // }, [setDialogShown]);
-  // const hideDialog = useCallback(() => {
-  //   setDialogShown(false);
-  // }, [setDialogShown]);
+  const { buttonStyle, containerStyle, iconStyle, textStyle } = useStyles();
 
   function navigateToService() {
     window.open(props.serviceUrl, "_blank");
@@ -70,17 +62,9 @@ export function OpenServiceButton(props: { serviceUrl: string}) {
       >
         <div className={containerStyle}>
           <OpenInBrowser className={iconStyle} />
-          <p>Open service in PagerDuty</p>
+          <p className={textStyle}>Open service in PagerDuty</p>
         </div>
       </IconButton>
-      {/* {integrationKey && (
-        <TriggerDialog
-          showDialog={dialogShown}
-          handleDialog={hideDialog}
-          integrationKey={integrationKey}
-          name={name}
-        />
-      )} */}
     </>
   );
 }

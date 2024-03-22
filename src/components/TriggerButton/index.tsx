@@ -55,7 +55,7 @@ export function TriggerButton(props: { children?: ReactNode }) {
         disabled={disabled}
       >
         {integrationKey
-          ? props.children ?? 'Create Incident'
+          ? props.children ?? 'Create new incident'
           : 'Missing integration key'}
       </Button>
       {integrationKey && (
@@ -63,7 +63,7 @@ export function TriggerButton(props: { children?: ReactNode }) {
           showDialog={dialogShown}
           handleDialog={hideDialog}
           integrationKey={integrationKey}
-          name={name}
+          serviceName={name}
         />
       )}
     </>

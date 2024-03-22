@@ -1,17 +1,24 @@
 import { BackstageTheme } from "@backstage/theme";
 import {
   Card,
+  IconButton,
   LinearProgress,
   Theme,
+  Tooltip,
   Typography,
   makeStyles,
   withStyles,
 } from "@material-ui/core";
 import React from "react";
+import InfoIcon from "@material-ui/icons/Info";
+import { PagerDutyServiceStandard } from "@pagerduty/backstage-plugin-common";
+import CheckCircle from "@material-ui/icons/CheckCircle";
+import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 
 type Props = {
-  total: number;
-  completed: number;
+  total: number | undefined;
+  completed: number | undefined;
+  standards: PagerDutyServiceStandard[] | undefined;
 };
 
 function colorFromPercentage(theme: Theme, percentage: number) {
@@ -23,7 +30,7 @@ function colorFromPercentage(theme: Theme, percentage: number) {
   return theme.palette.success.main;
 }
 
-function ServiceStandardsCard({ total, completed }: Props) {
+function ServiceStandardsCard({ total, completed, standards }: Props) {
   const useStyles = makeStyles<BackstageTheme>((theme) => ({
     cardStyle: {
       height: "120px",
@@ -34,10 +41,14 @@ function ServiceStandardsCard({ total, completed }: Props) {
     containerStyle: {
       display: "flex",
       justifyContent: "center",
+      marginTop: "-100px",
     },
     largeTextStyle: {
       fontSize: "50px",
-      color: colorFromPercentage(theme, completed / total),
+      color:
+        completed !== undefined && total !== undefined
+          ? colorFromPercentage(theme, completed / total)
+          : colorFromPercentage(theme, 0),
       alignSelf: "center",
       justifyContent: "center",
     },
@@ -49,6 +60,14 @@ function ServiceStandardsCard({ total, completed }: Props) {
       justifyContent: "center",
       marginLeft: "-2px",
       marginTop: "25px",
+    },
+    tooltipContainer: {},
+    tooltipIcon: {
+      marginRight: "5px",
+    },
+    standardItem: {
+      display: "flex",
+      alignItems: "center",
     },
   }));
 
@@ -64,24 +83,85 @@ function ServiceStandardsCard({ total, completed }: Props) {
     },
     bar: {
       borderRadius: 5,
-      backgroundColor: colorFromPercentage(theme, completed / total),
+      backgroundColor:
+        completed !== undefined && total !== undefined
+          ? colorFromPercentage(theme, completed / total)
+          : colorFromPercentage(theme, 0),
     },
   }))(LinearProgress);
 
-  const { cardStyle, containerStyle, largeTextStyle, smallTextStyle } =
-    useStyles();
+  const {
+    cardStyle,
+    containerStyle,
+    largeTextStyle,
+    smallTextStyle,
+    tooltipContainer,
+    tooltipIcon,
+    standardItem,
+  } = useStyles();
+
+  if (standards === undefined || completed === undefined || total === undefined) {
+    return (
+      <Card className={cardStyle}>
+        <div className={containerStyle}>
+          <Typography className={smallTextStyle}>
+            Unable to retrieve Scores
+          </Typography>
+        </div>
+      </Card>
+    );
+  }
+  
   return (
     <Card className={cardStyle}>
-      <div className={containerStyle}>
-        <Typography className={largeTextStyle}>{completed}</Typography>
-        <Typography className={smallTextStyle}>/{total}</Typography>
-      </div>
-      <div>
-        <BorderLinearProgress
-          variant="determinate"
-          value={(completed / total) * 100}
-        />
-      </div>
+      {completed !== undefined && total !== undefined ? (
+        <>
+          <div className={tooltipContainer}>
+            <IconButton>
+              <Tooltip
+                interactive
+                title={
+                  <>
+                    {standards?.map((standard, key) => (
+                      <p key={key}>
+                        {standard.pass ? (
+                          <span className={standardItem}>
+                            <CheckCircle className={tooltipIcon} />{" "}
+                            {standard.name}
+                          </span>
+                        ) : (
+                          <span className={standardItem}>
+                            <RadioButtonUncheckedIcon className={tooltipIcon} />{" "}
+                            {standard.name}
+                          </span>
+                        )}
+                      </p>
+                    ))}
+                  </>
+                }
+              >
+                <InfoIcon />
+              </Tooltip>
+            </IconButton>
+          </div>
+          <div className={containerStyle}>
+            <Typography className={largeTextStyle}>{completed}</Typography>
+            <Typography className={smallTextStyle}>/{total}</Typography>
+          </div>
+          <div>
+            <BorderLinearProgress
+              variant="determinate"
+              value={(completed! / total!) * 100}
+            />
+          </div>
+        </>
+      ) : (
+        <div className={containerStyle}>
+          <Typography className={smallTextStyle}>
+            Unable to retrieve Scores
+          </Typography>
+        </div>
+      )}
     </Card>
   );
 }

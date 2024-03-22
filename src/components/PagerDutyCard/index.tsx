@@ -44,16 +44,12 @@ import { PagerDutyEntity } from "../../types";
 import { ForbiddenError } from "../Errors/ForbiddenError";
 import { TriggerIncidentButton } from "./TriggerIncidentButton";
 import { OpenServiceButton } from "./OpenServiceButton";
-import {
-  createStyles,
-  makeStyles,
-  useTheme,
-} from "@material-ui/core/styles";
+import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import StatusCard from "./StatusCard";
-import IncidentCounterCard from "./IncidentCounterCard";
 import ServiceStandardsCard from "./ServiceStandardsCard";
 import { BackstageTheme } from "@backstage/theme";
-import { TriggerDialog } from "../TriggerDialog";
+import { PagerDutyCardServiceResponse } from "../../api/types";
+import InsightsCard from "./InsightsCard";
 
 const useStyles = makeStyles<BackstageTheme>((theme) =>
   createStyles({
@@ -66,12 +62,21 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
           : "rgba(255, 255, 255, 0.7)",
     },
     headerStyle: {
-      marginRight: "1em",
+      marginBottom: "0px",
+      fontSize: "0px",
     },
     overviewHeaderContainerStyle: {
       display: "flex",
       margin: "15px",
       marginBottom: "20px",
+    },
+    headerWithSubheaderContainerStyle: {
+      display: "flex",
+      alignItems: "center",
+    },
+    subheaderTextStyle: {
+      fontSize: "10px",
+      marginLeft: "5px",
     },
     overviewCardsContainerStyle: {
       display: "flex",
@@ -102,23 +107,17 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
   const classes = useStyles();
 
   const theme = useTheme();
-  const { readOnly, disableChangeEvents, integrationKey, name } = props;
+  const { readOnly, disableChangeEvents } = props;
   const api = useApi(pagerDutyApiRef);
   const [refreshIncidents, setRefreshIncidents] = useState<boolean>(false);
   const [refreshChangeEvents, setRefreshChangeEvents] =
     useState<boolean>(false);
-  const [dialogShown, setDialogShown] = useState<boolean>(false);
-
-  // const showDialog = useCallback(() => {
-  //   setDialogShown(true);
-  // }, [setDialogShown]);
-  const hideDialog = useCallback(() => {
-    setDialogShown(false);
-  }, [setDialogShown]);
+  const [refreshStatus, setRefreshStatus] = useState<boolean>(false);
 
   const handleRefresh = useCallback(() => {
     setRefreshIncidents((x) => !x);
     setRefreshChangeEvents((x) => !x);
+    setRefreshStatus((x) => !x);
   }, []);
 
   const {
@@ -130,14 +129,29 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
       props
     );
 
-    return {
+    const serviceStandards = await api.getServiceStandardsByServiceId(
+      foundService.id
+    );
+
+    const serviceMetrics = await api.getServiceMetricsByServiceId(
+      foundService.id
+    );
+
+    const result: PagerDutyCardServiceResponse = {
       id: foundService.id,
       name: foundService.name,
       url: foundService.html_url,
       policyId: foundService.escalation_policy.id,
-      policyLink: foundService.escalation_policy.html_url,
+      policyLink: foundService.escalation_policy.html_url as string,
+      policyName: foundService.escalation_policy.name,
       status: foundService.status,
+      standards:
+        serviceStandards !== undefined ? serviceStandards.standards : undefined,
+      metrics:
+        serviceMetrics !== undefined ? serviceMetrics.metrics : undefined,
     };
+
+    return result;
   }, [props]);
 
   if (error) {
@@ -165,106 +179,142 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
     );
   }
 
-  /**
-   * In order to create incidents using the REST API, a valid user email address must be present.
-   * There is no guarantee the current user entity has a valid email association, so instead just
-   * only allow triggering incidents when an integration key is present.
-   */
-  const createIncidentDisabled = !integrationKey;
-
   return (
-    <>
-      <Card data-testid="pagerduty-card">
-        <CardHeader
-          className={classes.headerStyle}
-          title={
-            theme.palette.type === "dark" ? (
-              <img src={PDWhiteImage} alt="PagerDuty" height="35" />
-            ) : (
-              <img src={PDGreenImage} alt="PagerDuty" height="35" />
-            )
-          }
-          action={
-            !readOnly ? (
-              <div>
-                <TriggerIncidentButton />
-                <OpenServiceButton serviceUrl={service!.url} />
-              </div>
-            ) : (
+    <Card data-testid="pagerduty-card">
+      <CardHeader
+        className={classes.headerStyle}
+        title={
+          theme.palette.type === "dark" ? (
+            <img src={PDWhiteImage} alt="PagerDuty" height="35" />
+          ) : (
+            <img src={PDGreenImage} alt="PagerDuty" height="35" />
+          )
+        }
+        action={
+          !readOnly ? (
+            <div>
+              <TriggerIncidentButton
+                integrationKey={props.integrationKey}
+                entityName={props.name}
+                handleRefresh={handleRefresh}
+              />
               <OpenServiceButton serviceUrl={service!.url} />
-            )
-          }
-        />
-        <Grid item md={12} className={classes.overviewHeaderContainerStyle}>
-          <Grid item md={3}>
+            </div>
+          ) : (
+            <OpenServiceButton serviceUrl={service!.url} />
+          )
+        }
+      />
+      <Grid item md={12} className={classes.overviewHeaderContainerStyle}>
+        <Grid item md={3}>
+          <Typography className={classes.overviewHeaderTextStyle}>
+            STATUS
+          </Typography>
+        </Grid>
+        <Grid item md={6}>
+          <span className={classes.headerWithSubheaderContainerStyle}>
             <Typography className={classes.overviewHeaderTextStyle}>
-              STATUS
+              INSIGHTS
             </Typography>
+            <Typography className={classes.subheaderTextStyle}>
+              (last 30 days)
+            </Typography>
+          </span>
+        </Grid>
+        <Grid item md={3}>
+          <Typography className={classes.overviewHeaderTextStyle}>
+            STANDARDS
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid item md={12} className={classes.overviewCardsContainerStyle}>
+        <Grid item md={3}>
+          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus} />
+        </Grid>
+        <Grid item md={6} className={classes.incidentMetricsContainerStyle}>
+          <Grid item md={4}>
+            <InsightsCard
+              count={
+                service?.metrics !== undefined && service.metrics.length > 0
+                  ? service?.metrics![0].total_interruptions
+                  : undefined
+              }
+              label="interruptions"
+              color={theme.palette.textSubtle}
+            />
           </Grid>
-          <Grid item md={6}>
-            <Typography className={classes.overviewHeaderTextStyle}>
-              INCIDENT HISTORY
-            </Typography>
+          <Grid item md={4}>
+            <InsightsCard
+              count={
+                service?.metrics !== undefined && service.metrics.length > 0
+                  ? service?.metrics![0].total_high_urgency_incidents
+                  : undefined
+              }
+              label="high urgency"
+              color={theme.palette.warning.main}
+            />
           </Grid>
-          <Grid item md={3}>
-            <Typography className={classes.overviewHeaderTextStyle}>
-              SERVICE STANDARDS
-            </Typography>
+          <Grid item md={4}>
+            <InsightsCard
+              count={
+                service?.metrics !== undefined && service?.metrics?.length > 0
+                  ? service?.metrics[0].total_incident_count
+                  : undefined
+              }
+              label="incidents"
+              color={theme.palette.error.main}
+            />
           </Grid>
         </Grid>
-        <Grid item md={12} className={classes.overviewCardsContainerStyle}>
-          <Grid item md={3}>
-            <StatusCard status={service?.status} />
-          </Grid>
-          <Grid item md={6} className={classes.incidentMetricsContainerStyle}>
-            <Grid md={4}>
-              <IncidentCounterCard count={1} label="triggered" />
-            </Grid>
-            <Grid md={4}>
-              <IncidentCounterCard count={1} label="acknowledged" />
-            </Grid>
-            <Grid md={4}>
-              <IncidentCounterCard count={43} label="resolved" />
-            </Grid>
-          </Grid>
-          <Grid item md={3}>
-            <ServiceStandardsCard total={9} completed={8} />
-          </Grid>
+        <Grid item md={3}>
+          <ServiceStandardsCard
+            total={
+              service?.standards !== undefined &&
+              service?.standards?.score !== undefined
+                ? service?.standards?.score?.total
+                : undefined
+            }
+            completed={
+              service?.standards !== undefined &&
+              service?.standards?.score !== undefined
+                ? service?.standards?.score?.passing
+                : undefined
+            }
+            standards={
+              service?.standards !== undefined
+                ? service?.standards?.standards
+                : undefined
+            }
+          />
         </Grid>
+      </Grid>
 
-        <Divider />
-        <CardContent>
-          <TabbedCard>
-            <CardTab label="Incidents">
-              <Incidents
+      <Divider />
+      <CardContent>
+        <TabbedCard>
+          <CardTab label="Incidents">
+            <Incidents
+              serviceId={service!.id}
+              refreshIncidents={refreshIncidents}
+            />
+          </CardTab>
+          {disableChangeEvents !== true ? (
+            <CardTab label="Change Events">
+              <ChangeEvents
                 serviceId={service!.id}
-                refreshIncidents={refreshIncidents}
+                refreshEvents={refreshChangeEvents}
               />
             </CardTab>
-            {disableChangeEvents !== true ? (
-              <CardTab label="Change Events">
-                <ChangeEvents
-                  serviceId={service!.id}
-                  refreshEvents={refreshChangeEvents}
-                />
-              </CardTab>
-            ) : (
-              <></>
-            )}
-          </TabbedCard>
-          <EscalationPolicy policyId={service!.policyId} />
-        </CardContent>
-      </Card>
-      {!createIncidentDisabled && (
-        <TriggerDialog
-          data-testid="trigger-dialog"
-          showDialog={dialogShown}
-          handleDialog={hideDialog}
-          onIncidentCreated={handleRefresh}
-          name={name}
-          integrationKey={integrationKey}
+          ) : (
+            <></>
+          )}
+        </TabbedCard>
+        <EscalationPolicy
+          policyId={service!.policyId}
+          policyUrl={service!.policyLink}
+          policyName={service!.policyName}
         />
-      )}
-    </>
+      </CardContent>
+    </Card>
   );
 };
