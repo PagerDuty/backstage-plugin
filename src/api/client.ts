@@ -25,7 +25,9 @@ import { PagerDutyChangeEventsResponse,
   PagerDutyOnCallUsersResponse, 
   PagerDutyUser, 
   PagerDutyServiceResponse,
-  PagerDutyIncidentsResponse 
+  PagerDutyIncidentsResponse,
+  PagerDutyServiceStandardsResponse,
+  PagerDutyServiceMetricsResponse
 } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
@@ -98,6 +100,15 @@ export class PagerDutyClient implements PagerDutyApi {
   async getServiceByEntity(entity: Entity): Promise<PagerDutyServiceResponse> {
     return await this.getServiceByPagerDutyEntity(getPagerDutyEntity(entity));
   }
+
+  async getServiceById(serviceId: string): Promise<PagerDutyServiceResponse> {
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/services/${serviceId}`;
+
+    return await this.findByUrl<PagerDutyServiceResponse>(url);
+  }
+
   async getIncidentsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyIncidentsResponse> {
@@ -116,6 +127,26 @@ export class PagerDutyClient implements PagerDutyApi {
     )}/services/${serviceId}/change-events`;
 
     return await this.findByUrl<PagerDutyChangeEventsResponse>(url);
+  }
+
+  async getServiceStandardsByServiceId(
+    serviceId: string,
+  ): Promise<PagerDutyServiceStandardsResponse> {
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/services/${serviceId}/standards`;
+
+    return await this.findByUrl<PagerDutyServiceStandardsResponse>(url);
+  }
+
+  async getServiceMetricsByServiceId(
+    serviceId: string,
+  ): Promise<PagerDutyServiceMetricsResponse> {
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/services/${serviceId}/metrics`;
+
+    return await this.findByUrl<PagerDutyServiceMetricsResponse>(url);
   }
 
   async getOnCallByPolicyId(
