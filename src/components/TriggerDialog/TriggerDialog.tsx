@@ -40,7 +40,7 @@ type Props = {
   showDialog: boolean;
   handleDialog: () => void;
   onIncidentCreated?: () => void;
-  name: string;
+  serviceName: string;
   integrationKey: string;
 };
 
@@ -48,7 +48,7 @@ export const TriggerDialog = ({
   showDialog,
   handleDialog,
   onIncidentCreated: onIncidentCreated,
-  name,
+  serviceName,
   integrationKey,
 }: Props) => {
   const alertApi = useApi(alertApiRef);
@@ -104,7 +104,7 @@ export const TriggerDialog = ({
   return (
     <Dialog maxWidth="md" open={showDialog} onClose={handleDialog} fullWidth>
       <DialogTitle>
-        This action will trigger an incident for <strong>"{name}"</strong>.
+        This action will trigger an incident for <strong>"{serviceName}"</strong>.
       </DialogTitle>
       <DialogContent>
         <Alert severity="info">
@@ -132,7 +132,7 @@ export const TriggerDialog = ({
           id="description"
           multiline
           fullWidth
-          rows="4"
+          minRows={4}
           margin="normal"
           label="Problem description"
           variant="outlined"

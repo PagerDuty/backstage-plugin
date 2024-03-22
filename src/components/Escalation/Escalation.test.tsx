@@ -36,13 +36,19 @@ describe("Escalation", () => {
     const { getByText, queryByTestId } = render(
       wrapInTestApp(
         <ApiProvider apis={apis}>
-          <EscalationPolicy policyId="456" />
+          <EscalationPolicy
+            policyId="456"
+            policyName="test-policy"
+            policyUrl="https://test-policy"
+          />
         </ApiProvider>
       )
     );
     await waitFor(() => !queryByTestId("progress"));
 
-    expect(getByText("No one is on-call. Update the escalation policy.")).toBeInTheDocument();
+    expect(
+      getByText("No one is on-call. Update the escalation policy.")
+    ).toBeInTheDocument();
     expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("456");
   });
 
@@ -58,7 +64,11 @@ describe("Escalation", () => {
     const { getByText, queryByTestId } = render(
       wrapInTestApp(
         <ApiProvider apis={apis}>
-          <EscalationPolicy policyId="abc" />
+          <EscalationPolicy
+            policyId="abc"
+            policyName="test-policy"
+            policyUrl="https://test-policy"
+          />
         </ApiProvider>
       )
     );
@@ -71,24 +81,27 @@ describe("Escalation", () => {
   });
 
   it("Render a list of users", async () => {
-    mockPagerDutyApi.getOnCallByPolicyId = jest
-      .fn()
-      .mockImplementationOnce(async () => (
+    mockPagerDutyApi.getOnCallByPolicyId = jest.fn().mockImplementationOnce(
+      async () =>
         [
           {
-              name: "person1",
-              id: "p1",
-              summary: "person1",
-              email: "person1@example.com",
-              html_url: "http://a.com/id1",
+            name: "person1",
+            id: "p1",
+            summary: "person1",
+            email: "person1@example.com",
+            html_url: "http://a.com/id1",
           },
         ] as PagerDutyUser[]
-      ));
+    );
 
     const { getByText, queryByTestId } = render(
       wrapInTestApp(
         <ApiProvider apis={apis}>
-          <EscalationPolicy policyId="abc" />
+          <EscalationPolicy
+            policyId="abc"
+            policyName="test-policy"
+            policyUrl="https://test-policy"
+          />
         </ApiProvider>
       )
     );
@@ -100,9 +113,8 @@ describe("Escalation", () => {
   });
 
   it("Renders a user with profile picture", async () => {
-    mockPagerDutyApi.getOnCallByPolicyId = jest
-      .fn()
-      .mockImplementationOnce(async () => (
+    mockPagerDutyApi.getOnCallByPolicyId = jest.fn().mockImplementationOnce(
+      async () =>
         [
           {
             name: "person1",
@@ -114,12 +126,16 @@ describe("Escalation", () => {
               "https://gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y",
           },
         ] as PagerDutyUser[]
-      ));
+    );
 
     const { getByText, queryByTestId, getByAltText } = render(
       wrapInTestApp(
         <ApiProvider apis={apis}>
-          <EscalationPolicy policyId="abc" />
+          <EscalationPolicy
+            policyId="abc"
+            policyName="test-policy"
+            policyUrl="https://test-policy"
+          />
         </ApiProvider>
       )
     );
@@ -127,7 +143,7 @@ describe("Escalation", () => {
 
     expect(getByText("person1")).toBeInTheDocument();
     expect(getByText("person1@example.com")).toBeInTheDocument();
-    expect(getByAltText("User")).toHaveAttribute(
+    expect(getByAltText("person1")).toHaveAttribute(
       "src",
       "https://gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y"
     );
@@ -142,7 +158,11 @@ describe("Escalation", () => {
     const { getByText, queryByTestId } = render(
       wrapInTestApp(
         <ApiProvider apis={apis}>
-          <EscalationPolicy policyId="abc" />
+          <EscalationPolicy
+            policyId="abc"
+            policyName="test-policy"
+            policyUrl="https://test-policy"
+          />
         </ApiProvider>
       )
     );

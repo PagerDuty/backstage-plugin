@@ -52,7 +52,7 @@ describe('TriggerDialog', () => {
       <ApiProvider apis={apis}>
         <TriggerDialog
           integrationKey="abc123"
-          name="pagerduty-test"
+          serviceName="pagerduty-test"
           showDialog
           handleDialog={() => {}}
           onIncidentCreated={() => {}}

@@ -21,7 +21,7 @@ import ForbiddenStateImage from '../../assets/forbiddenstate.svg';
 
 export const ChangeEventForbiddenState = () => {
   return (
-    <Grid container justify="center" direction="column" alignItems="center">
+    <Grid container justifyContent="center" direction="column" alignItems="center">
       <Grid item xs={12}>
         <Typography variant="h5">Feature not available with your account or token.</Typography>
       </Grid>

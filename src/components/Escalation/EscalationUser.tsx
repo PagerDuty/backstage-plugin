@@ -26,50 +26,103 @@ import {
   Typography,
 } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
-import EmailIcon from '@material-ui/icons/Email';
-import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import { BackstageTheme } from '@backstage/theme';
+import OpenInBrowser from '@material-ui/icons/OpenInBrowser';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles<BackstageTheme>((theme) => ({
   listItemPrimary: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-});
+  listItemSecondary: {
+    fontWeight: "normal",
+    textDecoration: "underline",
+    marginTop: "-5px",
+  },
+  buttonStyle: {
+    marginLeft: "-11px",
+    marginTop: "-10px",
+    fontSize: "15px",
+    color: theme.palette.text.primary,
+    "&:hover": {
+      backgroundColor: "transparent",
+      textDecoration: "underline",
+    },
+  },
+  containerStyle: {
+    display: "flex",
+    alignItems: "center",
+    fontWeight: "bold",
+  },
+  iconStyle: {
+    fontSize: "25px",
+    marginLeft: "-4px",
+    color: theme.palette.text.primary,
+  },
+  smallIconStyle: {
+    color: theme.palette.text.primary,
+  },
+  avatarStyle: {
+    marginTop: "-20px"
+  },
+}));
 
 type Props = {
   user: PagerDutyUser;
+  policyUrl: string;
+  policyName: string;
 };
 
-export const EscalationUser = ({ user }: Props) => {
+function navigateToEscalationPolicy(url: string) {
+  // open url in new browser window
+  window.open(url, "_blank");
+}
+
+export const EscalationUser = ({ user, policyUrl, policyName }: Props) => {
   const classes = useStyles();
 
   return (
     <ListItem>
       <ListItemIcon>
-        <Avatar alt="User" src={user.avatar_url} />
+        <Avatar alt={user.name} src={user.avatar_url} className={classes.avatarStyle} />
       </ListItemIcon>
       <ListItemText
         primary={
-          <Typography className={classes.listItemPrimary}>
-            {user.name}
-          </Typography>
+          <>
+            <Typography className={classes.listItemPrimary}>
+              {user.name}
+            </Typography>
+            <Typography
+              className={classes.listItemSecondary}
+              color="textSecondary"
+            >
+              {user.email}
+            </Typography>
+          </>
         }
-        secondary={user.email}
+        secondary={
+          <IconButton
+            aria-label="open-service-in-browser"
+            onClick={() => navigateToEscalationPolicy(policyUrl)} 
+            className={classes.buttonStyle}
+          >
+            <span className={classes.containerStyle}>
+              <NotificationsIcon className={classes.iconStyle} />
+              {policyName}
+            </span>
+          </IconButton>
+        }
       />
       <ListItemSecondaryAction>
-        <Tooltip title="Send e-mail to user" placement="top">
-          <IconButton href={`mailto:${user.email}`}>
-            <EmailIcon color="primary" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="View in PagerDuty" placement="top">
+        <Tooltip title="Open user in PagerDuty" placement="top">
           <IconButton
             href={user.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            color="primary"
+            className={classes.smallIconStyle}
           >
-            <OpenInBrowserIcon />
+            <OpenInBrowser />
           </IconButton>
         </Tooltip>
       </ListItemSecondaryAction>

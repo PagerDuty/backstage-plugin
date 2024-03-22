@@ -17,7 +17,11 @@
 import { PagerDutyChangeEventsResponse, 
   PagerDutyServiceResponse, 
   PagerDutyUser, 
-  PagerDutyIncidentsResponse
+  PagerDutyIncidentsResponse,
+  PagerDutyServiceStandardsResponse,
+  PagerDutyServiceMetricsResponse,
+  PagerDutyServiceStandards,
+  PagerDutyServiceMetrics
  } from '@pagerduty/backstage-plugin-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
@@ -30,6 +34,19 @@ export type PagerDutyTriggerAlarmRequest = {
   description: string;
   userName: string;
 };
+
+/** @public */
+export type PagerDutyCardServiceResponse = {
+  id: string;
+  name: string;
+  url: string;
+  policyId: string;
+  policyLink: string;
+  policyName: string;
+  status?: string;
+  standards?: PagerDutyServiceStandards;
+  metrics?: PagerDutyServiceMetrics[];
+}
 
 /** @public */
 export interface PagerDutyApi {
@@ -48,6 +65,14 @@ export interface PagerDutyApi {
   getServiceByEntity(entity: Entity): Promise<PagerDutyServiceResponse>;
 
   /**
+   * Fetches service with the provided service id.
+   *
+   */
+  getServiceById(
+    serviceId: string,
+  ): Promise<PagerDutyServiceResponse>;
+
+  /**
    * Fetches a list of incidents a provided service has.
    *
    */
@@ -62,6 +87,22 @@ export interface PagerDutyApi {
   getChangeEventsByServiceId(
     serviceId: string,
   ): Promise<PagerDutyChangeEventsResponse>;
+
+  /**
+   * Fetches a list of standards for a provided service.
+   *
+   */
+  getServiceStandardsByServiceId(
+    serviceId: string,
+  ): Promise<PagerDutyServiceStandardsResponse>;
+
+  /**
+   * Fetches a list of metrics for a provided service.
+   *
+   */
+  getServiceMetricsByServiceId(
+    serviceId: string,
+  ): Promise<PagerDutyServiceMetricsResponse>;
 
   /**
    * Fetches the list of users in an escalation policy.
