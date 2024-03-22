@@ -56,7 +56,7 @@ describe('TriggerButton', () => {
       </ApiProvider>,
     );
 
-    const triggerButton = screen.getByText('Create Incident');
+    const triggerButton = screen.getByText('Create new incident');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
     await act(async () => {
