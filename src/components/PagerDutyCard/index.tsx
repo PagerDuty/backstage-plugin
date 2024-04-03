@@ -100,6 +100,7 @@ const BasicCard = ({ children }: { children: ReactNode }) => (
 export type PagerDutyCardProps = PagerDutyEntity & {
   readOnly?: boolean;
   disableChangeEvents?: boolean;
+  disableOnCall?: boolean;
 };
 
 /** @public */
@@ -107,7 +108,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
   const classes = useStyles();
 
   const theme = useTheme();
-  const { readOnly, disableChangeEvents } = props;
+  const { readOnly, disableChangeEvents, disableOnCall } = props;
   const api = useApi(pagerDutyApiRef);
   const [refreshIncidents, setRefreshIncidents] = useState<boolean>(false);
   const [refreshChangeEvents, setRefreshChangeEvents] =
@@ -191,9 +192,10 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           )
         }
         action={
-          !readOnly ? (
+          (!readOnly && props.integrationKey) ? (
             <div>
               <TriggerIncidentButton
+                data-testid="trigger-incident-button"
                 integrationKey={props.integrationKey}
                 entityName={props.name}
                 handleRefresh={handleRefresh}
@@ -236,7 +238,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <InsightsCard
               count={
                 service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics![0].total_interruptions
+                  ? service?.metrics[0].total_interruptions
                   : undefined
               }
               label="interruptions"
@@ -247,7 +249,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <InsightsCard
               count={
                 service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics![0].total_high_urgency_incidents
+                  ? service?.metrics[0].total_high_urgency_incidents
                   : undefined
               }
               label="high urgency"
@@ -269,13 +271,11 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
         <Grid item md={3}>
           <ServiceStandardsCard
             total={
-              service?.standards !== undefined &&
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.total
                 : undefined
             }
             completed={
-              service?.standards !== undefined &&
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.passing
                 : undefined
@@ -301,6 +301,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           {disableChangeEvents !== true ? (
             <CardTab label="Change Events">
               <ChangeEvents
+                data-testid="change-events"
                 serviceId={service!.id}
                 refreshEvents={refreshChangeEvents}
               />
@@ -309,11 +310,16 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <></>
           )}
         </TabbedCard>
+        {disableOnCall !== true ? (
         <EscalationPolicy
+          data-testid="oncall-card"
           policyId={service!.policyId}
           policyUrl={service!.policyLink}
           policyName={service!.policyName}
         />
+        ) : (
+          <></>
+        )}
       </CardContent>
     </Card>
   );

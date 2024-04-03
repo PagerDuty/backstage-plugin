@@ -44,11 +44,15 @@ const useStyles = makeStyles<BackstageTheme>((theme) => ({
     fontWeight: "bold",
   },
   smallExternalLinkIconStyle: {
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
+  },
+  smallExternalLinkWithoutMarginIconStyle: {
+    color: theme.palette.text.primary,
+    marginRight: "-20px",
   },
   smallIconStyle: {
     color: theme.palette.text.primary,
-    marginRight: "-20px"
+    marginRight: "-20px",
   },
 }));
 
@@ -63,6 +67,7 @@ export const ChangeEventListItem = ({ changeEvent }: Props) => {
   const changedAt = DateTime.local()
     .minus(Duration.fromMillis(duration))
     .toRelative({ locale: 'en' });
+  
   let externalLinkElem: JSX.Element | undefined;
   if (changeEvent.links.length > 0) {
     const text: string = changeEvent.links[0].text;
@@ -71,7 +76,11 @@ export const ChangeEventListItem = ({ changeEvent }: Props) => {
         <IconButton
           component={Link}
           to={changeEvent.links[0].href}
-          className={classes.smallExternalLinkIconStyle}
+          className={
+            changeEvent.html_url === undefined
+              ? classes.smallExternalLinkWithoutMarginIconStyle
+              : classes.smallExternalLinkIconStyle
+          }
         >
           <LinkIcon />
         </IconButton>
