@@ -265,12 +265,12 @@ describe("PagerDutyCard", () => {
       ).toBeInTheDocument();
     });
 
-    it("disables the Create new incident button", async () => {
+    it("hides the Create new incident button", async () => {
       mockPagerDutyApi.getServiceByPagerDutyEntity = jest
         .fn()
         .mockImplementationOnce(async () => ({ service }));
 
-      const { queryByTestId, getByLabelText } = render(
+      const { queryByTestId } = render(
         wrapInTestApp(
           <ApiProvider apis={apis}>
             <PagerDutyCard name="blah" serviceId="def123" />
@@ -278,7 +278,7 @@ describe("PagerDutyCard", () => {
         )
       );
       await waitFor(() => !queryByTestId("progress"));
-      expect(getByLabelText("create-incident").className).toMatch("disabled");
+      expect(queryByTestId("trigger-incident-button")).not.toBeInTheDocument();
     });
   });
 

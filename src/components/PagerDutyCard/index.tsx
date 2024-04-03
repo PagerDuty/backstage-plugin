@@ -191,9 +191,10 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           )
         }
         action={
-          !readOnly ? (
+          (!readOnly && props.integrationKey) ? (
             <div>
               <TriggerIncidentButton
+                data-testid="trigger-incident-button"
                 integrationKey={props.integrationKey}
                 entityName={props.name}
                 handleRefresh={handleRefresh}
@@ -236,7 +237,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <InsightsCard
               count={
                 service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics![0].total_interruptions
+                  ? service?.metrics[0].total_interruptions
                   : undefined
               }
               label="interruptions"
@@ -247,7 +248,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <InsightsCard
               count={
                 service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics![0].total_high_urgency_incidents
+                  ? service?.metrics[0].total_high_urgency_incidents
                   : undefined
               }
               label="high urgency"
@@ -269,13 +270,11 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
         <Grid item md={3}>
           <ServiceStandardsCard
             total={
-              service?.standards !== undefined &&
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.total
                 : undefined
             }
             completed={
-              service?.standards !== undefined &&
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.passing
                 : undefined
