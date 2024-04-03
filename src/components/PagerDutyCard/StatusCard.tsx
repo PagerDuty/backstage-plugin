@@ -124,7 +124,7 @@ function StatusCard({ serviceId, refreshStatus }: Props) {
     <Card className={cardStyle}>
       {status !== undefined ? (
         <Typography className={largeTextStyle}>
-          {labelFromStatus(status!)}
+          {labelFromStatus(status)}
         </Typography>
       ) : (
         <Typography className={largeTextStyle}>Unable to get status</Typography>
