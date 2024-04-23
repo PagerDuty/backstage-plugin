@@ -18,10 +18,11 @@
 import React from 'react';
 import { EntityProvider } from '@backstage/plugin-catalog-react';
 import { createDevApp } from '@backstage/dev-utils';
-import { pagerDutyPlugin, EntityPagerDutyCard } from '../src/plugin';
+import {pagerDutyPlugin, EntityPagerDutyCard, EntityPagerDutySmallCard} from '../src/plugin';
 import { pagerDutyApiRef } from '../src/api';
 import { mockPagerDutyApi } from './mockPagerDutyApi';
 import { mockEntity } from './mockEntity';
+import {Grid} from '@material-ui/core';
 
 createDevApp()
   .registerApi({
@@ -36,6 +37,17 @@ createDevApp()
     element: (
       <EntityProvider entity={mockEntity}>
         <EntityPagerDutyCard />
+      </EntityProvider>
+    ),
+  })
+  .addPage({
+    path: '/pagerduty-small',
+    title: 'PagerDuty Small Card',
+    element: (
+      <EntityProvider entity={mockEntity}>
+        <Grid md={4}>
+          <EntityPagerDutySmallCard/>
+        </Grid>
       </EntityProvider>
     ),
   })
