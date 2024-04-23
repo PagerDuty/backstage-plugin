@@ -42,14 +42,16 @@ import {
 } from "@backstage/core-components";
 import { PagerDutyEntity } from "../../types";
 import { ForbiddenError } from "../Errors/ForbiddenError";
-import { TriggerIncidentButton } from "./TriggerIncidentButton";
-import { OpenServiceButton } from "./OpenServiceButton";
+import {
+  InsightsCard,
+  OpenServiceButton,
+  ServiceStandardsCard,
+  StatusCard,
+  TriggerIncidentButton
+} from "../PagerDutyCardCommon";
 import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
-import StatusCard from "./StatusCard";
-import ServiceStandardsCard from "./ServiceStandardsCard";
 import { BackstageTheme } from "@backstage/theme";
 import { PagerDutyCardServiceResponse } from "../../api/types";
-import InsightsCard from "./InsightsCard";
 
 const useStyles = makeStyles<BackstageTheme>((theme) =>
   createStyles({
