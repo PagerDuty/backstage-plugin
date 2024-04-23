@@ -25,6 +25,7 @@ export {
   pagerDutyPlugin as plugin,
   EntityPagerDutyCard,
   HomePagePagerDutyCard,
+  EntityPagerDutySmallCard,
 } from './plugin';
 
 export * from './components';

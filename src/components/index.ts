@@ -16,6 +16,7 @@
 
 
 export type { EntityPagerDutyCardProps } from './EntityPagerDutyCard';
+export type { EntityPagerDutySmallCardProps } from './EntityPagerDutySmallCard';
 export type { HomePagePagerDutyCardProps } from './HomePagePagerDutyCard';
 
 export {
@@ -23,5 +24,10 @@ export {
   isPluginApplicableToEntity as isPagerDutyAvailable,
   EntityPagerDutyCard,
 } from './EntityPagerDutyCard';
+
+export {
+  isPluginApplicableToEntity as isPagerDutySmallCardAvailable,
+  EntityPagerDutySmallCard,
+} from './EntityPagerDutySmallCard';
 
 export { TriggerButton } from './TriggerButton';
