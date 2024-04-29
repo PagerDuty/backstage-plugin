@@ -63,6 +63,15 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
           ? "rgba(0, 0, 0, 0.54)"
           : "rgba(255, 255, 255, 0.7)",
     },
+    oncallHeaderTextStyle: {
+      fontSize: "14px",
+      fontWeight: 500,
+      marginTop: "10px",
+      color:
+        theme.palette.type === "light"
+          ? "rgba(0, 0, 0, 0.54)"
+          : "rgba(255, 255, 255, 0.7)",
+    },
     headerStyle: {
       marginBottom: "0px",
       fontSize: "0px",
@@ -194,7 +203,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           )
         }
         action={
-          (!readOnly && props.integrationKey) ? (
+          !readOnly && props.integrationKey ? (
             <div>
               <TriggerIncidentButton
                 data-testid="trigger-incident-button"
@@ -313,12 +322,17 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           )}
         </TabbedCard>
         {disableOnCall !== true ? (
-        <EscalationPolicy
-          data-testid="oncall-card"
-          policyId={service!.policyId}
-          policyUrl={service!.policyLink}
-          policyName={service!.policyName}
-        />
+          <>
+            <Typography className={classes.oncallHeaderTextStyle}>
+              ON CALL
+            </Typography>
+            <EscalationPolicy
+              data-testid="oncall-card"
+              policyId={service!.policyId}
+              policyUrl={service!.policyLink}
+              policyName={service!.policyName}
+            />
+          </>
         ) : (
           <></>
         )}

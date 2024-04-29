@@ -74,7 +74,6 @@ export const EscalationPolicy = ({
   return (
     <List
       dense
-      subheader={<ListSubheader>ON CALL</ListSubheader>}
       style={{ marginLeft: "-15px" }}
     >
       {users!.map((user, index) => (

@@ -14,40 +14,39 @@
  * limitations under the License.
  */
 // eslint-disable-next-line @backstage/no-undeclared-imports
-import React, {ReactNode, useCallback, useState} from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Card,
   CardHeader,
-  Divider,
-  CardContent,
   Grid,
   Typography,
 } from "@material-ui/core";
-import {EscalationPolicy} from "../Escalation";
 import useAsync from "react-use/lib/useAsync";
-import {pagerDutyApiRef, UnauthorizedError} from "../../api";
-import {MissingTokenError, ServiceNotFoundError} from "../Errors";
+import { pagerDutyApiRef, UnauthorizedError } from "../../api";
+import { MissingTokenError, ServiceNotFoundError } from "../Errors";
 import PDGreenImage from "../../assets/PD-Green.svg";
 import PDWhiteImage from "../../assets/PD-White.svg";
 
-import {useApi} from "@backstage/core-plugin-api";
-import {NotFoundError} from "@backstage/errors";
-import {
-  Progress,
-  InfoCard,
-} from "@backstage/core-components";
-import {PagerDutyEntity} from "../../types";
-import {ForbiddenError} from "../Errors/ForbiddenError";
+import { useApi } from "@backstage/core-plugin-api";
+import { NotFoundError } from "@backstage/errors";
+import { Progress, InfoCard } from "@backstage/core-components";
+import { PagerDutyEntity } from "../../types";
+import { ForbiddenError } from "../Errors/ForbiddenError";
 import {
   InsightsCard,
   OpenServiceButton,
   ServiceStandardsCard,
   StatusCard,
-  TriggerIncidentButton
+  TriggerIncidentButton,
 } from "../PagerDutyCardCommon";
-import {createStyles, makeStyles, useTheme} from "@material-ui/core/styles";
-import {BackstageTheme} from "@backstage/theme";
-import {PagerDutyCardServiceResponse} from "../../api/types";
+import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
+import { BackstageTheme } from "@backstage/theme";
+import { PagerDutyCardServiceResponse } from "../../api/types";
+import { EscalationPolicy } from "../Escalation";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles<BackstageTheme>((theme) =>
   createStyles({
@@ -67,7 +66,7 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
       display: "flex",
       margin: "0px",
       padding: "15px",
-      marginBottom: "20px",
+      marginBottom: "5px",
     },
     headerWithSubheaderContainerStyle: {
       display: "flex",
@@ -81,6 +80,12 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
       display: "flex",
       margin: "15px",
       marginTop: "-15px",
+    },
+    onCallAccordionDetails: {
+      display: "flex",
+      width: "100%",
+      marginTop: "-25px",
+      marginBottom: "-15px",
     },
     incidentMetricsContainerStyle: {
       display: "flex",
@@ -156,13 +161,13 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
 
     switch (error.constructor) {
       case UnauthorizedError:
-        errorNode = <MissingTokenError/>;
+        errorNode = <MissingTokenError />;
         break;
       case NotFoundError:
-        errorNode = <ServiceNotFoundError/>;
+        errorNode = <ServiceNotFoundError />;
         break;
       default:
-        errorNode = <ForbiddenError/>;
+        errorNode = <ForbiddenError />;
     }
 
     return <BasicCard>{errorNode}</BasicCard>;
@@ -171,7 +176,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
   if (loading) {
     return (
       <BasicCard>
-        <Progress/>
+        <Progress />
       </BasicCard>
     );
   }
@@ -182,13 +187,13 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
         className={classes.headerStyle}
         title={
           theme.palette.type === "dark" ? (
-            <img src={PDWhiteImage} alt="PagerDuty" height="35"/>
+            <img src={PDWhiteImage} alt="PagerDuty" height="35" />
           ) : (
-            <img src={PDGreenImage} alt="PagerDuty" height="35"/>
+            <img src={PDGreenImage} alt="PagerDuty" height="35" />
           )
         }
         action={
-          (!readOnly && props.integrationKey) ? (
+          !readOnly && props.integrationKey ? (
             <div>
               <TriggerIncidentButton
                 data-testid="trigger-incident-button"
@@ -196,10 +201,10 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
                 entityName={props.name}
                 handleRefresh={handleRefresh}
               />
-              <OpenServiceButton serviceUrl={service!.url}/>
+              <OpenServiceButton serviceUrl={service!.url} />
             </div>
           ) : (
-            <OpenServiceButton serviceUrl={service!.url}/>
+            <OpenServiceButton serviceUrl={service!.url} />
           )
         }
       />
@@ -218,7 +223,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
 
       <Grid item md={12} className={classes.overviewCardsContainerStyle}>
         <Grid item md={6}>
-          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus}/>
+          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus} />
         </Grid>
         <Grid item md={6}>
           <ServiceStandardsCard
@@ -241,8 +246,12 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
         </Grid>
       </Grid>
       {disableInsights !== true ? (
-        <>
-          <Grid item md={12} className={classes.overviewHeaderContainerStyle}>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
             <span className={classes.headerWithSubheaderContainerStyle}>
               <Typography className={classes.overviewHeaderTextStyle}>
                 INSIGHTS
@@ -251,49 +260,77 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
                 (last 30 days)
               </Typography>
             </span>
-          </Grid><Grid item md={12} className={classes.incidentMetricsContainerStyle}>
-          <Grid item md={4}>
-            <InsightsCard
-              count={service?.metrics !== undefined && service.metrics.length > 0
-                ? service?.metrics[0].total_interruptions
-                : undefined}
-              label="interruptions"
-              color={theme.palette.textSubtle}/>
-          </Grid>
-          <Grid item md={4}>
-            <InsightsCard
-              count={service?.metrics !== undefined && service.metrics.length > 0
-                ? service?.metrics[0].total_high_urgency_incidents
-                : undefined}
-              label="high urgency"
-              color={theme.palette.warning.main}/>
-          </Grid>
-          <Grid item md={4}>
-            <InsightsCard
-              count={service?.metrics !== undefined && service?.metrics?.length > 0
-                ? service?.metrics[0].total_incident_count
-                : undefined}
-              label="incidents"
-              color={theme.palette.error.main}/>
-          </Grid>
-        </Grid>
-        </>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid
+              item
+              md={12}
+              className={classes.incidentMetricsContainerStyle}
+            >
+              <Grid item md={4}>
+                <InsightsCard
+                  count={
+                    service?.metrics !== undefined && service.metrics.length > 0
+                      ? service?.metrics[0].total_interruptions
+                      : undefined
+                  }
+                  label="interruptions"
+                  color={theme.palette.textSubtle}
+                />
+              </Grid>
+              <Grid item md={4}>
+                <InsightsCard
+                  count={
+                    service?.metrics !== undefined && service.metrics.length > 0
+                      ? service?.metrics[0].total_high_urgency_incidents
+                      : undefined
+                  }
+                  label="high urgency"
+                  color={theme.palette.warning.main}
+                />
+              </Grid>
+              <Grid item md={4}>
+                <InsightsCard
+                  count={
+                    service?.metrics !== undefined &&
+                    service?.metrics?.length > 0
+                      ? service?.metrics[0].total_incident_count
+                      : undefined
+                  }
+                  label="incidents"
+                  color={theme.palette.error.main}
+                />
+              </Grid>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
       ) : (
         <></>
       )}
-      <Divider/>
-      <CardContent>
-        {disableOnCall !== true ? (
-          <EscalationPolicy
-            data-testid="oncall-card"
-            policyId={service!.policyId}
-            policyUrl={service!.policyLink}
-            policyName={service!.policyName}
-          />
-        ) : (
-          <></>
-        )}
-      </CardContent>
+
+      {disableOnCall !== true ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.overviewHeaderTextStyle}>
+              ON CALL
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails className={classes.onCallAccordionDetails}>
+            <EscalationPolicy
+              data-testid="oncall-card"
+              policyId={service!.policyId}
+              policyUrl={service!.policyLink}
+              policyName={service!.policyName}
+            />
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <></>
+      )}
     </Card>
   );
 };
