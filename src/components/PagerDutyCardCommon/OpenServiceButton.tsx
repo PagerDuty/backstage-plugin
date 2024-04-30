@@ -15,42 +15,44 @@
  */
 
 // eslint-disable-next-line @backstage/no-undeclared-imports
-// import React, { useCallback, useState } from "react";
 import React from "react";
 import { makeStyles, IconButton } from "@material-ui/core";
 import { BackstageTheme } from "@backstage/theme";
 
-// import { usePagerdutyEntity } from "../../hooks";
-// import { TriggerDialog } from "../TriggerDialog";
 import OpenInBrowser from "@material-ui/icons/OpenInBrowser";
 
-const useStyles = makeStyles<BackstageTheme>((theme) => ({
-  buttonStyle: {
-    color: theme.palette.text.primary,
-    "&:hover": {
-      backgroundColor: "transparent",
-      textDecoration: "underline",
-    },
-  },
-  containerStyle: {
-    fontSize: "12px",
-    width: "85px",
-  },
-  iconStyle: {
-    fontSize: "30px",
-    marginBottom: "-10px",
-  },
-  textStyle: {
-    marginBottom: "-10px",
-  }
-}));
+type OpenServiceButtonProps = {
+  serviceUrl: string;
+  compact?: boolean;
+};
 
 /** @public */
-export function OpenServiceButton(props: { serviceUrl: string}) {
+export function OpenServiceButton({ serviceUrl, compact }: OpenServiceButtonProps) {
+  const useStyles = makeStyles<BackstageTheme>((theme) => ({
+    buttonStyle: {
+      color: theme.palette.text.primary,
+      "&:hover": {
+        backgroundColor: "transparent",
+        textDecoration: "underline",
+      },
+    },
+    containerStyle: {
+      fontSize: compact !== true ? "12px" : "10px",
+      width: compact !== true ? "85px" : "70px",
+    },
+    iconStyle: {
+      fontSize: "30px",
+      marginBottom: "-10px",
+    },
+    textStyle: {
+      marginBottom: "-10px",
+    },
+  }));
+
   const { buttonStyle, containerStyle, iconStyle, textStyle } = useStyles();
 
   function navigateToService() {
-    window.open(props.serviceUrl, "_blank");
+    window.open(serviceUrl, "_blank");
   }
 
   return (

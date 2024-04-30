@@ -18,7 +18,6 @@ import React from 'react';
 import {
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   Tooltip,
   ListItemText,
   makeStyles,
@@ -29,7 +28,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { BackstageTheme } from '@backstage/theme';
-import OpenInBrowser from '@material-ui/icons/OpenInBrowser';
 
 const useStyles = makeStyles<BackstageTheme>((theme) => ({
   listItemPrimary: {
@@ -43,6 +41,17 @@ const useStyles = makeStyles<BackstageTheme>((theme) => ({
   buttonStyle: {
     marginLeft: "-11px",
     marginTop: "-10px",
+    fontSize: "15px",
+    color: theme.palette.text.primary,
+    "&:hover": {
+      backgroundColor: "transparent",
+      textDecoration: "underline",
+    },
+  },
+  userTextButtonStyle: {
+    marginLeft: "-11px",
+    marginTop: "-10px",
+    marginBottom: "-10px",
     fontSize: "15px",
     color: theme.palette.text.primary,
     "&:hover": {
@@ -64,7 +73,7 @@ const useStyles = makeStyles<BackstageTheme>((theme) => ({
     color: theme.palette.text.primary,
   },
   avatarStyle: {
-    marginTop: "-20px"
+    marginTop: "-20px",
   },
 }));
 
@@ -74,7 +83,7 @@ type Props = {
   policyName: string;
 };
 
-function navigateToEscalationPolicy(url: string) {
+function navigateToUrl(url: string) {
   // open url in new browser window
   window.open(url, "_blank");
 }
@@ -85,14 +94,25 @@ export const EscalationUser = ({ user, policyUrl, policyName }: Props) => {
   return (
     <ListItem>
       <ListItemIcon>
-        <Avatar alt={user.name} src={user.avatar_url} className={classes.avatarStyle} />
+        <Avatar
+          alt={user.name}
+          src={user.avatar_url}
+          className={classes.avatarStyle}
+        />
       </ListItemIcon>
       <ListItemText
         primary={
           <>
-            <Typography className={classes.listItemPrimary}>
-              {user.name}
-            </Typography>
+            <Tooltip title="Open user in PagerDuty" placement="top">
+              <IconButton
+                aria-label="open-user-in-browser"
+                onClick={() => navigateToUrl(user.html_url)}
+                className={classes.userTextButtonStyle}
+              >
+                <span className={classes.containerStyle}>{user.name}</span>
+              </IconButton>
+            </Tooltip>
+
             <Typography
               className={classes.listItemSecondary}
               color="textSecondary"
@@ -103,8 +123,8 @@ export const EscalationUser = ({ user, policyUrl, policyName }: Props) => {
         }
         secondary={
           <IconButton
-            aria-label="open-service-in-browser"
-            onClick={() => navigateToEscalationPolicy(policyUrl)} 
+            aria-label="open-escalation-policy-in-browser"
+            onClick={() => navigateToUrl(policyUrl)}
             className={classes.buttonStyle}
           >
             <span className={classes.containerStyle}>
@@ -114,18 +134,6 @@ export const EscalationUser = ({ user, policyUrl, policyName }: Props) => {
           </IconButton>
         }
       />
-      <ListItemSecondaryAction>
-        <Tooltip title="Open user in PagerDuty" placement="top">
-          <IconButton
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.smallIconStyle}
-          >
-            <OpenInBrowser />
-          </IconButton>
-        </Tooltip>
-      </ListItemSecondaryAction>
     </ListItem>
   );
 };

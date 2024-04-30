@@ -19,6 +19,7 @@ type Props = {
   total: number | undefined;
   completed: number | undefined;
   standards: PagerDutyServiceStandard[] | undefined;
+  compact?: boolean;
 };
 
 function colorFromPercentage(theme: Theme, percentage: number) {
@@ -30,10 +31,10 @@ function colorFromPercentage(theme: Theme, percentage: number) {
   return theme.palette.success.main;
 }
 
-function ServiceStandardsCard({ total, completed, standards }: Props) {
+function ServiceStandardsCard({ total, completed, standards, compact }: Props) {
   const useStyles = makeStyles<BackstageTheme>((theme) => ({
     cardStyle: {
-      height: "120px",
+      height: compact !== true ? "120px" : "80px",
       display: "grid",
       gridTemplateRows: "1fr auto auto",
       backgroundColor: "rgba(0, 0, 0, 0.03)",
@@ -41,10 +42,10 @@ function ServiceStandardsCard({ total, completed, standards }: Props) {
     containerStyle: {
       display: "flex",
       justifyContent: "center",
-      marginTop: "-100px",
+      marginTop: compact !== true ? "-100px" : "-50px",
     },
     largeTextStyle: {
-      fontSize: "50px",
+      fontSize: compact !== true ? "50px" : "40px",
       color:
         completed !== undefined && total !== undefined
           ? colorFromPercentage(theme, completed / total)
@@ -54,12 +55,12 @@ function ServiceStandardsCard({ total, completed, standards }: Props) {
     },
     smallTextStyle: {
       color: theme.palette.textSubtle,
-      fontSize: "14px",
+      fontSize: compact !== true ? "14px" : "12px",
       fontWeight: "bold",
       alignSelf: "center",
       justifyContent: "center",
       marginLeft: "-2px",
-      marginTop: "25px",
+      marginTop: compact !== true ? "25px" : "20px",
     },
     tooltipContainer: {},
     tooltipIcon: {

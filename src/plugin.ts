@@ -61,6 +61,19 @@ export const EntityPagerDutyCard = pagerDutyPlugin.provide(
 );
 
 /** @public */
+export const EntityPagerDutySmallCard = pagerDutyPlugin.provide(
+  createComponentExtension({
+    name: 'EntityPagerDutySmallCard',
+    component: {
+      lazy: () =>
+        import('./components/EntityPagerDutySmallCard').then(
+          m => m.EntityPagerDutySmallCard,
+        ),
+    },
+  }),
+);
+
+/** @public */
 export const HomePagePagerDutyCard = pagerDutyPlugin.provide(
   createCardExtension<HomePagePagerDutyCardProps>({
     name: 'HomePagePagerDutyCard',

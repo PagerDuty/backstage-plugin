@@ -22,37 +22,38 @@ import { BackstageTheme } from "@backstage/theme";
 import { TriggerDialog } from "../TriggerDialog";
 import AddAlert from "@material-ui/icons/AddAlert";
 
-const useStyles = makeStyles<BackstageTheme>((theme) => ({
-  buttonStyle: {
-    color: theme.palette.text.primary,
-    "&:hover": {
-      backgroundColor: "transparent",
-      textDecoration: "underline",
-    },
-  },
-  containerStyle: {
-    fontSize: "12px",
-    width: "80px",
-    marginRight: "-10px",
-  },
-  iconStyle: {
-    fontSize: "30px",
-    marginBottom: "-10px"
-  },
-  textStyle: {
-    marginBottom: "-10px",
-  }
-}));
-
 /** @public */
 export type TriggerIncidentButtonProps = {
   integrationKey: string | undefined;
   entityName: string;
+  compact?: boolean;
   handleRefresh: () => void;
 }
 
 /** @public */
-export function TriggerIncidentButton({ integrationKey, entityName, handleRefresh } : TriggerIncidentButtonProps) {
+export function TriggerIncidentButton({ integrationKey, entityName, compact, handleRefresh } : TriggerIncidentButtonProps) {
+  const useStyles = makeStyles<BackstageTheme>((theme) => ({
+    buttonStyle: {
+      color: theme.palette.text.primary,
+      "&:hover": {
+        backgroundColor: "transparent",
+        textDecoration: "underline",
+      },
+    },
+    containerStyle: {
+      fontSize: compact !== true ? "12px" : "10px",
+      width: compact !== true ? "80px" : "60px",
+      marginRight: "-10px",
+    },
+    iconStyle: {
+      fontSize: "30px",
+      marginBottom: "-10px",
+    },
+    textStyle: {
+      marginBottom: "-10px",
+    },
+  }));
+
   const { buttonStyle, containerStyle, iconStyle, textStyle } = useStyles();
   const [dialogShown, setDialogShown] = useState<boolean>(false);
 
