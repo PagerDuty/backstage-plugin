@@ -15,7 +15,7 @@
  */
 // eslint-disable-next-line @backstage/no-undeclared-imports
 import React from "react";
-import { List, ListSubheader } from "@material-ui/core";
+import { List, ListSubheader, createStyles, makeStyles } from "@material-ui/core";
 import { EscalationUsersEmptyState } from "./EscalationUsersEmptyState";
 import { EscalationUsersForbiddenState } from "./EscalationUsersForbiddenState";
 import { EscalationUser } from "./EscalationUser";
@@ -25,12 +25,20 @@ import { Alert } from "@material-ui/lab";
 
 import { useApi } from "@backstage/core-plugin-api";
 import { Progress } from "@backstage/core-components";
+import { BackstageTheme } from "@backstage/theme";
 
 type Props = {
   policyId: string;
   policyUrl: string;
   policyName: string;
 };
+const useStyles = makeStyles<BackstageTheme>(() =>
+  createStyles({
+    listStyle: {
+      marginLeft: "-15px",
+    },
+  })
+);
 
 export const EscalationPolicy = ({
   policyId,
@@ -38,6 +46,7 @@ export const EscalationPolicy = ({
   policyName,
 }: Props) => {
   const api = useApi(pagerDutyApiRef);
+  const classes = useStyles();
 
   const {
     value: users,
@@ -74,7 +83,7 @@ export const EscalationPolicy = ({
   return (
     <List
       dense
-      style={{ marginLeft: "-15px" }}
+      className={classes.listStyle}
     >
       {users!.map((user, index) => (
         <EscalationUser

@@ -187,24 +187,25 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
         className={classes.headerStyle}
         title={
           theme.palette.type === "dark" ? (
-            <img src={PDWhiteImage} alt="PagerDuty" height="35" />
+            <img src={PDWhiteImage} alt="PagerDuty" height="25" />
           ) : (
-            <img src={PDGreenImage} alt="PagerDuty" height="35" />
+            <img src={PDGreenImage} alt="PagerDuty" height="25" />
           )
         }
         action={
           !readOnly && props.integrationKey ? (
             <div>
               <TriggerIncidentButton
+                compact
                 data-testid="trigger-incident-button"
                 integrationKey={props.integrationKey}
                 entityName={props.name}
                 handleRefresh={handleRefresh}
               />
-              <OpenServiceButton serviceUrl={service!.url} />
+              <OpenServiceButton compact serviceUrl={service!.url} />
             </div>
           ) : (
-            <OpenServiceButton serviceUrl={service!.url} />
+            <OpenServiceButton compact serviceUrl={service!.url} />
           )
         }
       />
@@ -223,10 +224,11 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
 
       <Grid item md={12} className={classes.overviewCardsContainerStyle}>
         <Grid item md={6}>
-          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus} />
+          <StatusCard compact serviceId={service!.id} refreshStatus={refreshStatus} />
         </Grid>
         <Grid item md={6}>
           <ServiceStandardsCard
+            compact
             total={
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.total
@@ -269,6 +271,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
             >
               <Grid item md={4}>
                 <InsightsCard
+                  compact
                   count={
                     service?.metrics !== undefined && service.metrics.length > 0
                       ? service?.metrics[0].total_interruptions
@@ -280,6 +283,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
               </Grid>
               <Grid item md={4}>
                 <InsightsCard
+                  compact
                   count={
                     service?.metrics !== undefined && service.metrics.length > 0
                       ? service?.metrics[0].total_high_urgency_incidents
@@ -291,6 +295,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
               </Grid>
               <Grid item md={4}>
                 <InsightsCard
+                  compact
                   count={
                     service?.metrics !== undefined &&
                     service?.metrics?.length > 0
