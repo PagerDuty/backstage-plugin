@@ -18,7 +18,6 @@ import React from 'react';
 import {
   ListItem,
   ListItemIcon,
-  // ListItemSecondaryAction,
   Tooltip,
   ListItemText,
   makeStyles,
@@ -29,7 +28,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { BackstageTheme } from '@backstage/theme';
-// import OpenInBrowser from '@material-ui/icons/OpenInBrowser';
 
 const useStyles = makeStyles<BackstageTheme>((theme) => ({
   listItemPrimary: {
@@ -136,18 +134,6 @@ export const EscalationUser = ({ user, policyUrl, policyName }: Props) => {
           </IconButton>
         }
       />
-      {/* <ListItemSecondaryAction>
-        <Tooltip title="Open user in PagerDuty" placement="top">
-          <IconButton
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.userTextButtonStyle}
-          >
-            <OpenInBrowser />
-          </IconButton>
-        </Tooltip>
-      </ListItemSecondaryAction> */}
     </ListItem>
   );
 };
