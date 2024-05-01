@@ -11,6 +11,7 @@ import { Progress } from "@backstage/core-components";
 type Props = {
   serviceId: string;
   refreshStatus: boolean;
+  compact?: boolean;
 };
 
 function labelFromStatus(status: string) {
@@ -65,7 +66,7 @@ function colorFromStatus(theme: Theme, status: string) {
   return color;
 }
 
-function StatusCard({ serviceId, refreshStatus }: Props) {
+function StatusCard({ serviceId, refreshStatus, compact}: Props) {
   const api = useApi(pagerDutyApiRef);
   const [{ value: status, loading, error }, getStatus] = useAsyncFn(
     async () => {
@@ -76,7 +77,7 @@ function StatusCard({ serviceId, refreshStatus }: Props) {
 
   const useStyles = makeStyles<BackstageTheme>((theme) => ({
     cardStyle: {
-      height: "120px",
+      height: compact !== true ? "120px" : "80px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

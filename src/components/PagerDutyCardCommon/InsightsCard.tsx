@@ -7,16 +7,17 @@ type Props = {
   count: number | undefined;
   label: string;
   color: string;
+  compact?: boolean;
 };
 
-function IncidentCounterCard({ count, label, color }: Props) {
+function IncidentCounterCard({ count, label, color, compact }: Props) {
 
   const textColor = color && validateColor(color) ? color : "black";
 
   const useStyles = makeStyles<BackstageTheme>(() => ({
     cardStyle: {
       marginRight: "10px",
-      height: "120px",
+      height: compact !== true ? "120px" : "80px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

@@ -16,30 +16,23 @@
 // eslint-disable-next-line @backstage/no-undeclared-imports
 import React, { ReactNode, useCallback, useState } from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Card,
   CardHeader,
-  Divider,
-  CardContent,
   Grid,
   Typography,
 } from "@material-ui/core";
-import { Incidents } from "../Incident";
-import { EscalationPolicy } from "../Escalation";
 import useAsync from "react-use/lib/useAsync";
 import { pagerDutyApiRef, UnauthorizedError } from "../../api";
 import { MissingTokenError, ServiceNotFoundError } from "../Errors";
-import { ChangeEvents } from "../ChangeEvents";
 import PDGreenImage from "../../assets/PD-Green.svg";
 import PDWhiteImage from "../../assets/PD-White.svg";
 
 import { useApi } from "@backstage/core-plugin-api";
 import { NotFoundError } from "@backstage/errors";
-import {
-  Progress,
-  TabbedCard,
-  CardTab,
-  InfoCard,
-} from "@backstage/core-components";
+import { Progress, InfoCard } from "@backstage/core-components";
 import { PagerDutyEntity } from "../../types";
 import { ForbiddenError } from "../Errors/ForbiddenError";
 import {
@@ -47,11 +40,13 @@ import {
   OpenServiceButton,
   ServiceStandardsCard,
   StatusCard,
-  TriggerIncidentButton
+  TriggerIncidentButton,
 } from "../PagerDutyCardCommon";
 import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import { BackstageTheme } from "@backstage/theme";
 import { PagerDutyCardServiceResponse } from "../../api/types";
+import { EscalationPolicy } from "../Escalation";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles<BackstageTheme>((theme) =>
   createStyles({
@@ -63,23 +58,15 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
           ? "rgba(0, 0, 0, 0.54)"
           : "rgba(255, 255, 255, 0.7)",
     },
-    oncallHeaderTextStyle: {
-      fontSize: "14px",
-      fontWeight: 500,
-      marginTop: "10px",
-      color:
-        theme.palette.type === "light"
-          ? "rgba(0, 0, 0, 0.54)"
-          : "rgba(255, 255, 255, 0.7)",
-    },
     headerStyle: {
       marginBottom: "0px",
       fontSize: "0px",
     },
     overviewHeaderContainerStyle: {
       display: "flex",
-      margin: "15px",
-      marginBottom: "20px",
+      margin: "0px",
+      padding: "15px",
+      marginBottom: "5px",
     },
     headerWithSubheaderContainerStyle: {
       display: "flex",
@@ -94,11 +81,19 @@ const useStyles = makeStyles<BackstageTheme>((theme) =>
       margin: "15px",
       marginTop: "-15px",
     },
+    onCallAccordionDetails: {
+      display: "flex",
+      width: "100%",
+      marginTop: "-25px",
+      marginBottom: "-15px",
+    },
     incidentMetricsContainerStyle: {
       display: "flex",
       height: "100%",
       justifyContent: "center",
       columnSpan: "all",
+      margin: "15px",
+      marginTop: "-15px",
     },
   })
 );
@@ -110,25 +105,20 @@ const BasicCard = ({ children }: { children: ReactNode }) => (
 /** @public */
 export type PagerDutyCardProps = PagerDutyEntity & {
   readOnly?: boolean;
-  disableChangeEvents?: boolean;
+  disableInsights?: boolean;
   disableOnCall?: boolean;
 };
 
 /** @public */
-export const PagerDutyCard = (props: PagerDutyCardProps) => {
+export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
   const classes = useStyles();
 
   const theme = useTheme();
-  const { readOnly, disableChangeEvents, disableOnCall } = props;
+  const { readOnly, disableInsights, disableOnCall } = props;
   const api = useApi(pagerDutyApiRef);
-  const [refreshIncidents, setRefreshIncidents] = useState<boolean>(false);
-  const [refreshChangeEvents, setRefreshChangeEvents] =
-    useState<boolean>(false);
   const [refreshStatus, setRefreshStatus] = useState<boolean>(false);
 
   const handleRefresh = useCallback(() => {
-    setRefreshIncidents((x) => !x);
-    setRefreshChangeEvents((x) => !x);
     setRefreshStatus((x) => !x);
   }, []);
 
@@ -197,90 +187,48 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
         className={classes.headerStyle}
         title={
           theme.palette.type === "dark" ? (
-            <img src={PDWhiteImage} alt="PagerDuty" height="35" />
+            <img src={PDWhiteImage} alt="PagerDuty" height="25" />
           ) : (
-            <img src={PDGreenImage} alt="PagerDuty" height="35" />
+            <img src={PDGreenImage} alt="PagerDuty" height="25" />
           )
         }
         action={
           !readOnly && props.integrationKey ? (
             <div>
               <TriggerIncidentButton
+                compact
                 data-testid="trigger-incident-button"
                 integrationKey={props.integrationKey}
                 entityName={props.name}
                 handleRefresh={handleRefresh}
               />
-              <OpenServiceButton serviceUrl={service!.url} />
+              <OpenServiceButton compact serviceUrl={service!.url} />
             </div>
           ) : (
-            <OpenServiceButton serviceUrl={service!.url} />
+            <OpenServiceButton compact serviceUrl={service!.url} />
           )
         }
       />
       <Grid item md={12} className={classes.overviewHeaderContainerStyle}>
-        <Grid item md={3}>
+        <Grid item md={6}>
           <Typography className={classes.overviewHeaderTextStyle}>
             STATUS
           </Typography>
         </Grid>
         <Grid item md={6}>
-          <span className={classes.headerWithSubheaderContainerStyle}>
-            <Typography className={classes.overviewHeaderTextStyle}>
-              INSIGHTS
-            </Typography>
-            <Typography className={classes.subheaderTextStyle}>
-              (last 30 days)
-            </Typography>
-          </span>
-        </Grid>
-        <Grid item md={3}>
           <Typography className={classes.overviewHeaderTextStyle}>
             STANDARDS
           </Typography>
         </Grid>
       </Grid>
+
       <Grid item md={12} className={classes.overviewCardsContainerStyle}>
-        <Grid item md={3}>
-          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus} />
+        <Grid item md={6}>
+          <StatusCard compact serviceId={service!.id} refreshStatus={refreshStatus} />
         </Grid>
-        <Grid item md={6} className={classes.incidentMetricsContainerStyle}>
-          <Grid item md={4}>
-            <InsightsCard
-              count={
-                service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics[0].total_interruptions
-                  : undefined
-              }
-              label="interruptions"
-              color={theme.palette.textSubtle}
-            />
-          </Grid>
-          <Grid item md={4}>
-            <InsightsCard
-              count={
-                service?.metrics !== undefined && service.metrics.length > 0
-                  ? service?.metrics[0].total_high_urgency_incidents
-                  : undefined
-              }
-              label="high urgency"
-              color={theme.palette.warning.main}
-            />
-          </Grid>
-          <Grid item md={4}>
-            <InsightsCard
-              count={
-                service?.metrics !== undefined && service?.metrics?.length > 0
-                  ? service?.metrics[0].total_incident_count
-                  : undefined
-              }
-              label="incidents"
-              color={theme.palette.error.main}
-            />
-          </Grid>
-        </Grid>
-        <Grid item md={3}>
+        <Grid item md={6}>
           <ServiceStandardsCard
+            compact
             total={
               service?.standards?.score !== undefined
                 ? service?.standards?.score?.total
@@ -299,44 +247,95 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
           />
         </Grid>
       </Grid>
+      {disableInsights !== true ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <span className={classes.headerWithSubheaderContainerStyle}>
+              <Typography className={classes.overviewHeaderTextStyle}>
+                INSIGHTS
+              </Typography>
+              <Typography className={classes.subheaderTextStyle}>
+                (last 30 days)
+              </Typography>
+            </span>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid
+              item
+              md={12}
+              className={classes.incidentMetricsContainerStyle}
+            >
+              <Grid item md={4}>
+                <InsightsCard
+                  compact
+                  count={
+                    service?.metrics !== undefined && service.metrics.length > 0
+                      ? service?.metrics[0].total_interruptions
+                      : undefined
+                  }
+                  label="interruptions"
+                  color={theme.palette.textSubtle}
+                />
+              </Grid>
+              <Grid item md={4}>
+                <InsightsCard
+                  compact
+                  count={
+                    service?.metrics !== undefined && service.metrics.length > 0
+                      ? service?.metrics[0].total_high_urgency_incidents
+                      : undefined
+                  }
+                  label="high urgency"
+                  color={theme.palette.warning.main}
+                />
+              </Grid>
+              <Grid item md={4}>
+                <InsightsCard
+                  compact
+                  count={
+                    service?.metrics !== undefined &&
+                    service?.metrics?.length > 0
+                      ? service?.metrics[0].total_incident_count
+                      : undefined
+                  }
+                  label="incidents"
+                  color={theme.palette.error.main}
+                />
+              </Grid>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <></>
+      )}
 
-      <Divider />
-      <CardContent>
-        <TabbedCard>
-          <CardTab label="Incidents">
-            <Incidents
-              serviceId={service!.id}
-              refreshIncidents={refreshIncidents}
-            />
-          </CardTab>
-          {disableChangeEvents !== true ? (
-            <CardTab label="Change Events">
-              <ChangeEvents
-                data-testid="change-events"
-                serviceId={service!.id}
-                refreshEvents={refreshChangeEvents}
-              />
-            </CardTab>
-          ) : (
-            <></>
-          )}
-        </TabbedCard>
-        {disableOnCall !== true ? (
-          <>
-            <Typography className={classes.oncallHeaderTextStyle}>
+      {disableOnCall !== true ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.overviewHeaderTextStyle}>
               ON CALL
             </Typography>
+          </AccordionSummary>
+          <AccordionDetails className={classes.onCallAccordionDetails}>
             <EscalationPolicy
               data-testid="oncall-card"
               policyId={service!.policyId}
               policyUrl={service!.policyLink}
               policyName={service!.policyName}
             />
-          </>
-        ) : (
-          <></>
-        )}
-      </CardContent>
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <></>
+      )}
     </Card>
   );
 };
