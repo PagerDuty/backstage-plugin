@@ -320,7 +320,7 @@ describe('PagerDutyClient', () => {
           });
         });
 
-        it('throws NotFoundError', async () => {
+        it('throws a corresponding error', async () => {
           await expect(client.getServiceByEntity(entity)).rejects.toThrow(
             'Request failed with 500, Not valid request internal error occurred',
           );
