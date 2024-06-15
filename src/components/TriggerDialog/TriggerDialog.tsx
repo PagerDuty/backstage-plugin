@@ -85,6 +85,9 @@ export const TriggerDialog = ({
           message: `Alarm successfully triggered`,
         });
 
+        // clear description state
+        setDescription("");
+
         handleDialog();
 
         // The pager duty API isn't always returning the newly created alarm immediately
