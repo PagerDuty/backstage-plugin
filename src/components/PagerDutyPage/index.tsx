@@ -13,7 +13,7 @@ export const PagerDutyPage = () => {
           <Grid item>
             <Typography variant="h4">Service to Entity mapping</Typography>
             <Typography variant="body1">
-              Easily map your services to entities in Backstage without the need to add anotations to all your projects.
+              Easily map your existing PagerDuty services to entities in Backstage without the need to add anotations to all your projects.
             </Typography>
             <Typography variant="body1">
               <b>Warning: </b>Only 1:1 mapping is allowed at this time.
