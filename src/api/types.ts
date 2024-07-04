@@ -21,7 +21,8 @@ import { PagerDutyChangeEventsResponse,
   PagerDutyServiceStandardsResponse,
   PagerDutyServiceMetricsResponse,
   PagerDutyServiceStandards,
-  PagerDutyServiceMetrics
+  PagerDutyServiceMetrics,
+  PagerDutyEntityMappingsResponse
  } from '@pagerduty/backstage-plugin-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
@@ -50,6 +51,18 @@ export type PagerDutyCardServiceResponse = {
 
 /** @public */
 export interface PagerDutyApi {
+  /**
+   * Fetches all entity mappings.
+   *
+   */
+  getEntityMappings(): Promise<PagerDutyEntityMappingsResponse>;
+
+  /**
+   * Stores the service mapping in the database.
+   * 
+   */
+  storeServiceMapping(serviceId: string, integrationKey: string, entityRef: string): Promise<Response>;
+
   /**
    * Fetches the service for the provided pager duty Entity.
    *
