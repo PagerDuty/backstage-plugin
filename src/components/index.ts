@@ -30,4 +30,6 @@ export {
   EntityPagerDutySmallCard,
 } from './EntityPagerDutySmallCard';
 
+export { PagerDutyIcon } from './Icons/PagerDutyIcon';
+
 export { TriggerButton } from './TriggerButton';
