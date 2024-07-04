@@ -21,3 +21,19 @@ export type SubHeaderLink = {
   icon: React.ReactNode;
   action?: React.ReactNode;
 };
+
+export type BackstageEntity = {
+  id: string;
+  name: string;
+  namespace: string;
+  type: string;
+  system: string;
+  owner: string;
+  lifecycle: string;
+  annotations: Annotations;
+};
+
+export type Annotations = {
+  "pagerduty.com/integration-key": string;
+  "pagerduty.com/service-id": string;
+};

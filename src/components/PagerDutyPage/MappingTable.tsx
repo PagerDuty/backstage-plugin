@@ -85,13 +85,14 @@ export const MappingTable = ({
     const [validationErrors, setValidationErrors] = useState<
       Record<string, string | undefined>
     >({});
-    const [entityOptions, setEntityOptions] = useState<CatalogEntityOptions[]>([]);
+    const [entityOptions, setEntityOptions] = useState<CatalogEntityOptions[]>(
+      []
+    );
     const pagerDutyApi = useApi(pagerDutyApiRef);
 
     useEffect(() => {
       getEntityOptions();
-    }
-    , []);
+    }, []);
 
     const columns = useMemo<MRT_ColumnDef<PagerDutyEntityMapping>[]>(
       () => [
@@ -139,9 +140,9 @@ export const MappingTable = ({
             select: true,
             error: !!validationErrors?.state,
             helperText: validationErrors?.state,
-            multiline: true,            
+            multiline: true,
             type: "range",
-          },          
+          },
         },
         {
           accessorKey: "entityName",
@@ -179,31 +180,14 @@ export const MappingTable = ({
 
     // UPDATE hook (put mapping in api)
     function useUpdateMapping() {
-      // const queryClient = useQueryClient();
       return useMutation({
         mutationFn: async (mapping: PagerDutyEntityMapping) => {
           return await pagerDutyApi.storeServiceMapping(
             mapping.serviceId,
             mapping.integrationKey || "",
-            mapping.entityRef,
+            mapping.entityRef
           );
         },
-        // client side optimistic update
-        // onMutate: (newMappingInfo: PagerDutyEntityMapping) => {
-        //   queryClient.setQueryData(["updateMappings"], (prevMappings: any) =>
-        //     prevMappings?.map((prevMapping: PagerDutyEntityMapping) => {
-        //       if (prevMapping.serviceId === newMappingInfo.serviceId) {
-        //         newMappingInfo.entityName =
-        //           fetchedCatalogEntities.find(
-        //             (entity) => entity.id === newMappingInfo.entityRef
-        //           )?.name || "";
-
-        //         return newMappingInfo;
-        //       }
-        //       return prevMapping;
-        //     })
-        //   );
-        // },
       });
     }
 
@@ -215,17 +199,22 @@ export const MappingTable = ({
     const handleSaveMapping: MRT_TableOptions<PagerDutyEntityMapping>["onEditingRowSave"] =
       async ({ values, table }) => {
         setValidationErrors({});
-        
+
         values.entityName =
-          catalogEntities.find((entity) => `${entity.type}:${entity.namespace}/${entity.name}`.toLowerCase() === values.entityRef)
-            ?.name ?? "";
+          catalogEntities.find(
+            (entity) =>
+              `${entity.type}:${entity.namespace}/${entity.name}`.toLowerCase() ===
+              values.entityRef
+          )?.name ?? "";
         values.status = "RefreshToUpdate";
 
         await updateMapping(values);
 
         // find corresponding mapping in mappings array
         // and update it with new values
-        const existingMapping = mappings.find((item) => item.serviceId === values.serviceId);
+        const existingMapping = mappings.find(
+          (item) => item.serviceId === values.serviceId
+        );
         if (existingMapping) {
           existingMapping.entityRef = values.entityRef;
           existingMapping.entityName = values.entityName;
@@ -241,7 +230,7 @@ export const MappingTable = ({
     const dataTable = useMaterialReactTable({
       columns,
       data: mappings,
-      editDisplayMode: "modal", // default ('row', 'cell', 'table', and 'custom' are also available)
+      editDisplayMode: "modal",
       enableEditing: true,
       positionActionsColumn: "last",
       enableStickyHeader: true,
@@ -261,7 +250,6 @@ export const MappingTable = ({
       },
       onEditingRowCancel: () => setValidationErrors({}),
       onEditingRowSave: handleSaveMapping,
-      // optionally customize modal content
       renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
         <>
           <DialogTitle>Update Entity Mapping</DialogTitle>
@@ -281,7 +269,6 @@ export const MappingTable = ({
             <IconButton
               onClick={() => {
                 getEntityOptions();
-
                 table.setEditingRow(row);
               }}
             >
@@ -314,10 +301,8 @@ export const MappingTable = ({
 
     function getEntityOptions() {
       const options: CatalogEntityOptions[] = [];
-      // if (entityOptions.length === 0) {
       // initialize with empty object
       options.push({ value: "", label: "None" });
-      // }
 
       catalogEntities.forEach((entity) => {
         // find service-id annotation in entity
@@ -332,7 +317,9 @@ export const MappingTable = ({
         let foundServiceMapping: PagerDutyEntityMapping | undefined;
         if (foundServiceAnnotation || foundIntegrationKeyAnnotation) {
           foundServiceMapping = mappings.find(
-            (item) => item.serviceId === foundServiceAnnotation || item.integrationKey === foundIntegrationKeyAnnotation
+            (item) =>
+              item.serviceId === foundServiceAnnotation ||
+              item.integrationKey === foundIntegrationKeyAnnotation
           );
         }
 
@@ -344,8 +331,11 @@ export const MappingTable = ({
         );
 
         if (
-          (!foundEntityMapping && (!foundServiceAnnotation || !foundIntegrationKeyAnnotation)) ||
-          ((foundServiceAnnotation || foundIntegrationKeyAnnotation) && foundServiceMapping && !foundEntityMapping)
+          (!foundEntityMapping &&
+            (!foundServiceAnnotation || !foundIntegrationKeyAnnotation)) ||
+          ((foundServiceAnnotation || foundIntegrationKeyAnnotation) &&
+            foundServiceMapping &&
+            !foundEntityMapping)
         ) {
           options.push({
             value: entityRef,

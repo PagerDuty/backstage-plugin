@@ -4,23 +4,7 @@ import { useApi } from "@backstage/core-plugin-api";
 import { pagerDutyApiRef } from "../../api";
 import { catalogApiRef } from "@backstage/plugin-catalog-react";
 import { MappingTable } from "./MappingTable";
-
-type BackstageEntity = {
-  id: string;
-  name: string;
-  namespace: string;
-  type: string;
-  system: string;
-  owner: string;
-  lifecycle: string;
-  annotations: Annotations;
-};
-
-export type Annotations = {
-  "pagerduty.com/integration-key": string;
-  "pagerduty.com/service-id": string;
-};
-
+import { BackstageEntity, Annotations } from "../types";
 
 export const ServiceMappingComponent = () => {
   const [entityMappings, setEntityMappings] = useState<
