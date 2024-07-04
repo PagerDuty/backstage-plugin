@@ -13,6 +13,7 @@ The PagerDuty plugin reduces the cognitive load on developers responsible for ma
 - **[See Active Incidents](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#view-any-open-incidents>)** - View all active incidents for a service directly in Backstage.
 - **[Check for Recent Changes](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#view-change-events-associated-to-a-service>)** - Identify recent changes that may be the root cause of potential issues with your service.
 - **[Identify On-Call Personnel](<https://pagerduty.github.io/backstage-plugin-docs/capabilities/#see-and-contact-on-call-staff>)** - Quickly determine who is responsible for a failing service and resolve the incident as quickly as possible. This feature allows companies to spend more time solving problems rather than determining who should solve them.
+- **Map existing PagerDuty services to Backstage entities** - Leverage PagerDuty's Advanced Configuration page to map existing PagerDuty services to Backstage entities without code changes.
 
 ## Getting Started
 
