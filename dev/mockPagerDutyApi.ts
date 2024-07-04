@@ -20,8 +20,47 @@ import {
 } from '../src';
 import { PagerDutyChangeEvent, PagerDutyIncident, PagerDutyUser } from '@pagerduty/backstage-plugin-common';
 import { Entity } from '@backstage/catalog-model';
+import { v4 as uuidv4 } from 'uuid';
 
 export const mockPagerDutyApi: PagerDutyApi = {
+  async getEntityMappings() {
+      return {
+        mappings: [
+          {
+            serviceId: "SERV1CE1D",
+            entityRef: "ENTITY1D",
+            entityName: "Entity1",
+            integrationKey: "INTEGRAT1ONKEY1",
+            team: "Team1",
+            serviceName: "Service1",
+            serviceUrl: "http://service1",
+            escalationPolicy: "Escalation Policy 1",
+            status: "InSync",
+          },
+          {
+            serviceId: "SERV1CE1D",
+            entityRef: "",
+            entityName: "Entity2",
+            integrationKey: "INTEGRAT1ONKEY2",
+            status: "NotMapped",
+            team: "Team1",
+            serviceName: "Service2",
+            serviceUrl: "http://service2",
+            escalationPolicy: "Escalation Policy 1",
+          }
+        ]
+      }
+  },
+  async storeServiceMapping(serviceId, entityId) {
+    const uuid = uuidv4();
+    
+
+    return new Response(JSON.stringify({
+      service_id: serviceId,
+      entity_id: entityId,
+      id: uuid,
+    }));
+  },
   async getServiceByPagerDutyEntity(pagerDutyEntity: PagerDutyEntity) {
     return {
       service: {
