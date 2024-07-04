@@ -27,7 +27,8 @@ import { PagerDutyChangeEventsResponse,
   PagerDutyServiceResponse,
   PagerDutyIncidentsResponse,
   PagerDutyServiceStandardsResponse,
-  PagerDutyServiceMetricsResponse
+  PagerDutyServiceMetricsResponse,
+  PagerDutyEntityMappingsResponse
 } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
@@ -95,6 +96,38 @@ export class PagerDutyClient implements PagerDutyApi {
     }
 
     return response;
+  }
+
+  async getEntityMappings(): Promise<PagerDutyEntityMappingsResponse> {
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/mapping/entity`;
+
+    return await this.findByUrl<PagerDutyEntityMappingsResponse>(url);
+  }
+
+  async storeServiceMapping(serviceId: string, integrationKey: string, backstageEntityRef: string): Promise<Response> {
+
+    const body = JSON.stringify({
+      entityRef: backstageEntityRef,
+      serviceId: serviceId,
+      integrationKey: integrationKey,
+    });
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Accept: 'application/json, text/plain, */*',
+      },
+      body,
+    };
+
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/mapping/entity`;
+
+    return this.request(url, options);
   }
 
   async getServiceByEntity(entity: Entity): Promise<PagerDutyServiceResponse> {
