@@ -9,7 +9,7 @@ on:
         default: true
         type: boolean
       version:
-        description: 'Test scenario tags'
+        description: 'Version'
         required: true
         type: string      
 
