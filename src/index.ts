@@ -23,6 +23,7 @@
 export {
   pagerDutyPlugin,
   pagerDutyPlugin as plugin,
+  PagerDutyPage,
   EntityPagerDutyCard,
   HomePagePagerDutyCard,
   EntityPagerDutySmallCard,
