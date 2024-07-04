@@ -22,6 +22,7 @@ import {
   fetchApiRef,
   configApiRef,
   createComponentExtension,
+  createRoutableExtension,
 } from '@backstage/core-plugin-api';
 import { createCardExtension } from '@backstage/plugin-home-react';
 import { HomePagePagerDutyCardProps } from './components/HomePagePagerDutyCard/Content';
@@ -46,6 +47,15 @@ export const pagerDutyPlugin = createPlugin({
     }),
   ],
 });
+
+/** @public */
+export const PagerDutyPage = pagerDutyPlugin.provide(
+  createRoutableExtension({
+    name: 'PagerDutyPage',
+    component: () => import('./components/PagerDutyPage').then(m => m.PagerDutyPage),
+    mountPoint: rootRouteRef,
+  })
+)
 
 /** @public */
 export const EntityPagerDutyCard = pagerDutyPlugin.provide(
