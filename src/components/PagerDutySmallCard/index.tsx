@@ -132,16 +132,19 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
     );
 
     const serviceStandards = await api.getServiceStandardsByServiceId(
-      foundService.id
+      foundService.id,
+      props.account
     );
 
     const serviceMetrics = await api.getServiceMetricsByServiceId(
-      foundService.id
+      foundService.id,
+      props.account
     );
 
     const result: PagerDutyCardServiceResponse = {
       id: foundService.id,
       name: foundService.name,
+      account: props.account,
       url: foundService.html_url,
       policyId: foundService.escalation_policy.id,
       policyLink: foundService.escalation_policy.html_url as string,
@@ -224,7 +227,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
 
       <Grid item md={12} className={classes.overviewCardsContainerStyle}>
         <Grid item md={6}>
-          <StatusCard compact serviceId={service!.id} refreshStatus={refreshStatus} />
+          <StatusCard compact serviceId={service!.id} refreshStatus={refreshStatus} account={service!.account} />
         </Grid>
         <Grid item md={6}>
           <ServiceStandardsCard
@@ -330,6 +333,7 @@ export const PagerDutySmallCard = (props: PagerDutyCardProps) => {
               policyId={service!.policyId}
               policyUrl={service!.policyLink}
               policyName={service!.policyName}
+              account={service!.account}
             />
           </AccordionDetails>
         </Accordion>

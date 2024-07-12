@@ -121,6 +121,12 @@ export const MappingTable = ({
           enableEditing: false,
         },
         {
+          accessorKey: "account",
+          header: "Account",
+          enableEditing: false,
+          Edit: () => null,
+        },
+        {
           accessorKey: "team",
           header: "Team",
           enableEditing: false,
@@ -185,7 +191,8 @@ export const MappingTable = ({
           return await pagerDutyApi.storeServiceMapping(
             mapping.serviceId,
             mapping.integrationKey || "",
-            mapping.entityRef
+            mapping.entityRef,
+            mapping.account || ""
           );
         },
       });

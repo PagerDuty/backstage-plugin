@@ -31,6 +31,7 @@ type Props = {
   policyId: string;
   policyUrl: string;
   policyName: string;
+  account?: string;
 };
 const useStyles = makeStyles<BackstageTheme>(() =>
   createStyles({
@@ -44,6 +45,7 @@ export const EscalationPolicy = ({
   policyId,
   policyUrl,
   policyName,
+  account,
 }: Props) => {
   const api = useApi(pagerDutyApiRef);
   const classes = useStyles();
@@ -53,7 +55,7 @@ export const EscalationPolicy = ({
     loading,
     error,
   } = useAsync(async () => {
-    return await api.getOnCallByPolicyId(policyId);
+    return await api.getOnCallByPolicyId(policyId, account);
   });
 
   if (error) {
