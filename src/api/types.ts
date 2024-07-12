@@ -45,6 +45,7 @@ export type PagerDutyCardServiceResponse = {
   policyLink: string;
   policyName: string;
   status?: string;
+  account?: string;
   standards?: PagerDutyServiceStandards;
   metrics?: PagerDutyServiceMetrics[];
 }
@@ -61,7 +62,7 @@ export interface PagerDutyApi {
    * Stores the service mapping in the database.
    * 
    */
-  storeServiceMapping(serviceId: string, integrationKey: string, entityRef: string): Promise<Response>;
+  storeServiceMapping(serviceId: string, integrationKey: string, entityRef: string, account: string): Promise<Response>;
 
   /**
    * Fetches the service for the provided pager duty Entity.
@@ -83,6 +84,7 @@ export interface PagerDutyApi {
    */
   getServiceById(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyServiceResponse>;
 
   /**
@@ -91,6 +93,7 @@ export interface PagerDutyApi {
    */
   getIncidentsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyIncidentsResponse>;
 
   /**
@@ -99,6 +102,7 @@ export interface PagerDutyApi {
    */
   getChangeEventsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyChangeEventsResponse>;
 
   /**
@@ -107,6 +111,7 @@ export interface PagerDutyApi {
    */
   getServiceStandardsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyServiceStandardsResponse>;
 
   /**
@@ -115,13 +120,14 @@ export interface PagerDutyApi {
    */
   getServiceMetricsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyServiceMetricsResponse>;
 
   /**
    * Fetches the list of users in an escalation policy.
    *
    */
-  getOnCallByPolicyId(policyId: string): Promise<PagerDutyUser[]>;
+  getOnCallByPolicyId(policyId: string, account?: string): Promise<PagerDutyUser[]>;
 
   /**
    * Triggers an incident to whoever is on-call.

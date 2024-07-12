@@ -18,5 +18,6 @@
 export type PagerDutyEntity = {
   integrationKey?: string;
   serviceId?: string;
+  account?: string;
   name: string;
 };
