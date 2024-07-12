@@ -28,16 +28,18 @@ import { IncidentForbiddenState } from './IncidentForbiddenState';
 
 type Props = {
   serviceId: string;
+  account?: string;
   refreshIncidents: boolean;
 };
 
-export const Incidents = ({ serviceId, refreshIncidents }: Props) => {
+export const Incidents = ({ serviceId, account, refreshIncidents }: Props) => {
   const api = useApi(pagerDutyApiRef);
 
   const [{ value: incidents, loading, error }, getIncidents] = useAsyncFn(
     async () => {
       const { incidents: foundIncidents } = await api.getIncidentsByServiceId(
         serviceId,
+        account
       );
       return foundIncidents;
     },

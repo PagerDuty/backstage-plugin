@@ -49,7 +49,10 @@ describe("Escalation", () => {
     expect(
       getByText("No one is on-call. Update the escalation policy.")
     ).toBeInTheDocument();
-    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("456");
+    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith(
+      "456",
+      undefined
+    ); // undefined is the default value for the optional account parameter
   });
 
   it("Renders a forbidden state when change events is undefined", async () => {
@@ -109,7 +112,10 @@ describe("Escalation", () => {
 
     expect(getByText("person1")).toBeInTheDocument();
     expect(getByText("person1@example.com")).toBeInTheDocument();
-    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("abc");
+    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith(
+      "abc",
+      undefined
+    ); // undefined is the default value for the optional account parameter
   });
 
   it("Renders a user with profile picture", async () => {
@@ -147,7 +153,10 @@ describe("Escalation", () => {
       "src",
       "https://gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y"
     );
-    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith("abc");
+    expect(mockPagerDutyApi.getOnCallByPolicyId).toHaveBeenCalledWith(
+      "abc",
+      undefined
+    ); // undefined is the default value for the optional account parameter
   });
 
   it("Handles errors", async () => {
