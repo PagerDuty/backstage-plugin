@@ -16,14 +16,15 @@
 
 import { Entity } from '@backstage/catalog-model';
 import { PagerDutyEntity } from '../types';
-import { PAGERDUTY_INTEGRATION_KEY, PAGERDUTY_SERVICE_ID } from './constants';
+import { PAGERDUTY_INTEGRATION_KEY, PAGERDUTY_SERVICE_ID, PAGERDUTY_ACCOUNT_NAME } from './constants';
 
 export function getPagerDutyEntity(entity: Entity): PagerDutyEntity {
   const {
     [PAGERDUTY_INTEGRATION_KEY]: integrationKey,
     [PAGERDUTY_SERVICE_ID]: serviceId,
+    [PAGERDUTY_ACCOUNT_NAME]: account,
   } = entity.metadata.annotations || ({} as Record<string, string>);
   const name = entity.metadata.name;
 
-  return { integrationKey, serviceId, name };
+  return { integrationKey, serviceId, account, name };
 }

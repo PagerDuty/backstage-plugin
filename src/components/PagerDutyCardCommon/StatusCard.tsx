@@ -11,6 +11,7 @@ import { Progress } from "@backstage/core-components";
 type Props = {
   serviceId: string;
   refreshStatus: boolean;
+  account?: string;
   compact?: boolean;
 };
 
@@ -66,11 +67,11 @@ function colorFromStatus(theme: Theme, status: string) {
   return color;
 }
 
-function StatusCard({ serviceId, refreshStatus, compact}: Props) {
+function StatusCard({ serviceId, refreshStatus, account, compact}: Props) {
   const api = useApi(pagerDutyApiRef);
   const [{ value: status, loading, error }, getStatus] = useAsyncFn(
     async () => {
-      const { service: foundService } = await api.getServiceById(serviceId);
+      const { service: foundService } = await api.getServiceById(serviceId, account);
       return foundService.status;
     }
   );

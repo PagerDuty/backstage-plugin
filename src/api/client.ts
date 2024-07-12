@@ -71,7 +71,7 @@ export class PagerDutyClient implements PagerDutyApi {
   async getServiceByPagerDutyEntity(
     pagerDutyEntity: PagerDutyEntity,
   ): Promise<PagerDutyServiceResponse> {
-    const { integrationKey, serviceId } = pagerDutyEntity;
+    const { integrationKey, serviceId, account } = pagerDutyEntity;
 
     let response: PagerDutyServiceResponse;
     let url: string;
@@ -80,6 +80,10 @@ export class PagerDutyClient implements PagerDutyApi {
       url = `${await this.config.discoveryApi.getBaseUrl(
         'pagerduty',
       )}/services?integration_key=${integrationKey}`;
+
+      if(account) {
+        url = `${url}&account=${account}`;
+      }
       const serviceResponse = await this.findByUrl<PagerDutyServiceResponse>(url);
 
       if (serviceResponse.service === undefined) throw new NotFoundError();
@@ -89,6 +93,10 @@ export class PagerDutyClient implements PagerDutyApi {
       url = `${await this.config.discoveryApi.getBaseUrl(
         'pagerduty',
       )}/services/${serviceId}`;
+
+      if (account) {
+        url = `${url}?account=${account}`;
+      }
 
       response = await this.findByUrl<PagerDutyServiceResponse>(url);
     } else {
@@ -106,12 +114,13 @@ export class PagerDutyClient implements PagerDutyApi {
     return await this.findByUrl<PagerDutyEntityMappingsResponse>(url);
   }
 
-  async storeServiceMapping(serviceId: string, integrationKey: string, backstageEntityRef: string): Promise<Response> {
+  async storeServiceMapping(serviceId: string, integrationKey: string, backstageEntityRef: string, account: string): Promise<Response> {
 
     const body = JSON.stringify({
       entityRef: backstageEntityRef,
       serviceId: serviceId,
       integrationKey: integrationKey,
+      account: account,
     });
 
     const options = {
@@ -134,61 +143,90 @@ export class PagerDutyClient implements PagerDutyApi {
     return await this.getServiceByPagerDutyEntity(getPagerDutyEntity(entity));
   }
 
-  async getServiceById(serviceId: string): Promise<PagerDutyServiceResponse> {
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+  async getServiceById(serviceId: string, account?: string): Promise<PagerDutyServiceResponse> {
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/services/${serviceId}`;
+
+    if(account) {
+      url = url.concat(`?account=${account}`);
+    }
 
     return await this.findByUrl<PagerDutyServiceResponse>(url);
   }
 
   async getIncidentsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyIncidentsResponse> {
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/services/${serviceId}/incidents`;
+
+    if(account) {
+      url = url.concat(`?account=${account}`);
+    }
 
     return await this.findByUrl<PagerDutyIncidentsResponse>(url);
   }
 
   async getChangeEventsByServiceId(
     serviceId: string,
+    account?: string,
   ): Promise<PagerDutyChangeEventsResponse> {
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/services/${serviceId}/change-events`;
+
+    if(account) {
+      url = url.concat(`?account=${account}`);
+    }
 
     return await this.findByUrl<PagerDutyChangeEventsResponse>(url);
   }
 
   async getServiceStandardsByServiceId(
     serviceId: string,
+    account?: string
   ): Promise<PagerDutyServiceStandardsResponse> {
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/services/${serviceId}/standards`;
+
+    if(account) {
+      url = url.concat(`?account=${account}`);
+    }
 
     return await this.findByUrl<PagerDutyServiceStandardsResponse>(url);
   }
 
   async getServiceMetricsByServiceId(
     serviceId: string,
+    account?: string
   ): Promise<PagerDutyServiceMetricsResponse> {
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/services/${serviceId}/metrics`;
+
+    if (account){
+      url = url.concat(`?account=${account}`);
+    }
 
     return await this.findByUrl<PagerDutyServiceMetricsResponse>(url);
   }
 
   async getOnCallByPolicyId(
     policyId: string,
+    account?: string,
   ): Promise<PagerDutyUser[]> {
     const params = `escalation_policy_ids[]=${policyId}`;
-    const url = `${await this.config.discoveryApi.getBaseUrl(
+    let url = `${await this.config.discoveryApi.getBaseUrl(
       'pagerduty',
     )}/oncall-users?${params}`;
+
+    if (account) {
+      url = url.concat(`&account=${account}`);
+    }
 
     const response: PagerDutyOnCallUsersResponse = await this.findByUrl<PagerDutyOnCallUsersResponse>(url);
     return response.users;

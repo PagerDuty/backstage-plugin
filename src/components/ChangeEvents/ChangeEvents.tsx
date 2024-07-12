@@ -28,15 +28,16 @@ import { Alert } from '@material-ui/lab';
 
 type Props = {
   serviceId: string;
+  account?: string;
   refreshEvents: boolean;
 };
 
-export const ChangeEvents = ({ serviceId, refreshEvents }: Props) => {
+export const ChangeEvents = ({ serviceId, account, refreshEvents }: Props) => {
   const api = useApi(pagerDutyApiRef);
 
   const [{ value: changeEvents, loading, error }, getChangeEvents] = useAsyncFn(
     async () => {
-      const { change_events } = await api.getChangeEventsByServiceId(serviceId);
+      const { change_events } = await api.getChangeEventsByServiceId(serviceId, account);
       return change_events;
     },
   );

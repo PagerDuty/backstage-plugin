@@ -47,7 +47,7 @@ import {
   OpenServiceButton,
   ServiceStandardsCard,
   StatusCard,
-  TriggerIncidentButton
+  TriggerIncidentButton,
 } from "../PagerDutyCardCommon";
 import { createStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import { BackstageTheme } from "@backstage/theme";
@@ -142,15 +142,18 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
     );
 
     const serviceStandards = await api.getServiceStandardsByServiceId(
-      foundService.id
+      foundService.id,
+      props.account
     );
 
     const serviceMetrics = await api.getServiceMetricsByServiceId(
-      foundService.id
+      foundService.id,
+      props.account
     );
 
     const result: PagerDutyCardServiceResponse = {
       id: foundService.id,
+      account: props.account,
       name: foundService.name,
       url: foundService.html_url,
       policyId: foundService.escalation_policy.id,
@@ -242,7 +245,11 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
       </Grid>
       <Grid item md={12} className={classes.overviewCardsContainerStyle}>
         <Grid item md={3}>
-          <StatusCard serviceId={service!.id} refreshStatus={refreshStatus} />
+          <StatusCard
+            serviceId={service!.id}
+            account={service!.account}
+            refreshStatus={refreshStatus}
+          />
         </Grid>
         <Grid item md={6} className={classes.incidentMetricsContainerStyle}>
           <Grid item md={4}>
@@ -307,6 +314,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
             <Incidents
               serviceId={service!.id}
               refreshIncidents={refreshIncidents}
+              account={service!.account}
             />
           </CardTab>
           {disableChangeEvents !== true ? (
@@ -315,6 +323,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
                 data-testid="change-events"
                 serviceId={service!.id}
                 refreshEvents={refreshChangeEvents}
+                account={service!.account}
               />
             </CardTab>
           ) : (
@@ -331,6 +340,7 @@ export const PagerDutyCard = (props: PagerDutyCardProps) => {
               policyId={service!.policyId}
               policyUrl={service!.policyLink}
               policyName={service!.policyName}
+              account={service!.account}
             />
           </>
         ) : (
