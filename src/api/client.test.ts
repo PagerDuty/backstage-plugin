@@ -16,7 +16,7 @@
 import { MockFetchApi } from '@backstage/test-utils';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { PagerDutyClient, UnauthorizedError } from './client';
-import { PagerDutyService } from '@pagerduty/backstage-plugin-common';
+import { PagerDutyService, PagerDutySetting } from '@pagerduty/backstage-plugin-common';
 import { NotFoundError } from '@backstage/errors';
 import { Entity } from '@backstage/catalog-model';
 
@@ -364,4 +364,82 @@ describe('PagerDutyClient', () => {
       });
     });
   });
+});
+
+describe('getSetting', () => {
+  const settingId = 'settingId';
+  const setting: PagerDutySetting = {
+    id: settingId,
+    value: 'disabled',
+  };
+
+  beforeEach(() => {
+    mockFetch.mockResolvedValueOnce({
+      status: 200,
+      ok: true,
+      json: () => Promise.resolve(setting),
+    });
+  });
+
+  it('should fetch the setting by ID', async () => {
+    const result = await client.getSetting(settingId);
+
+    expect(result).toEqual(setting);
+    expect(mockFetch).toHaveBeenCalledWith(
+      'http://localhost:7007/pagerduty/settings/settingId',
+      requestHeaders,
+    );
+  });
+
+  describe('storeSettings', () => {
+    const settings: PagerDutySetting[] = [
+      {
+        id: 'setting1',
+        value: 'disabled',
+      },
+      {
+        id: 'setting2',
+        value: 'backstage',
+      },
+    ];
+
+    beforeEach(() => {
+      mockFetch.mockReset();
+    });
+
+    it('should send a POST request to the correct URL with the settings', async () => {
+      const response = new Response(null, { status: 200 });
+      mockFetch.mockResolvedValueOnce(response);
+
+      const expectedUrl = 'http://localhost:7007/pagerduty/settings';
+      const expectedOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          Accept: 'application/json, text/plain, */*',
+        },
+        body: JSON.stringify(settings),
+      };
+
+      await expect(client.storeSettings(settings)).resolves.toEqual(response);
+      expect(mockFetch).toHaveBeenCalledWith(expectedUrl, expectedOptions);
+    });
+
+    it('should throw an error if the request fails', async () => {
+      const errorResponse = {
+        status: 500,
+        ok: false,
+        json: () =>
+          Promise.resolve({
+            errors: ['Internal server error'],
+          }),
+      };
+      mockFetch.mockResolvedValueOnce(errorResponse);
+
+      await expect(client.storeSettings(settings)).rejects.toThrow(
+        'Request failed with 500, Internal server error',
+      );
+    });
+  });
+
 });

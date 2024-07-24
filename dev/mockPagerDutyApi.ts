@@ -23,6 +23,15 @@ import { Entity } from '@backstage/catalog-model';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockPagerDutyApi: PagerDutyApi = {
+  async getSetting(id: string) {
+    return {
+      id: id,
+      value: 'backstage',
+    };
+  },
+  async storeSettings(settings) {
+    return new Response(JSON.stringify(settings));
+  },
   async getEntityMappings() {
       return {
         mappings: [

@@ -28,7 +28,8 @@ import { PagerDutyChangeEventsResponse,
   PagerDutyIncidentsResponse,
   PagerDutyServiceStandardsResponse,
   PagerDutyServiceMetricsResponse,
-  PagerDutyEntityMappingsResponse
+  PagerDutyEntityMappingsResponse,
+  PagerDutySetting
 } from '@pagerduty/backstage-plugin-common';
 import { createApiRef, ConfigApi } from '@backstage/core-plugin-api';
 import { NotFoundError } from '@backstage/errors';
@@ -104,6 +105,33 @@ export class PagerDutyClient implements PagerDutyApi {
     }
 
     return response;
+  }
+
+  async getSetting(id: string): Promise<PagerDutySetting> {
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/settings/${id}`;
+
+    return await this.findByUrl<PagerDutySetting>(url);
+  }
+
+  async storeSettings(settings: PagerDutySetting[]): Promise<Response> {
+    const body = JSON.stringify(settings);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Accept: 'application/json, text/plain, */*',
+      },
+      body,
+    };
+
+    const url = `${await this.config.discoveryApi.getBaseUrl(
+      'pagerduty',
+    )}/settings`;
+
+    return this.request(url, options);
   }
 
   async getEntityMappings(): Promise<PagerDutyEntityMappingsResponse> {

@@ -190,9 +190,9 @@ export const MappingTable = ({
         mutationFn: async (mapping: PagerDutyEntityMapping) => {
           return await pagerDutyApi.storeServiceMapping(
             mapping.serviceId,
-            mapping.integrationKey || "",
+            mapping.integrationKey ?? "",
             mapping.entityRef,
-            mapping.account || ""
+            mapping.account ?? ""
           );
         },
       });
