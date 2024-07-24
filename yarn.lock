@@ -4393,10 +4393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagerduty/backstage-plugin-common@npm:0.2.1-next.5":
-  version: 0.2.1-next.5
-  resolution: "@pagerduty/backstage-plugin-common@npm:0.2.1-next.5"
-  checksum: 6f36a9313c82edd04fb3c6a452b565b0a464c5631c1546a4ecfaf5aab313bd79b48162fad160f6d44e85bdd299b12eb6cd13c000ba63dbfae05637c755ae6ad9
+"@pagerduty/backstage-plugin-common@npm:0.2.1":
+  version: 0.2.1
+  resolution: "@pagerduty/backstage-plugin-common@npm:0.2.1"
+  checksum: 76233c2162d8e7bd3479e13652042cf949911be065f0bf92c5823cbc03c122b8ff49938ca36ab8449da800de7dd9c85724f70e3ff5323e77ef879478394115c9
   languageName: node
   linkType: hard
 
@@ -4425,7 +4425,7 @@ __metadata:
     "@mui/icons-material": ^5.15.19
     "@mui/material": ^5.15.19
     "@mui/x-date-pickers": ^7.6.1
-    "@pagerduty/backstage-plugin-common": 0.2.1-next.5
+    "@pagerduty/backstage-plugin-common": 0.2.1
     "@tanstack/react-query": ^5.40.1
     "@testing-library/dom": ^8.0.0
     "@testing-library/jest-dom": ^5.10.1

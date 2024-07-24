@@ -50,7 +50,7 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@mui/x-date-pickers": "^7.6.1",
-    "@pagerduty/backstage-plugin-common": "0.2.1-next.5",
+    "@pagerduty/backstage-plugin-common": "0.2.1",
     "@tanstack/react-query": "^5.40.1",
     "classnames": "^2.2.6",
     "luxon": "^3.4.1",
