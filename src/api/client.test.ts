@@ -365,6 +365,7 @@ describe('PagerDutyClient', () => {
     });
   });
 });
+
 describe('getSetting', () => {
   const settingId = 'settingId';
   const setting: PagerDutySetting = {
