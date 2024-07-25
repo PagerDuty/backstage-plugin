@@ -97,6 +97,7 @@ export const MappingTable = ({
     const columns = useMemo<MRT_ColumnDef<PagerDutyEntityMapping>[]>(
       () => [
         {
+          id: "serviceId",
           accessorKey: "serviceId",
           header: "Service ID",
           visibleInShowHideMenu: false,
@@ -109,6 +110,7 @@ export const MappingTable = ({
           ),
         },
         {
+          id: "integrationKey",
           accessorKey: "integrationKey",
           header: "Integration Key",
           visibleInShowHideMenu: false,
@@ -116,27 +118,32 @@ export const MappingTable = ({
           Edit: () => null,
         },
         {
+          id: "serviceName",
           accessorKey: "serviceName",
           header: "PagerDuty Service",
           enableEditing: false,
         },
         {
+          id: "account",
           accessorKey: "account",
           header: "Account",
           enableEditing: false,
           Edit: () => null,
         },
         {
+          id: "team",
           accessorKey: "team",
           header: "Team",
           enableEditing: false,
         },
         {
+          id: "escalationPolicy",
           accessorKey: "escalationPolicy",
           header: "Escalation Policy",
           enableEditing: false,
         },
         {
+          id: "entityRef",
           accessorKey: "entityRef",
           header: "Mapping",
           visibleInShowHideMenu: false,
@@ -151,12 +158,14 @@ export const MappingTable = ({
           },
         },
         {
+          id: "entityName",
           accessorKey: "entityName",
           header: "Mapped Entity Name",
           enableEditing: false,
           Edit: () => null,
         },
         {
+          id: "status",
           accessorKey: "status",
           header: "Status",
           enableEditing: false,
@@ -174,6 +183,7 @@ export const MappingTable = ({
           ),
         },
         {
+          id: "serviceUrl",
           accessorKey: "serviceUrl",
           header: "Service URL",
           visibleInShowHideMenu: false,
@@ -190,9 +200,9 @@ export const MappingTable = ({
         mutationFn: async (mapping: PagerDutyEntityMapping) => {
           return await pagerDutyApi.storeServiceMapping(
             mapping.serviceId,
-            mapping.integrationKey || "",
+            mapping.integrationKey ?? "",
             mapping.entityRef,
-            mapping.account || ""
+            mapping.account ?? ""
           );
         },
       });
@@ -297,6 +307,8 @@ export const MappingTable = ({
         showAlertBanner:
           mappings === undefined || catalogEntities === undefined,
         showProgressBars: mappings.length === 0 || catalogEntities.length === 0,
+      },
+      initialState: {
         columnVisibility: {
           serviceId: false,
           entityRef: false,
