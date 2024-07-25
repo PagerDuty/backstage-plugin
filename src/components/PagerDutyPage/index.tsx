@@ -132,6 +132,7 @@ export const PagerDutyPage = () => {
                       value="pagerduty"
                       control={<Radio />}
                       label="PagerDuty"
+                      disabled
                     />
                     <FormControlLabel
                       value="both"
