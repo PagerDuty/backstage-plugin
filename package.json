@@ -13,15 +13,21 @@
   "backstage": {
     "role": "frontend-plugin",
     "pluginId": "pagerduty",
-    "pluginPackages": "pagerduty"
+    "pluginPackages": [
+      "@pagerduty/backstage-plugin",
+      "@pagerduty/backstage-plugin-common",
+      "@pagerduty/backstage-plugin-backend"
+    ]
   },
   "homepage": "https://github.com/pagerduty/backstage-plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pagerduty/backstage-plugin.git"
+    "url": "https://github.com/pagerduty/backstage-plugin.git",
+    "directory": "."
   },
   "keywords": [
     "backstage",
+    "plugin",
     "pagerduty"
   ],
   "scripts": {
