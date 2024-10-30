@@ -13,15 +13,21 @@
   "backstage": {
     "role": "frontend-plugin",
     "pluginId": "pagerduty",
-    "pluginPackages": "pagerduty"
+    "pluginPackages": [
+      "@pagerduty/backstage-plugin",
+      "@pagerduty/backstage-plugin-common",
+      "@pagerduty/backstage-plugin-backend"
+    ]
   },
   "homepage": "https://github.com/pagerduty/backstage-plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pagerduty/backstage-plugin.git"
+    "url": "https://github.com/pagerduty/backstage-plugin.git",
+    "directory": "."
   },
   "keywords": [
     "backstage",
+    "plugin",
     "pagerduty"
   ],
   "scripts": {
@@ -50,7 +56,7 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@mui/x-date-pickers": "^7.6.1",
-    "@pagerduty/backstage-plugin-common": "0.2.1",
+    "@pagerduty/backstage-plugin-common": "^0.2.1",
     "@tanstack/react-query": "^5.40.1",
     "classnames": "^2.2.6",
     "luxon": "^3.4.1",
